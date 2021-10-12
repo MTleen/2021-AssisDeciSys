@@ -4,8 +4,9 @@ const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
-process.env.VUE_APP_TITLE = '消防辅助决策系统'
-const name = process.env.VUE_APP_TITLE || '消防辅助决策系统' // 网页标题
+
+process.env.VUE_APP_TITLE = '消防作战指挥辅助决策管理系统'
+const name = process.env.VUE_APP_TITLE || '消防作战指挥辅助决策管理系统' // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 80 // 端口
 

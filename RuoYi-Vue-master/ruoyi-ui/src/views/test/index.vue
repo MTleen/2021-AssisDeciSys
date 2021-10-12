@@ -147,16 +147,16 @@
     data() {
       return {
         form: {
-          name:'',
-          time:'',
-          type:'',
-          person:'',
-          station:'',
-          car:'',
-          keyWord:'',
+          name:'1',
+          time:'2',
+          type:'3',
+          person:'4',
+          station:'5',
+          car:'6',
+          keyWord:'7',
         },
         tipForm: {
-            tip:''
+            tip:'8'
         },
         zhihuiData: [{
             ZHId:'1',
@@ -165,27 +165,27 @@
         },
         {
             ZHId:'2',
-            ZHcontent:'存在失联迷失',
+            ZHcontent:'严格落实一线指挥',
             ZHIcon:'2',
         }],
 
         zhandouData: [{
             ZDId:'1',
-            ZDcontent:'严格落实一线指挥',
+            ZDcontent:'存在高空坠落',
             ZDIcon:'1',
         },{
             ZDId:'2',
-            ZDcontent:'合理选择进攻途径',
+            ZDcontent:'加油冲',
             ZDIcon:'3',
         }],
 
          sitongData: [{
             STId:'1',
-            STcontent:'利用防烟楼梯登高',
+            STcontent:'存在高空坠落',
             STIcon:'1',
         },{
             STId:'2',
-            STcontent:'严禁停靠着火层或穿越着火层',
+            STcontent:'加油冲',
             STIcon:'3',
         }]
       
