@@ -42,23 +42,24 @@
 
         <el-row :gutter="30" style="margin-top: 30px">
             <el-col :span="8">
-                <el-card class="box-card" >
-                    <div style="padding: 9px;">
-                    <span>指挥员</span>
+                <el-card class="box-card" backgroundColor="cadetblue" >
+                    <div style="padding: 9px;" icon="el-icon-plus">
+                    <span style="font-size:20px" >指挥员</span>
+
                     </div>
                 </el-card>
             </el-col>
             <el-col :span="8">
                 <el-card class="box-card">
                     <div style="padding: 9px;">
-                    <span>战斗员</span>
+                    <span style="font-size:20px"  icon="el-icon-eleme">战斗员</span>
                     </div>
                 </el-card>
             </el-col>
             <el-col :span="8">
                 <el-card class="box-card">
                     <div style="padding: 9px;">
-                    <span >司通员</span>
+                    <span style="font-size:20px">司通员</span>
                     </div>
                 </el-card>
             </el-col>
@@ -134,7 +135,7 @@
                 <el-form-item label="" prop="tip">
                 <el-input v-model="tipForm.tip"  size="small"></el-input>
                 </el-form-item>
-                <el-button type=""  size="small">附件上传</el-button>
+                <el-button type=""  size="small" icon="el-icon-plus">附件上传</el-button>
              </el-form>
         </el-row>
 
@@ -203,3 +204,11 @@
     }
   }
 </script>
+<style scoped>
+.el-card {
+    background-color: #409EFF;
+    /* padding: 10px 20px; */
+    color:#fff;
+    text-align:center
+  }
+</style>

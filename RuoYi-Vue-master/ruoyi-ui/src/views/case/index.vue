@@ -32,7 +32,7 @@
   <el-row :gutter="40">
     <el-col :span="16">
       <div class="grid-content bg-purple">
-        <el-table  v-loading="loading" :data="typeList" stripe border >
+        <el-table  v-loading="loading" :data="typeList" stripe border :header-cell-style="tableHeaderColor" >
           <el-table-column label="序号" align="center" prop="caseId" >
           </el-table-column>
           <el-table-column label="案件类型" align="center" prop="caseType" :show-overflow-tooltip="true">
@@ -61,7 +61,7 @@
   
     <el-col :span="8">
       <div class="grid-content bg-purple">
-        <el-table v-loading="loading" :data="dataTable" stripe border >
+        <el-table v-loading="loading" :data="dataTable" stripe border  :header-cell-style="tableHeaderColor">
           <el-table-column label="序号" align="center" prop="caseNumber" >
           </el-table-column>
           <el-table-column label="人员" align="center" prop="casePerson" >
@@ -165,6 +165,17 @@
         const property = column['property'];
         return row[property] === value;
       },
+       //设置表头行的样式
+      tableHeaderColor({row,column,rowIndex,columnIndex}){
+        return 'background-color:#409EFF;color:#fff;font-wight:500;text-align:center'
+ 
+      }
+    }
+  }
+</script>
+<style>
+</style>
+
     }
   };
 </script>
