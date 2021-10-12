@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * swagger 用户测试方法
- * 
+ *
  * @author ruoyi
  */
 @Api("用户信息管理")
@@ -34,148 +34,119 @@ public class TestController extends BaseController
 {
     private final static Map<Integer, UserEntity> users = new LinkedHashMap<Integer, UserEntity>();
     {
-        users.put(1, new UserEntity(1, "admin", "admin123", "15888888888"));
-        users.put(2, new UserEntity(2, "ry", "admin123", "15666666666"));
+        users.put(1, new UserEntity(1, 2, 10));
+        users.put(2, new UserEntity(2, 2, 10));
     }
 
-    @ApiOperation("获取用户列表")
-    @GetMapping("/list")
-    public AjaxResult userList()
-    {
-        List<UserEntity> userList = new ArrayList<UserEntity>(users.values());
-        return AjaxResult.success(userList);
-    }
+//    @ApiOperation("获取匹配规则")
+//    @GetMapping("/list")
+//    public AjaxResult userList()
+//    {
+//        List<UserEntity> userList = new ArrayList<UserEntity>(users.values());
+//        return AjaxResult.success(userList);
+//    }
 
-    @ApiOperation("获取用户详细")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
-    @GetMapping("/{userId}")
-    public AjaxResult getUser(@PathVariable Integer userId)
-    {
-        if (!users.isEmpty() && users.containsKey(userId))
-        {
-            return AjaxResult.success(users.get(userId));
-        }
-        else
-        {
-            return error("用户不存在");
-        }
-    }
-
-    @ApiOperation("新增用户")
+    @ApiOperation("获取规则信息")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "userId", value = "用户id", dataType = "Integer"),
-        @ApiImplicitParam(name = "username", value = "用户名称", dataType = "String"),
-        @ApiImplicitParam(name = "password", value = "用户密码", dataType = "String"),
-        @ApiImplicitParam(name = "mobile", value = "用户手机", dataType = "String")
+            @ApiImplicitParam( name="PositonId",value="岗位ID",required = true,dataType = "Integer",paramType="query"),
+            @ApiImplicitParam( name="InformTypeId",value="信息类型ID",required = true,dataType = "Integer",paramType="query"),
+            @ApiImplicitParam( name="num",value="数量",required = true,dataType = "Integer",paramType="query"),
     })
-    @PostMapping("/save")
-    public AjaxResult save(UserEntity user)
+    @PostMapping("/save2")
+    public AjaxResult save2(UserEntity user)
     {
-        if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId()))
+        if (StringUtils.isNull(user) || StringUtils.isNull(user.getPositionId()))
         {
             return error("用户ID不能为空");
         }
-        return AjaxResult.success(users.put(user.getUserId(), user));
+        return AjaxResult.success(users.put(user.getPositionId(), user));
     }
 
-    @ApiOperation("更新用户")
-    @PutMapping("/update")
-    public AjaxResult update(@RequestBody UserEntity user)
+    @ApiOperation("获取发送状态")
+    @ApiImplicitParam(name = "SendStatus", value = "发送状态", required = true, dataType = "Integer", paramType = "path")
+    @GetMapping("/{SendStatus}")
+    public AjaxResult getStatus(@PathVariable Integer SendStatus)
     {
-        if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId()))
+        if (!users.isEmpty() && users.containsKey(SendStatus))
         {
-            return error("用户ID不能为空");
-        }
-        if (users.isEmpty() || !users.containsKey(user.getUserId()))
-        {
-            return error("用户不存在");
-        }
-        users.remove(user.getUserId());
-        return AjaxResult.success(users.put(user.getUserId(), user));
-    }
-
-    @ApiOperation("删除用户信息")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
-    @DeleteMapping("/{userId}")
-    public AjaxResult delete(@PathVariable Integer userId)
-    {
-        if (!users.isEmpty() && users.containsKey(userId))
-        {
-            users.remove(userId);
-            return success();
+            return AjaxResult.success(users.get(SendStatus));
         }
         else
         {
             return error("用户不存在");
         }
+    }
+
+    @ApiOperation("匹配信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam( name="DisasterType",value="类别",required = true,dataType = "Integer",paramType="query"),
+            @ApiImplicitParam( name="DisposeObject",value="处置对象",required = true,dataType = "Integer",paramType="query"),
+            @ApiImplicitParam( name="DetailType",value="险情类型",required = true,dataType = "Integer",paramType="query"),
+            @ApiImplicitParam( name="Label4",value="附加标签",required = true,dataType = "Integer",paramType="query"),
+            @ApiImplicitParam( name="KeyWord",value="关键词",required = true,dataType = "String",paramType="query")
+    })
+    @PostMapping("/save1")
+    public AjaxResult save1(UserEntity user)
+    {
+        if (StringUtils.isNull(user) || StringUtils.isNull(user.getPositionId()))
+        {
+            return error("用户ID不能为空");
+        }
+        return AjaxResult.success(users.put(user.getPositionId(), user));
     }
 }
 
-@ApiModel(value = "UserEntity", description = "用户实体")
+@ApiModel(value = "UserEntity", description = "规则实体")
 class UserEntity
 {
-    @ApiModelProperty("用户ID")
-    private Integer userId;
+    @ApiModelProperty("岗位ID")
+    private Integer PositionId;
 
-    @ApiModelProperty("用户名称")
-    private String username;
+    @ApiModelProperty("信息类型ID")
+    private Integer InformTypeId;
 
-    @ApiModelProperty("用户密码")
-    private String password;
+    @ApiModelProperty("数量")
+    private Integer num;
 
-    @ApiModelProperty("用户手机")
-    private String mobile;
 
-    public UserEntity()
+
+    public UserEntity(Integer PositionId, Integer InformTypeId, Integer num)
     {
+        this.PositionId = PositionId;
+        this.InformTypeId = InformTypeId;
+        this.num = num;
 
     }
 
-    public UserEntity(Integer userId, String username, String password, String mobile)
+    public Integer getPositionId()
     {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.mobile = mobile;
+        return PositionId;
     }
 
-    public Integer getUserId()
+    public void setPositionId(Integer PositionId)
     {
-        return userId;
+        this.PositionId = PositionId;
     }
 
-    public void setUserId(Integer userId)
+    public Integer getInformTypeId()
     {
-        this.userId = userId;
+        return InformTypeId;
     }
 
-    public String getUsername()
+    public void setInformTypeId(Integer InformTypeId)
     {
-        return username;
+        this.InformTypeId = InformTypeId;
     }
 
-    public void setUsername(String username)
+    public Integer getnum()
     {
-        this.username = username;
+        return num;
     }
 
-    public String getPassword()
+    public void setnum(Integer num)
     {
-        return password;
+        this.num = num;
     }
 
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
 
-    public String getMobile()
-    {
-        return mobile;
-    }
-
-    public void setMobile(String mobile)
-    {
-        this.mobile = mobile;
-    }
 }

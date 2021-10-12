@@ -16,12 +16,12 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="ruoyi" target="1.8" />
-      <module name="ruoyi-admin" target="1.8" />
+      <module name="ruoyi-admin" target="7" />
       <module name="ruoyi-common" target="1.8" />
       <module name="ruoyi-framework" target="1.8" />
-      <module name="ruoyi-generator" target="1.8" />
-      <module name="ruoyi-quartz" target="1.8" />
-      <module name="ruoyi-system" target="1.8" />
+      <module name="ruoyi-generator" target="7" />
+      <module name="ruoyi-quartz" target="7" />
+      <module name="ruoyi-system" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
