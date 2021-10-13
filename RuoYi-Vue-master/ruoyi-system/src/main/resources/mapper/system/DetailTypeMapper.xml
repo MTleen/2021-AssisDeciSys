@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DetailTypeMapper">
+    
+    <resultMap type="DetailType" id="DetailTypeResult">
+        <result property="typeid"    column="typeID"    />
+        <result property="typename"    column="typename"    />
+        <result property="distype"    column="distype"    />
+    </resultMap>
+
+    <sql id="selectDetailTypeVo">
+        select typeID, typename, distype from DetailType
+    </sql>
+
+    <select id="selectDetailTypeList" parameterType="DetailType" resultMap="DetailTypeResult">
+        <include refid="selectDetailTypeVo"/>
+        <where>  
+            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
+            <if test="distype != null "> and distype = #{distype}</if>
+        </where>
+    </select>
+    
+    <select id="selectDetailTypeByTypeid" parameterType="Long" resultMap="DetailTypeResult">
+        <include refid="selectDetailTypeVo"/>
+        where typeID = #{typeid}
+    </select>
+        
+    <insert id="insertDetailType" parameterType="DetailType">
+        insert into DetailType
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeid != null">typeID,</if>
+            <if test="typename != null and typename != ''">typename,</if>
+            <if test="distype != null">distype,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeid != null">#{typeid},</if>
+            <if test="typename != null and typename != ''">#{typename},</if>
+            <if test="distype != null">#{distype},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDetailType" parameterType="DetailType">
+        update DetailType
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typename != null and typename != ''">typename = #{typename},</if>
+            <if test="distype != null">distype = #{distype},</if>
+        </trim>
+        where typeID = #{typeid}
+    </update>
+
+    <delete id="deleteDetailTypeByTypeid" parameterType="Long">
+        delete from DetailType where typeID = #{typeid}
+    </delete>
+
+    <delete id="deleteDetailTypeByTypeids" parameterType="String">
+        delete from DetailType where typeID in 
+        <foreach item="typeid" collection="array" open="(" separator="," close=")">
+            #{typeid}
+        </foreach>
+    </delete>
+</mapper>

@@ -57,6 +57,17 @@
           </el-table-column>
         </el-table>
       </div>
+      <div class="block" style="margin-top: 30px">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage4"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="20"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="100">
+        </el-pagination>
+      </div>
     </el-col>
   
     <el-col :span="8">
@@ -84,14 +95,9 @@
     </el-col>
   </el-row>
 
-  <!-- <pagination
-          v-show="total>0"
-          :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getList"
-        /> -->
   </div>
+
+  
 </div>
    
 
