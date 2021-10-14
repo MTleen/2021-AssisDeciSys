@@ -43,7 +43,7 @@
         <el-row :gutter="30" style="margin-top: 30px">
             <el-col :span="8">
                 <el-card class="box-card" backgroundColor="cadetblue" >
-                    <div style="padding: 9px;" icon="el-icon-plus">
+                    <div style="padding: 2px;" icon="el-icon-plus">
                     <span style="font-size:20px" >指挥员</span>
 
                     </div>
@@ -51,14 +51,14 @@
             </el-col>
             <el-col :span="8">
                 <el-card class="box-card">
-                    <div style="padding: 9px;">
+                    <div style="padding: 2px;">
                     <span style="font-size:20px"  icon="el-icon-eleme">战斗员</span>
                     </div>
                 </el-card>
             </el-col>
             <el-col :span="8">
                 <el-card class="box-card">
-                    <div style="padding: 9px;">
+                    <div style="padding: 2px;">
                     <span style="font-size:20px">司通员</span>
                     </div>
                 </el-card>
@@ -68,8 +68,8 @@
 
         <el-row :gutter="30" style="margin-top: 30px">
              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                    <el-table  v-loading="loading" :data="zhihuiData" stripe  >
+                <div class="grid-content bg-purple" >
+                    <el-table  v-loading="loading" :cell-style="{padding:'2px'}"  :data="zhihuiData" stripe  >
                     <el-table-column type="selection"  width="55">
                     </el-table-column>
 
@@ -77,7 +77,7 @@
                         <template slot-scope="scope">{{ scope.row.ZHId }}</template>
                     </el-table-column>
 
-                    <el-table-column label="内容详情" align="center" prop="ZHcontent" :show-overflow-tooltip="true">
+                    <el-table-column label="内容详情" align="center" prop="ZHcontent" :show-overflow-tooltip="false">
                     </el-table-column>  
                     <el-table-column label="全部" align="center" prop="ZHIcon"
                         :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"
@@ -90,14 +90,14 @@
 
               <el-col :span="8">
                 <div class="grid-content bg-purple">
-                    <el-table  v-loading="loading" :data="zhandouData" stripe  >
+                    <el-table   v-loading="loading" :cell-style="{padding:'2px'}" :data="zhandouData" stripe  >
                     <el-table-column type="selection"  width="55">
                     </el-table-column>
 
                     <el-table-column label="序号" align="center" prop="ZDId" >
                         <template slot-scope="scope">{{ scope.row.ZDId }}</template>
                     </el-table-column>
-                    <el-table-column label="内容详情" align="center" prop="ZDcontent" :show-overflow-tooltip="true">
+                    <el-table-column label="内容详情" align="center" prop="ZDcontent" :show-overflow-tooltip="false">
                     </el-table-column>  
                     <el-table-column label="全部" align="center" prop="ZDIcon"
                         :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"
@@ -110,14 +110,14 @@
              
              <el-col :span="8">
                 <div class="grid-content bg-purple">
-                    <el-table  v-loading="loading" :data="sitongData" stripe  >
+                    <el-table  v-loading="loading" :cell-style="{padding:'2px'}"  :data="sitongData" stripe  >
                     <el-table-column type="selection"  width="55">
                     </el-table-column>
 
                     <el-table-column label="序号" align="center" prop="STId" >
                          <template slot-scope="scope">{{ scope.row.STId }}</template>
                     </el-table-column>
-                    <el-table-column label="内容详情" align="center" prop="STcontent" :show-overflow-tooltip="true">
+                    <el-table-column label="内容详情" align="center" prop="STcontent" :show-overflow-tooltip="false">
                     </el-table-column>  
                     <el-table-column label="全部" align="center" prop="STIcon"
                         :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"
