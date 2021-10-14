@@ -1,4 +1,4 @@
-package com.ruoyi.system.domain;
+package com.ruoyi.knowledge.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 详细类型表对象 DetailType
  * 
  * @author xiaoyu
- * @date 2021-10-13
+ * @date 2021-10-14
  */
 public class DetailType extends BaseEntity
 {

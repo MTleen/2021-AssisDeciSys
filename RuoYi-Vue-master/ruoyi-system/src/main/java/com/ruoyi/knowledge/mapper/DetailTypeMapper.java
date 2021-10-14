@@ -1,13 +1,13 @@
-package com.ruoyi.system.mapper;
+package com.ruoyi.knowledge.mapper;
 
 import java.util.List;
-import com.ruoyi.system.domain.DetailType;
+import com.ruoyi.knowledge.domain.DetailType;
 
 /**
  * 详细类型表Mapper接口
  * 
  * @author xiaoyu
- * @date 2021-10-13
+ * @date 2021-10-14
  */
 public interface DetailTypeMapper 
 {

@@ -1,17 +1,17 @@
-package com.ruoyi.system.service.impl;
+package com.ruoyi.knowledge.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.DetailTypeMapper;
-import com.ruoyi.system.domain.DetailType;
-import com.ruoyi.system.service.IDetailTypeService;
+import com.ruoyi.knowledge.mapper.DetailTypeMapper;
+import com.ruoyi.knowledge.domain.DetailType;
+import com.ruoyi.knowledge.service.IDetailTypeService;
 
 /**
  * 详细类型表Service业务层处理
  * 
  * @author xiaoyu
- * @date 2021-10-13
+ * @date 2021-10-14
  */
 @Service
 public class DetailTypeServiceImpl implements IDetailTypeService 

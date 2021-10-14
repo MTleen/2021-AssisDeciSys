@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.system;
+package com.ruoyi.web.controller.knowledge;
 
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,8 +15,8 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.system.domain.DetailType;
-import com.ruoyi.system.service.IDetailTypeService;
+import com.ruoyi.knowledge.domain.DetailType;
+import com.ruoyi.knowledge.service.IDetailTypeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
@@ -24,10 +24,10 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 详细类型表Controller
  * 
  * @author xiaoyu
- * @date 2021-10-13
+ * @date 2021-10-14
  */
 @RestController
-@RequestMapping("/system/DetailType")
+@RequestMapping("/knowledge/detailtype")
 public class DetailTypeController extends BaseController
 {
     @Autowired
@@ -36,7 +36,7 @@ public class DetailTypeController extends BaseController
     /**
      * 查询详细类型表列表
      */
-    @PreAuthorize("@ss.hasPermi('system:DetailType:list')")
+    @PreAuthorize("@ss.hasPermi('knowledge:detailtype:list')")
     @GetMapping("/list")
     public TableDataInfo list(DetailType detailType)
     {
@@ -48,7 +48,7 @@ public class DetailTypeController extends BaseController
     /**
      * 导出详细类型表列表
      */
-    @PreAuthorize("@ss.hasPermi('system:DetailType:export')")
+    @PreAuthorize("@ss.hasPermi('knowledge:detailtype:export')")
     @Log(title = "详细类型表", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(DetailType detailType)
@@ -61,7 +61,7 @@ public class DetailTypeController extends BaseController
     /**
      * 获取详细类型表详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:DetailType:query')")
+    @PreAuthorize("@ss.hasPermi('knowledge:detailtype:query')")
     @GetMapping(value = "/{typeid}")
     public AjaxResult getInfo(@PathVariable("typeid") Long typeid)
     {
@@ -71,7 +71,7 @@ public class DetailTypeController extends BaseController
     /**
      * 新增详细类型表
      */
-    @PreAuthorize("@ss.hasPermi('system:DetailType:add')")
+    @PreAuthorize("@ss.hasPermi('knowledge:detailtype:add')")
     @Log(title = "详细类型表", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DetailType detailType)
@@ -82,7 +82,7 @@ public class DetailTypeController extends BaseController
     /**
      * 修改详细类型表
      */
-    @PreAuthorize("@ss.hasPermi('system:DetailType:edit')")
+    @PreAuthorize("@ss.hasPermi('knowledge:detailtype:edit')")
     @Log(title = "详细类型表", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DetailType detailType)
@@ -93,7 +93,7 @@ public class DetailTypeController extends BaseController
     /**
      * 删除详细类型表
      */
-    @PreAuthorize("@ss.hasPermi('system:DetailType:remove')")
+    @PreAuthorize("@ss.hasPermi('knowledge:detailtype:remove')")
     @Log(title = "详细类型表", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{typeids}")
     public AjaxResult remove(@PathVariable Long[] typeids)

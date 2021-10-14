@@ -1,52 +1,52 @@
 import request from '@/utils/request'
 
 // 查询详细类型表列表
-export function listDetailType(query) {
+export function listDetailtype(query) {
   return request({
-    url: '/system/DetailType/list',
+    url: '/knowledge/detailtype/list',
     method: 'get',
     params: query
   })
 }
 
 // 查询详细类型表详细
-export function getDetailType(typeid) {
+export function getDetailtype(typeid) {
   return request({
-    url: '/system/DetailType/' + typeid,
+    url: '/knowledge/detailtype/' + typeid,
     method: 'get'
   })
 }
 
 // 新增详细类型表
-export function addDetailType(data) {
+export function addDetailtype(data) {
   return request({
-    url: '/system/DetailType',
+    url: '/knowledge/detailtype',
     method: 'post',
     data: data
   })
 }
 
 // 修改详细类型表
-export function updateDetailType(data) {
+export function updateDetailtype(data) {
   return request({
-    url: '/system/DetailType',
+    url: '/knowledge/detailtype',
     method: 'put',
     data: data
   })
 }
 
 // 删除详细类型表
-export function delDetailType(typeid) {
+export function delDetailtype(typeid) {
   return request({
-    url: '/system/DetailType/' + typeid,
+    url: '/knowledge/detailtype/' + typeid,
     method: 'delete'
   })
 }
 
 // 导出详细类型表
-export function exportDetailType(query) {
+export function exportDetailtype(query) {
   return request({
-    url: '/system/DetailType/export',
+    url: '/knowledge/detailtype/export',
     method: 'get',
     params: query
   })

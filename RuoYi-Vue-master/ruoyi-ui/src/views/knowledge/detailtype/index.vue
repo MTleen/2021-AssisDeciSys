@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="${comment}" prop="typename">
+      <el-form-item label="类型名称" prop="typename">
         <el-input
           v-model="queryParams.typename"
-          placeholder="请输入${comment}"
+          placeholder="请输入类型名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="${comment}" prop="distype">
-        <el-select v-model="queryParams.distype" placeholder="请选择${comment}" clearable size="small">
+      <el-form-item label="险情类型" prop="distype">
+        <el-select v-model="queryParams.distype" placeholder="请选择险情类型" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
@@ -29,7 +29,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:DetailType:add']"
+          v-hasPermi="['knowledge:detailtype:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -40,7 +40,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:DetailType:edit']"
+          v-hasPermi="['knowledge:detailtype:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -51,7 +51,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:DetailType:remove']"
+          v-hasPermi="['knowledge:detailtype:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -62,17 +62,17 @@
           size="mini"
           :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['system:DetailType:export']"
+          v-hasPermi="['knowledge:detailtype:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="DetailTypeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="detailtypeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="${comment}" align="center" prop="typeid" />
-      <el-table-column label="${comment}" align="center" prop="typename" />
-      <el-table-column label="${comment}" align="center" prop="distype" />
+      <el-table-column label="类型 ID" align="center" prop="typeid" />
+      <el-table-column label="类型名称" align="center" prop="typename" />
+      <el-table-column label="险情类型" align="center" prop="distype" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -80,19 +80,19 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:DetailType:edit']"
+            v-hasPermi="['knowledge:detailtype:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:DetailType:remove']"
+            v-hasPermi="['knowledge:detailtype:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+    
     <pagination
       v-show="total>0"
       :total="total"
@@ -104,11 +104,11 @@
     <!-- 添加或修改详细类型表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="${comment}" prop="typename">
-          <el-input v-model="form.typename" placeholder="请输入${comment}" />
+        <el-form-item label="类型名称" prop="typename">
+          <el-input v-model="form.typename" placeholder="请输入类型名称" />
         </el-form-item>
-        <el-form-item label="${comment}" prop="distype">
-          <el-select v-model="form.distype" placeholder="请选择${comment}">
+        <el-form-item label="险情类型" prop="distype">
+          <el-select v-model="form.distype" placeholder="请选择险情类型">
             <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
@@ -122,10 +122,10 @@
 </template>
 
 <script>
-import { listDetailType, getDetailType, delDetailType, addDetailType, updateDetailType, exportDetailType } from "@/api/system/DetailType";
+import { listDetailtype, getDetailtype, delDetailtype, addDetailtype, updateDetailtype, exportDetailtype } from "@/api/knowledge/detailtype";
 
 export default {
-  name: "DetailType",
+  name: "Detailtype",
   data() {
     return {
       // 遮罩层
@@ -143,7 +143,7 @@ export default {
       // 总条数
       total: 0,
       // 详细类型表表格数据
-      DetailTypeList: [],
+      detailtypeList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -160,7 +160,7 @@ export default {
       // 表单校验
       rules: {
         typename: [
-          { required: true, message: "$comment不能为空", trigger: "blur" }
+          { required: true, message: "类型名称不能为空", trigger: "blur" }
         ],
       }
     };
@@ -172,8 +172,8 @@ export default {
     /** 查询详细类型表列表 */
     getList() {
       this.loading = true;
-      listDetailType(this.queryParams).then(response => {
-        this.DetailTypeList = response.rows;
+      listDetailtype(this.queryParams).then(response => {
+        this.detailtypeList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -218,7 +218,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const typeid = row.typeid || this.ids
-      getDetailType(typeid).then(response => {
+      getDetailtype(typeid).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改详细类型表";
@@ -229,13 +229,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.typeid != null) {
-            updateDetailType(this.form).then(response => {
+            updateDetailtype(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addDetailType(this.form).then(response => {
+            addDetailtype(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -252,7 +252,7 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delDetailType(typeids);
+          return delDetailtype(typeids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -267,7 +267,7 @@ export default {
           type: "warning"
         }).then(() => {
           this.exportLoading = true;
-          return exportDetailType(queryParams);
+          return exportDetailtype(queryParams);
         }).then(response => {
           this.download(response.msg);
           this.exportLoading = false;

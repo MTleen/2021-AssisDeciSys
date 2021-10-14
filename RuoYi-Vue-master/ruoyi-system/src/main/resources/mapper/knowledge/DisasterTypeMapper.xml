@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.DisasterTypeMapper">
+    
+    <resultMap type="DisasterType" id="DisasterTypeResult">
+        <result property="typeid"    column="typeID"    />
+        <result property="typename"    column="typename"    />
+    </resultMap>
+
+    <sql id="selectDisasterTypeVo">
+        select typeID, typename from DisasterType
+    </sql>
+
+    <select id="selectDisasterTypeList" parameterType="DisasterType" resultMap="DisasterTypeResult">
+        <include refid="selectDisasterTypeVo"/>
+        <where>  
+            <if test="typeid != null "> and typeID = #{typeid}</if>
+            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDisasterTypeByTypeid" parameterType="Long" resultMap="DisasterTypeResult">
+        <include refid="selectDisasterTypeVo"/>
+        where typeID = #{typeid}
+    </select>
+        
+    <insert id="insertDisasterType" parameterType="DisasterType">
+        insert into DisasterType
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeid != null">typeID,</if>
+            <if test="typename != null">typename,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeid != null">#{typeid},</if>
+            <if test="typename != null">#{typename},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDisasterType" parameterType="DisasterType">
+        update DisasterType
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typename != null">typename = #{typename},</if>
+        </trim>
+        where typeID = #{typeid}
+    </update>
+
+    <delete id="deleteDisasterTypeByTypeid" parameterType="Long">
+        delete from DisasterType where typeID = #{typeid}
+    </delete>
+
+    <delete id="deleteDisasterTypeByTypeids" parameterType="String">
+        delete from DisasterType where typeID in 
+        <foreach item="typeid" collection="array" open="(" separator="," close=")">
+            #{typeid}
+        </foreach>
+    </delete>
+</mapper>

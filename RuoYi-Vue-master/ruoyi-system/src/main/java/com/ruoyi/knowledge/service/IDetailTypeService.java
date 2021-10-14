@@ -1,13 +1,13 @@
-package com.ruoyi.system.service;
+package com.ruoyi.knowledge.service;
 
 import java.util.List;
-import com.ruoyi.system.domain.DetailType;
+import com.ruoyi.knowledge.domain.DetailType;
 
 /**
  * 详细类型表Service接口
  * 
  * @author xiaoyu
- * @date 2021-10-13
+ * @date 2021-10-14
  */
 public interface IDetailTypeService 
 {
