@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.HistoryMapper">
+    
+    <resultMap type="History" id="HistoryResult">
+        <result property="index"    column="index"    />
+        <result property="cautionid"    column="cautionID"    />
+        <result property="informid"    column="informID"    />
+    </resultMap>
+
+    <sql id="selectHistoryVo">
+        select index, cautionID, informID from History
+    </sql>
+
+    <select id="selectHistoryList" parameterType="History" resultMap="HistoryResult">
+        <include refid="selectHistoryVo"/>
+        <where>  
+            <if test="cautionid != null  and cautionid != ''"> and cautionID = #{cautionid}</if>
+            <if test="informid != null "> and informID = #{informid}</if>
+        </where>
+    </select>
+    
+    <select id="selectHistoryByIndex" parameterType="Long" resultMap="HistoryResult">
+        <include refid="selectHistoryVo"/>
+        where index = #{index}
+    </select>
+        
+    <insert id="insertHistory" parameterType="History">
+        insert into History
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="index != null">index,</if>
+            <if test="cautionid != null">cautionID,</if>
+            <if test="informid != null">informID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="index != null">#{index},</if>
+            <if test="cautionid != null">#{cautionid},</if>
+            <if test="informid != null">#{informid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHistory" parameterType="History">
+        update History
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cautionid != null">cautionID = #{cautionid},</if>
+            <if test="informid != null">informID = #{informid},</if>
+        </trim>
+        where index = #{index}
+    </update>
+
+    <delete id="deleteHistoryByIndex" parameterType="Long">
+        delete from History where index = #{index}
+    </delete>
+
+    <delete id="deleteHistoryByIndexs" parameterType="String">
+        delete from History where index in 
+        <foreach item="index" collection="array" open="(" separator="," close=")">
+            #{index}
+        </foreach>
+    </delete>
+</mapper>

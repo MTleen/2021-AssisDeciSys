@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.RecordMapper">
+    
+    <resultMap type="Record" id="RecordResult">
+        <result property="cautionid"    column="cautionID"    />
+        <result property="cautiontime"    column="cautiontime"    />
+        <result property="location"    column="location"    />
+        <result property="distypeid"    column="distypeID"    />
+        <result property="dillobject"    column="dillobject"    />
+        <result property="siteid"    column="siteID"    />
+        <result property="truckid"    column="truckID"    />
+        <result property="supplement"    column="supplement"    />
+        <result property="boom"    column="boom"    />
+        <result property="poison"    column="poison"    />
+        <result property="picture"    column="picture"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectRecordVo">
+        select cautionID, cautiontime, location, distypeID, dillobject, siteID, truckID, supplement, boom, poison, picture, status from Record
+    </sql>
+
+    <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
+        <include refid="selectRecordVo"/>
+        <where>  
+            <if test="cautiontime != null "> and cautiontime = #{cautiontime}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="distypeid != null "> and distypeID = #{distypeid}</if>
+            <if test="dillobject != null "> and dillobject = #{dillobject}</if>
+            <if test="siteid != null "> and siteID = #{siteid}</if>
+            <if test="truckid != null "> and truckID = #{truckid}</if>
+            <if test="supplement != null  and supplement != ''"> and supplement = #{supplement}</if>
+            <if test="boom != null "> and boom = #{boom}</if>
+            <if test="poison != null "> and poison = #{poison}</if>
+            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectRecordByCautionid" parameterType="String" resultMap="RecordResult">
+        <include refid="selectRecordVo"/>
+        where cautionID = #{cautionid}
+    </select>
+        
+    <insert id="insertRecord" parameterType="Record">
+        insert into Record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cautionid != null">cautionID,</if>
+            <if test="cautiontime != null">cautiontime,</if>
+            <if test="location != null and location != ''">location,</if>
+            <if test="distypeid != null">distypeID,</if>
+            <if test="dillobject != null">dillobject,</if>
+            <if test="siteid != null">siteID,</if>
+            <if test="truckid != null">truckID,</if>
+            <if test="supplement != null">supplement,</if>
+            <if test="boom != null">boom,</if>
+            <if test="poison != null">poison,</if>
+            <if test="picture != null">picture,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cautionid != null">#{cautionid},</if>
+            <if test="cautiontime != null">#{cautiontime},</if>
+            <if test="location != null and location != ''">#{location},</if>
+            <if test="distypeid != null">#{distypeid},</if>
+            <if test="dillobject != null">#{dillobject},</if>
+            <if test="siteid != null">#{siteid},</if>
+            <if test="truckid != null">#{truckid},</if>
+            <if test="supplement != null">#{supplement},</if>
+            <if test="boom != null">#{boom},</if>
+            <if test="poison != null">#{poison},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRecord" parameterType="Record">
+        update Record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cautiontime != null">cautiontime = #{cautiontime},</if>
+            <if test="location != null and location != ''">location = #{location},</if>
+            <if test="distypeid != null">distypeID = #{distypeid},</if>
+            <if test="dillobject != null">dillobject = #{dillobject},</if>
+            <if test="siteid != null">siteID = #{siteid},</if>
+            <if test="truckid != null">truckID = #{truckid},</if>
+            <if test="supplement != null">supplement = #{supplement},</if>
+            <if test="boom != null">boom = #{boom},</if>
+            <if test="poison != null">poison = #{poison},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where cautionID = #{cautionid}
+    </update>
+
+    <delete id="deleteRecordByCautionid" parameterType="String">
+        delete from Record where cautionID = #{cautionid}
+    </delete>
+
+    <delete id="deleteRecordByCautionids" parameterType="String">
+        delete from Record where cautionID in 
+        <foreach item="cautionid" collection="array" open="(" separator="," close=")">
+            #{cautionid}
+        </foreach>
+    </delete>
+</mapper>

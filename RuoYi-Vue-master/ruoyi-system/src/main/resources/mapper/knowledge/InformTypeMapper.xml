@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.InformTypeMapper">
+    
+    <resultMap type="InformType" id="InformTypeResult">
+        <result property="typeid"    column="typeID"    />
+        <result property="typename"    column="typename"    />
+    </resultMap>
+
+    <sql id="selectInformTypeVo">
+        select typeID, typename from InformType
+    </sql>
+
+    <select id="selectInformTypeList" parameterType="InformType" resultMap="InformTypeResult">
+        <include refid="selectInformTypeVo"/>
+        <where>  
+            <if test="typeid != null "> and typeID = #{typeid}</if>
+            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectInformTypeByTypeid" parameterType="Long" resultMap="InformTypeResult">
+        <include refid="selectInformTypeVo"/>
+        where typeID = #{typeid}
+    </select>
+        
+    <insert id="insertInformType" parameterType="InformType">
+        insert into InformType
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeid != null">typeID,</if>
+            <if test="typename != null and typename != ''">typename,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeid != null">#{typeid},</if>
+            <if test="typename != null and typename != ''">#{typename},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInformType" parameterType="InformType">
+        update InformType
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typename != null and typename != ''">typename = #{typename},</if>
+        </trim>
+        where typeID = #{typeid}
+    </update>
+
+    <delete id="deleteInformTypeByTypeid" parameterType="Long">
+        delete from InformType where typeID = #{typeid}
+    </delete>
+
+    <delete id="deleteInformTypeByTypeids" parameterType="String">
+        delete from InformType where typeID in 
+        <foreach item="typeid" collection="array" open="(" separator="," close=")">
+            #{typeid}
+        </foreach>
+    </delete>
+</mapper>

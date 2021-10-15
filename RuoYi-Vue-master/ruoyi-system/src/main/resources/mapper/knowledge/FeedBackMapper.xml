@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.FeedBackMapper">
+    
+    <resultMap type="FeedBack" id="FeedBackResult">
+        <result property="feedid"    column="feedID"    />
+        <result property="tele"    column="tele"    />
+        <result property="inform"    column="inform"    />
+    </resultMap>
+
+    <sql id="selectFeedBackVo">
+        select feedID, tele, inform from FeedBack
+    </sql>
+
+    <select id="selectFeedBackList" parameterType="FeedBack" resultMap="FeedBackResult">
+        <include refid="selectFeedBackVo"/>
+        <where>  
+            <if test="tele != null  and tele != ''"> and tele = #{tele}</if>
+            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
+        </where>
+    </select>
+    
+    <select id="selectFeedBackByFeedid" parameterType="Long" resultMap="FeedBackResult">
+        <include refid="selectFeedBackVo"/>
+        where feedID = #{feedid}
+    </select>
+        
+    <insert id="insertFeedBack" parameterType="FeedBack">
+        insert into FeedBack
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="feedid != null">feedID,</if>
+            <if test="tele != null">tele,</if>
+            <if test="inform != null and inform != ''">inform,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="feedid != null">#{feedid},</if>
+            <if test="tele != null">#{tele},</if>
+            <if test="inform != null and inform != ''">#{inform},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFeedBack" parameterType="FeedBack">
+        update FeedBack
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tele != null">tele = #{tele},</if>
+            <if test="inform != null and inform != ''">inform = #{inform},</if>
+        </trim>
+        where feedID = #{feedid}
+    </update>
+
+    <delete id="deleteFeedBackByFeedid" parameterType="Long">
+        delete from FeedBack where feedID = #{feedid}
+    </delete>
+
+    <delete id="deleteFeedBackByFeedids" parameterType="String">
+        delete from FeedBack where feedID in 
+        <foreach item="feedid" collection="array" open="(" separator="," close=")">
+            #{feedid}
+        </foreach>
+    </delete>
+</mapper>

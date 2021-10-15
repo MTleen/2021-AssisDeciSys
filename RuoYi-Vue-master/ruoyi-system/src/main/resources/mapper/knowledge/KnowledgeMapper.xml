@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.KnowledgeMapper">
+    
+    <resultMap type="Knowledge" id="KnowledgeResult">
+        <result property="informid"    column="InformID"    />
+        <result property="inform"    column="inform"    />
+        <result property="weight"    column="weight"    />
+        <result property="disastertype"    column="disastertype"    />
+        <result property="disposeobj"    column="disposeobj"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="informtypeid"    column="informtypeID"    />
+    </resultMap>
+
+    <sql id="selectKnowledgeVo">
+        select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge
+    </sql>
+
+    <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        <where>  
+            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="disastertype != null "> and disastertype = #{disastertype}</if>
+            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
+            <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+            <if test="label4 != null "> and label4 = #{label4}</if>
+            <if test="informtypeid != null "> and informtypeID = #{informtypeid}</if>
+        </where>
+    </select>
+    
+    <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        where InformID = #{informid}
+    </select>
+        
+    <insert id="insertKnowledge" parameterType="Knowledge">
+        insert into Knowledge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="informid != null">InformID,</if>
+            <if test="inform != null and inform != ''">inform,</if>
+            <if test="weight != null">weight,</if>
+            <if test="disastertype != null">disastertype,</if>
+            <if test="disposeobj != null">disposeobj,</if>
+            <if test="detailtype != null">detailtype,</if>
+            <if test="label4 != null">label4,</if>
+            <if test="informtypeid != null">informtypeID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="informid != null">#{informid},</if>
+            <if test="inform != null and inform != ''">#{inform},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="disastertype != null">#{disastertype},</if>
+            <if test="disposeobj != null">#{disposeobj},</if>
+            <if test="detailtype != null">#{detailtype},</if>
+            <if test="label4 != null">#{label4},</if>
+            <if test="informtypeid != null">#{informtypeid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKnowledge" parameterType="Knowledge">
+        update Knowledge
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inform != null and inform != ''">inform = #{inform},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="disastertype != null">disastertype = #{disastertype},</if>
+            <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
+            <if test="detailtype != null">detailtype = #{detailtype},</if>
+            <if test="label4 != null">label4 = #{label4},</if>
+            <if test="informtypeid != null">informtypeID = #{informtypeid},</if>
+        </trim>
+        where InformID = #{informid}
+    </update>
+
+    <delete id="deleteKnowledgeByInformid" parameterType="Long">
+        delete from Knowledge where InformID = #{informid}
+    </delete>
+
+    <delete id="deleteKnowledgeByInformids" parameterType="String">
+        delete from Knowledge where InformID in 
+        <foreach item="informid" collection="array" open="(" separator="," close=")">
+            #{informid}
+        </foreach>
+    </delete>
+</mapper>
