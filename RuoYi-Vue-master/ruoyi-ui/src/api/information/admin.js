@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询权限管理列表
 export function listAdmin(query) {
   return request({
-    url: '/system/admin/list',
+    url: '/information/admin/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listAdmin(query) {
 // 查询权限管理详细
 export function getAdmin(adminid) {
   return request({
-    url: '/system/admin/' + adminid,
+    url: '/information/admin/' + adminid,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getAdmin(adminid) {
 // 新增权限管理
 export function addAdmin(data) {
   return request({
-    url: '/system/admin',
+    url: '/information/admin',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addAdmin(data) {
 // 修改权限管理
 export function updateAdmin(data) {
   return request({
-    url: '/system/admin',
+    url: '/information/admin',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateAdmin(data) {
 // 删除权限管理
 export function delAdmin(adminid) {
   return request({
-    url: '/system/admin/' + adminid,
+    url: '/information/admin/' + adminid,
     method: 'delete'
   })
 }
@@ -46,7 +46,7 @@ export function delAdmin(adminid) {
 // 导出权限管理
 export function exportAdmin(query) {
   return request({
-    url: '/system/admin/export',
+    url: '/information/admin/export',
     method: 'get',
     params: query
   })

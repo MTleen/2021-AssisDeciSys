@@ -1,17 +1,17 @@
-package com.ruoyi.system.service.impl;
+package com.ruoyi.information.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.AdminMapper;
-import com.ruoyi.system.domain.Admin;
-import com.ruoyi.system.service.IAdminService;
+import com.ruoyi.information.mapper.AdminMapper;
+import com.ruoyi.information.domain.Admin;
+import com.ruoyi.information.service.IAdminService;
 
 /**
  * 权限管理Service业务层处理
  * 
  * @author wuliangrui
- * @date 2021-10-14
+ * @date 2021-10-15
  */
 @Service
 public class AdminServiceImpl implements IAdminService 

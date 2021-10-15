@@ -1,4 +1,4 @@
-package com.ruoyi.system.domain;
+package com.ruoyi.information.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 权限管理对象 admin
  * 
  * @author wuliangrui
- * @date 2021-10-14
+ * @date 2021-10-15
  */
 public class Admin extends BaseEntity
 {

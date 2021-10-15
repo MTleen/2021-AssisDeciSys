@@ -1,13 +1,13 @@
-package com.ruoyi.system.mapper;
+package com.ruoyi.information.mapper;
 
 import java.util.List;
-import com.ruoyi.system.domain.Admin;
+import com.ruoyi.information.domain.Admin;
 
 /**
  * 权限管理Mapper接口
  * 
  * @author wuliangrui
- * @date 2021-10-14
+ * @date 2021-10-15
  */
 public interface AdminMapper 
 {
