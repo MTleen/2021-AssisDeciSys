@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.RuleMapper">
+    
+    <resultMap type="Rule" id="RuleResult">
+        <result property="ruleid"    column="ruleID"    />
+        <result property="informtype"    column="informtype"    />
+        <result property="num"    column="num"    />
+        <result property="positionid"    column="positionId"    />
+    </resultMap>
+
+    <sql id="selectRuleVo">
+        select ruleID, informtype, num, positionId from Rule
+    </sql>
+
+    <select id="selectRuleList" parameterType="Rule" resultMap="RuleResult">
+        <include refid="selectRuleVo"/>
+        <where>  
+            <if test="informtype != null "> and informtype = #{informtype}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="positionid != null "> and positionId = #{positionid}</if>
+        </where>
+    </select>
+    
+    <select id="selectRuleByRuleid" parameterType="Long" resultMap="RuleResult">
+        <include refid="selectRuleVo"/>
+        where ruleID = #{ruleid}
+    </select>
+        
+    <insert id="insertRule" parameterType="Rule">
+        insert into Rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleid != null">ruleID,</if>
+            <if test="informtype != null">informtype,</if>
+            <if test="num != null">num,</if>
+            <if test="positionid != null">positionId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleid != null">#{ruleid},</if>
+            <if test="informtype != null">#{informtype},</if>
+            <if test="num != null">#{num},</if>
+            <if test="positionid != null">#{positionid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRule" parameterType="Rule">
+        update Rule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="informtype != null">informtype = #{informtype},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="positionid != null">positionId = #{positionid},</if>
+        </trim>
+        where ruleID = #{ruleid}
+    </update>
+
+    <delete id="deleteRuleByRuleid" parameterType="Long">
+        delete from Rule where ruleID = #{ruleid}
+    </delete>
+
+    <delete id="deleteRuleByRuleids" parameterType="String">
+        delete from Rule where ruleID in 
+        <foreach item="ruleid" collection="array" open="(" separator="," close=")">
+            #{ruleid}
+        </foreach>
+    </delete>
+</mapper>

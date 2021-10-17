@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.Label4Mapper">
+    
+    <resultMap type="Label4" id="Label4Result">
+        <result property="labelid"    column="labelID"    />
+        <result property="labelname"    column="labelname"    />
+    </resultMap>
+
+    <sql id="selectLabel4Vo">
+        select labelID, labelname from Label4
+    </sql>
+
+    <select id="selectLabel4List" parameterType="Label4" resultMap="Label4Result">
+        <include refid="selectLabel4Vo"/>
+        <where>  
+            <if test="labelname != null  and labelname != ''"> and labelname like concat('%', #{labelname}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectLabel4ByLabelid" parameterType="Long" resultMap="Label4Result">
+        <include refid="selectLabel4Vo"/>
+        where labelID = #{labelid}
+    </select>
+        
+    <insert id="insertLabel4" parameterType="Label4">
+        insert into Label4
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="labelid != null">labelID,</if>
+            <if test="labelname != null">labelname,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="labelid != null">#{labelid},</if>
+            <if test="labelname != null">#{labelname},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLabel4" parameterType="Label4">
+        update Label4
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="labelname != null">labelname = #{labelname},</if>
+        </trim>
+        where labelID = #{labelid}
+    </update>
+
+    <delete id="deleteLabel4ByLabelid" parameterType="Long">
+        delete from Label4 where labelID = #{labelid}
+    </delete>
+
+    <delete id="deleteLabel4ByLabelids" parameterType="String">
+        delete from Label4 where labelID in 
+        <foreach item="labelid" collection="array" open="(" separator="," close=")">
+            #{labelid}
+        </foreach>
+    </delete>
+</mapper>

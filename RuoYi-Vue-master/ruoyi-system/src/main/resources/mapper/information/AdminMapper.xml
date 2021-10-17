@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.information.mapper.AdminMapper">
+    
+    <resultMap type="Admin" id="AdminResult">
+        <result property="adminid"    column="adminID"    />
+        <result property="adminname"    column="adminname"    />
+    </resultMap>
+
+    <sql id="selectAdminVo">
+        select adminID, adminname from admin
+    </sql>
+
+    <select id="selectAdminList" parameterType="Admin" resultMap="AdminResult">
+        <include refid="selectAdminVo"/>
+        <where>  
+            <if test="adminid != null "> and adminID = #{adminid}</if>
+            <if test="adminname != null  and adminname != ''"> and adminname like concat('%', #{adminname}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectAdminByAdminid" parameterType="Long" resultMap="AdminResult">
+        <include refid="selectAdminVo"/>
+        where adminID = #{adminid}
+    </select>
+        
+    <insert id="insertAdmin" parameterType="Admin" useGeneratedKeys="true" keyProperty="adminid">
+        insert into admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adminname != null">adminname,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adminname != null">#{adminname},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAdmin" parameterType="Admin">
+        update admin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="adminname != null">adminname = #{adminname},</if>
+        </trim>
+        where adminID = #{adminid}
+    </update>
+
+    <delete id="deleteAdminByAdminid" parameterType="Long">
+        delete from admin where adminID = #{adminid}
+    </delete>
+
+    <delete id="deleteAdminByAdminids" parameterType="String">
+        delete from admin where adminID in 
+        <foreach item="adminid" collection="array" open="(" separator="," close=")">
+            #{adminid}
+        </foreach>
+    </delete>
+</mapper>
