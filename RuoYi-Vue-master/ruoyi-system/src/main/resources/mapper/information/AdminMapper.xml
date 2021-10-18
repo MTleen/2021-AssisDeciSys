@@ -10,13 +10,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAdminVo">
-        select adminID, adminname from admin
+        select adminID, adminname from Admin
     </sql>
 
     <select id="selectAdminList" parameterType="Admin" resultMap="AdminResult">
         <include refid="selectAdminVo"/>
         <where>  
-            <if test="adminid != null "> and adminID = #{adminid}</if>
             <if test="adminname != null  and adminname != ''"> and adminname like concat('%', #{adminname}, '%')</if>
         </where>
     </select>
@@ -26,18 +25,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where adminID = #{adminid}
     </select>
         
-    <insert id="insertAdmin" parameterType="Admin" useGeneratedKeys="true" keyProperty="adminid">
-        insert into admin
+    <insert id="insertAdmin" parameterType="Admin">
+        insert into Admin
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adminid != null">adminID,</if>
             <if test="adminname != null">adminname,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adminid != null">#{adminid},</if>
             <if test="adminname != null">#{adminname},</if>
          </trim>
     </insert>
 
     <update id="updateAdmin" parameterType="Admin">
-        update admin
+        update Admin
         <trim prefix="SET" suffixOverrides=",">
             <if test="adminname != null">adminname = #{adminname},</if>
         </trim>
@@ -45,11 +46,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteAdminByAdminid" parameterType="Long">
-        delete from admin where adminID = #{adminid}
+        delete from Admin where adminID = #{adminid}
     </delete>
 
     <delete id="deleteAdminByAdminids" parameterType="String">
-        delete from admin where adminID in 
+        delete from Admin where adminID in 
         <foreach item="adminid" collection="array" open="(" separator="," close=")">
             #{adminid}
         </foreach>

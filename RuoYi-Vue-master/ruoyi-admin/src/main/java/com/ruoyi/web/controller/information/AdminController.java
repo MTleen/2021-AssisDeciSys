@@ -21,10 +21,10 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 权限管理Controller
+ * 权限表管理Controller
  * 
- * @author wuliangrui
- * @date 2021-10-15
+ * @author Mathripper
+ * @date 2021-10-18
  */
 @RestController
 @RequestMapping("/information/admin")
@@ -34,7 +34,7 @@ public class AdminController extends BaseController
     private IAdminService adminService;
 
     /**
-     * 查询权限管理列表
+     * 查询权限表管理列表
      */
     @PreAuthorize("@ss.hasPermi('information:admin:list')")
     @GetMapping("/list")
@@ -46,20 +46,20 @@ public class AdminController extends BaseController
     }
 
     /**
-     * 导出权限管理列表
+     * 导出权限表管理列表
      */
     @PreAuthorize("@ss.hasPermi('information:admin:export')")
-    @Log(title = "权限管理", businessType = BusinessType.EXPORT)
+    @Log(title = "权限表管理", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(Admin admin)
     {
         List<Admin> list = adminService.selectAdminList(admin);
         ExcelUtil<Admin> util = new ExcelUtil<Admin>(Admin.class);
-        return util.exportExcel(list, "权限管理数据");
+        return util.exportExcel(list, "权限表管理数据");
     }
 
     /**
-     * 获取权限管理详细信息
+     * 获取权限表管理详细信息
      */
     @PreAuthorize("@ss.hasPermi('information:admin:query')")
     @GetMapping(value = "/{adminid}")
@@ -69,10 +69,10 @@ public class AdminController extends BaseController
     }
 
     /**
-     * 新增权限管理
+     * 新增权限表管理
      */
     @PreAuthorize("@ss.hasPermi('information:admin:add')")
-    @Log(title = "权限管理", businessType = BusinessType.INSERT)
+    @Log(title = "权限表管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Admin admin)
     {
@@ -80,10 +80,10 @@ public class AdminController extends BaseController
     }
 
     /**
-     * 修改权限管理
+     * 修改权限表管理
      */
     @PreAuthorize("@ss.hasPermi('information:admin:edit')")
-    @Log(title = "权限管理", businessType = BusinessType.UPDATE)
+    @Log(title = "权限表管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Admin admin)
     {
@@ -91,10 +91,10 @@ public class AdminController extends BaseController
     }
 
     /**
-     * 删除权限管理
+     * 删除权限表管理
      */
     @PreAuthorize("@ss.hasPermi('information:admin:remove')")
-    @Log(title = "权限管理", businessType = BusinessType.DELETE)
+    @Log(title = "权限表管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{adminids}")
     public AjaxResult remove(@PathVariable Long[] adminids)
     {

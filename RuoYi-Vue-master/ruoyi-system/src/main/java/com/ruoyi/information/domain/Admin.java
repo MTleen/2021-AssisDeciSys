@@ -6,21 +6,20 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 权限管理对象 admin
+ * 权限表管理对象 Admin
  * 
- * @author wuliangrui
- * @date 2021-10-15
+ * @author Mathripper
+ * @date 2021-10-18
  */
 public class Admin extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 权限ID */
-    @Excel(name = "权限ID")
+    /** 权限 ID */
     private Long adminid;
 
-    /** 权限 */
-    @Excel(name = "权限")
+    /** 权限名称 */
+    @Excel(name = "权限名称")
     private String adminname;
 
     public void setAdminid(Long adminid) 

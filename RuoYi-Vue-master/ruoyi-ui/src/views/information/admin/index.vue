@@ -1,19 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="权限ID" prop="adminid">
-        <el-input
-          v-model="queryParams.adminid"
-          placeholder="请输入权限ID"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="权限" prop="adminname">
+      <el-form-item label="权限名称" prop="adminname">
         <el-input
           v-model="queryParams.adminname"
-          placeholder="请输入权限"
+          placeholder="请输入权限名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -74,8 +65,8 @@
 
     <el-table v-loading="loading" :data="adminList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="权限ID" align="center" prop="adminid" />
-      <el-table-column label="权限" align="center" prop="adminname" />
+      <el-table-column label="权限 ID" align="center" prop="adminid" />
+      <el-table-column label="权限名称" align="center" prop="adminname" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -104,11 +95,11 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改权限管理对话框 -->
+    <!-- 添加或修改权限表管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="权限" prop="adminname">
-          <el-input v-model="form.adminname" placeholder="请输入权限" />
+        <el-form-item label="权限名称" prop="adminname">
+          <el-input v-model="form.adminname" placeholder="请输入权限名称" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -140,7 +131,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 权限管理表格数据
+      // 权限表管理表格数据
       adminList: [],
       // 弹出层标题
       title: "",
@@ -150,7 +141,6 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        adminid: null,
         adminname: null
       },
       // 表单参数
@@ -164,7 +154,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询权限管理列表 */
+    /** 查询权限表管理列表 */
     getList() {
       this.loading = true;
       listAdmin(this.queryParams).then(response => {
@@ -206,7 +196,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加权限管理";
+      this.title = "添加权限表管理";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -215,7 +205,7 @@ export default {
       getAdmin(adminid).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改权限管理";
+        this.title = "修改权限表管理";
       });
     },
     /** 提交按钮 */
@@ -224,13 +214,13 @@ export default {
         if (valid) {
           if (this.form.adminid != null) {
             updateAdmin(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
             addAdmin(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
@@ -241,23 +231,31 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const adminids = row.adminid || this.ids;
-      this.$modal.confirm('是否确认删除权限管理编号为"' + adminids + '"的数据项？').then(function() {
-        return delAdmin(adminids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      this.$confirm('是否确认删除权限表管理编号为"' + adminids + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return delAdmin(adminids);
+        }).then(() => {
+          this.getList();
+          this.msgSuccess("删除成功");
+        }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$modal.confirm('是否确认导出所有权限管理数据项？').then(() => {
-        this.exportLoading = true;
-        return exportAdmin(queryParams);
-      }).then(response => {
-        this.$download.name(response.msg);
-        this.exportLoading = false;
-      }).catch(() => {});
+      this.$confirm('是否确认导出所有权限表管理数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          this.exportLoading = true;
+          return exportAdmin(queryParams);
+        }).then(response => {
+          this.download(response.msg);
+          this.exportLoading = false;
+        }).catch(() => {});
     }
   }
 };

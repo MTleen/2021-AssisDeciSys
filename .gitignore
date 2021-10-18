@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# customize
+pom.xml
+.vscode
+.idea
+.classpath
+
+
 # C extensions
 *.so
 

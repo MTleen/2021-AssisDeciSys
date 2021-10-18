@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询权限管理列表
+// 查询权限表管理列表
 export function listAdmin(query) {
   return request({
     url: '/information/admin/list',
@@ -9,7 +9,7 @@ export function listAdmin(query) {
   })
 }
 
-// 查询权限管理详细
+// 查询权限表管理详细
 export function getAdmin(adminid) {
   return request({
     url: '/information/admin/' + adminid,
@@ -17,7 +17,7 @@ export function getAdmin(adminid) {
   })
 }
 
-// 新增权限管理
+// 新增权限表管理
 export function addAdmin(data) {
   return request({
     url: '/information/admin',
@@ -26,7 +26,7 @@ export function addAdmin(data) {
   })
 }
 
-// 修改权限管理
+// 修改权限表管理
 export function updateAdmin(data) {
   return request({
     url: '/information/admin',
@@ -35,7 +35,7 @@ export function updateAdmin(data) {
   })
 }
 
-// 删除权限管理
+// 删除权限表管理
 export function delAdmin(adminid) {
   return request({
     url: '/information/admin/' + adminid,
@@ -43,7 +43,7 @@ export function delAdmin(adminid) {
   })
 }
 
-// 导出权限管理
+// 导出权限表管理
 export function exportAdmin(query) {
   return request({
     url: '/information/admin/export',
