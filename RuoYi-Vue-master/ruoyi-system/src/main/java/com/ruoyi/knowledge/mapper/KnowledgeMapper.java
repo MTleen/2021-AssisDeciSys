@@ -2,6 +2,7 @@ package com.ruoyi.knowledge.mapper;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.kwords;
 
 /**
  * 提示信息表Mapper接口
@@ -26,6 +27,14 @@ public interface KnowledgeMapper
      * @return 提示信息表集合
      */
     public List<Knowledge> selectKnowledgeList(Knowledge knowledge);
+
+    /**
+     * 匹配提示信息
+     * 
+     * @param kwrods 提示信息表
+     * @return 提示信息表集合
+     */
+    public List<Knowledge> matchKnowledgeList(kwords kwords);
 
     /**
      * 新增提示信息表

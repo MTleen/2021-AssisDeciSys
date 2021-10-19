@@ -2,6 +2,7 @@ package com.ruoyi.knowledge.service;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.kwords;
 
 /**
  * 提示信息表Service接口
@@ -26,6 +27,14 @@ public interface IKnowledgeService
      * @return 提示信息表集合
      */
     public List<Knowledge> selectKnowledgeList(Knowledge knowledge);
+
+    /**
+     * 匹配提示信息表
+     * 
+     * @param kwords 提示信息表
+     * @return 提示信息表集合
+     */
+    public List<Knowledge> matchKnowledgeList(kwords kwords);
 
     /**
      * 新增提示信息表

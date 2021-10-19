@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.KnowledgeMapper;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.kwords;
 import com.ruoyi.knowledge.service.IKnowledgeService;
 
 /**
@@ -41,6 +42,18 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     public List<Knowledge> selectKnowledgeList(Knowledge knowledge)
     {
         return knowledgeMapper.selectKnowledgeList(knowledge);
+    }
+
+    /**
+     * 匹配提示信息
+     * 
+     * @param kwords 提示信息表
+     * @return 提示信息表
+     */
+    @Override
+    public List<Knowledge> matchKnowledgeList(kwords kwords)
+    {
+        return knowledgeMapper.matchKnowledgeList(kwords);
     }
 
     /**
