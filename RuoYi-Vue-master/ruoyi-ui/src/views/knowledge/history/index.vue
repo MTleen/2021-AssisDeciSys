@@ -74,7 +74,7 @@
 
     <el-table v-loading="loading" :data="historyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="编号" align="center" prop="index" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="报警编号" align="center" prop="cautionid" />
       <el-table-column label="提示信息编号" align="center" prop="informid" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

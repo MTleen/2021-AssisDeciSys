@@ -65,7 +65,7 @@
 
     <el-table v-loading="loading" :data="feedbackList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="编号" align="center" prop="feedid" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="人员编号" align="center" prop="tele" />
       <el-table-column label="反馈信息" align="center" prop="inform" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

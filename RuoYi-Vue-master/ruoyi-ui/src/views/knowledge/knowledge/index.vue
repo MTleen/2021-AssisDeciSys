@@ -102,14 +102,14 @@
 
     <el-table v-loading="loading" :data="knowledgeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="信息编号" align="center" prop="informid" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="信息内容" align="center" prop="inform" />
-      <el-table-column label="权重" align="center" prop="weight" />
       <el-table-column label="险情类型" align="center" prop="disastertype" />
       <el-table-column label="处置对象" align="center" prop="disposeobj" />
       <el-table-column label="详细类型" align="center" prop="detailtype" />
       <el-table-column label="四级标签" align="center" prop="label4" />
       <el-table-column label="提示信息类型" align="center" prop="informtypeid" />
+      <el-table-column label="权重" align="center" prop="weight" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -233,6 +233,7 @@ export default {
       this.loading = true;
       listKnowledge(this.queryParams).then(response => {
         this.knowledgeList = response.rows;
+        console.log(this.knowledgeList)
         this.total = response.total;
         this.loading = false;
       });

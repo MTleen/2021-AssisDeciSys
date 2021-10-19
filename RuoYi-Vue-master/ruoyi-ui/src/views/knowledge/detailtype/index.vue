@@ -70,7 +70,8 @@
 
     <el-table v-loading="loading" :data="detailtypeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="类型 ID" align="center" prop="typeid" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+      <!-- <el-table-column label="类型 ID" align="center" prop="typeid" /> -->
       <el-table-column label="类型名称" align="center" prop="typename" />
       <el-table-column label="险情类型" align="center" prop="distype" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -92,7 +93,6 @@
         </template>
       </el-table-column>
     </el-table>
-    
     <pagination
       v-show="total>0"
       :total="total"
@@ -168,6 +168,7 @@ export default {
   created() {
     this.getList();
   },
+  
   methods: {
     /** 查询详细类型表列表 */
     getList() {
