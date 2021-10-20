@@ -40,13 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
-        select a.InformID, a.inform, a.weight, e.typename, f.objname, d.typename, c.labelname, b.typename 
-        from Knowledge a
-        left join InformType b on b.typeID = a.informtypeID
-        left join Label4 c on c.labelID = a.label4
-        left join DetailType d on d.typeID = a.detailtype
-        left join DisasterType e on e.typeID = a.disastertype
-        left join DisposeObj f on f.objID = a.disposeobj
+        <include refid="selectKnowledgeVo"/>
         where a.InformID = #{informid}
     </select>
         

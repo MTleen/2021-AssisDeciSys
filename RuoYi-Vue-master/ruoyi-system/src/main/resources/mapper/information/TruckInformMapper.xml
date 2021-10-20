@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.information.mapper.TruckInformMapper">
+    
+    <resultMap type="TruckInform" id="TruckInformResult">
+        <result property="truckid"    column="truckID"    />
+        <result property="license"    column="license"    />
+        <result property="siteid"    column="siteID"    />
+        <result property="peoplenum"    column="peoplenum"    />
+        <result property="truckstate"    column="truckstate"    />
+        <result property="trucktype"    column="trucktype"    />
+    </resultMap>
+
+    <sql id="selectTruckInformVo">
+        select truckID, license, siteID, peoplenum, truckstate, trucktype from TruckInform
+    </sql>
+
+    <select id="selectTruckInformList" parameterType="TruckInform" resultMap="TruckInformResult">
+        <include refid="selectTruckInformVo"/>
+        <where>  
+            <if test="truckid != null "> and truckID = #{truckid}</if>
+            <if test="license != null  and license != ''"> and license = #{license}</if>
+            <if test="siteid != null "> and siteID = #{siteid}</if>
+            <if test="peoplenum != null "> and peoplenum = #{peoplenum}</if>
+            <if test="truckstate != null "> and truckstate = #{truckstate}</if>
+            <if test="trucktype != null "> and trucktype = #{trucktype}</if>
+        </where>
+    </select>
+    
+    <select id="selectTruckInformByLicense" parameterType="String" resultMap="TruckInformResult">
+        <include refid="selectTruckInformVo"/>
+        where license = #{license}
+    </select>
+        
+    <insert id="insertTruckInform" parameterType="TruckInform">
+        insert into TruckInform
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="truckid != null">truckID,</if>
+            <if test="license != null">license,</if>
+            <if test="siteid != null">siteID,</if>
+            <if test="peoplenum != null">peoplenum,</if>
+            <if test="truckstate != null">truckstate,</if>
+            <if test="trucktype != null">trucktype,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="truckid != null">#{truckid},</if>
+            <if test="license != null">#{license},</if>
+            <if test="siteid != null">#{siteid},</if>
+            <if test="peoplenum != null">#{peoplenum},</if>
+            <if test="truckstate != null">#{truckstate},</if>
+            <if test="trucktype != null">#{trucktype},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTruckInform" parameterType="TruckInform">
+        update TruckInform
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="truckid != null">truckID = #{truckid},</if>
+            <if test="siteid != null">siteID = #{siteid},</if>
+            <if test="peoplenum != null">peoplenum = #{peoplenum},</if>
+            <if test="truckstate != null">truckstate = #{truckstate},</if>
+            <if test="trucktype != null">trucktype = #{trucktype},</if>
+        </trim>
+        where license = #{license}
+    </update>
+
+    <delete id="deleteTruckInformByLicense" parameterType="String">
+        delete from TruckInform where license = #{license}
+    </delete>
+
+    <delete id="deleteTruckInformByLicenses" parameterType="String">
+        delete from TruckInform where license in 
+        <foreach item="license" collection="array" open="(" separator="," close=")">
+            #{license}
+        </foreach>
+    </delete>
+</mapper>

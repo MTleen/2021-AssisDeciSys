@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.information.mapper.TruckTypeMapper">
+    
+    <resultMap type="TruckType" id="TruckTypeResult">
+        <result property="typeid"    column="typeID"    />
+        <result property="typename"    column="typename"    />
+    </resultMap>
+
+    <sql id="selectTruckTypeVo">
+        select typeID, typename from TruckType
+    </sql>
+
+    <select id="selectTruckTypeList" parameterType="TruckType" resultMap="TruckTypeResult">
+        <include refid="selectTruckTypeVo"/>
+        <where>  
+            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTruckTypeByTypeid" parameterType="Long" resultMap="TruckTypeResult">
+        <include refid="selectTruckTypeVo"/>
+        where typeID = #{typeid}
+    </select>
+        
+    <insert id="insertTruckType" parameterType="TruckType" useGeneratedKeys="true" keyProperty="typeid">
+        insert into TruckType
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typename != null">typename,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typename != null">#{typename},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTruckType" parameterType="TruckType">
+        update TruckType
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typename != null">typename = #{typename},</if>
+        </trim>
+        where typeID = #{typeid}
+    </update>
+
+    <delete id="deleteTruckTypeByTypeid" parameterType="Long">
+        delete from TruckType where typeID = #{typeid}
+    </delete>
+
+    <delete id="deleteTruckTypeByTypeids" parameterType="String">
+        delete from TruckType where typeID in 
+        <foreach item="typeid" collection="array" open="(" separator="," close=")">
+            #{typeid}
+        </foreach>
+    </delete>
+</mapper>

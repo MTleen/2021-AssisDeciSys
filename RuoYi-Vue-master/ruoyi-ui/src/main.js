@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Author: Shengxiang Hu
+ * @Date: 2021-10-14 19:50:08
+ * @LastEditors: Shengxiang Hu
+ * @LastEditTime: 2021-10-20 14:32:37
+ * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-ui\src\main.js
+ */
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
@@ -41,6 +49,8 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+// 一次性读取数据库的最大记录数
+Vue.prototype.MAXCOUNT = 1024
 
 Vue.prototype.msgSuccess = function (msg) {
   this.$message({ showClose: true, message: msg, type: "success" });
