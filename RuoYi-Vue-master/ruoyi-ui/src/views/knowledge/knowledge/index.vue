@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="权重" prop="weight">
+      <el-form-item label="权重" prop="weight" >
         <el-input
           v-model="queryParams.weight"
           placeholder="请输入权重"
@@ -50,6 +50,9 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+       <el-form-item>
+                <el-button icon="el-icon-search" type="info" size="mini" >查询</el-button>
       </el-form-item>
     </el-form>
 

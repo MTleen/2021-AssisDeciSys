@@ -1,44 +1,48 @@
 <template>
-    <div class="app-container">
-        <el-form ref="form" :model="form" inline="true" label-width="80px">
-            <el-form-item label="地址:" prop="location">
-                <el-input v-model="form.name"  size="small"></el-input>
-            </el-form-item>
+    <div class="app-container"> 
+        <div class="top-style">
+            <el-form ref="form" :model="form" :inline="true" label-width="80px">
+                <el-form-item label="地址:" prop="location" style="margin-top: 20px">
+                    <el-input v-model="form.name"  size="small"  clearable ></el-input>
+                </el-form-item>
 
-            <el-form-item label="时间:" prop="time">
-                <el-input v-model="form.time"  size="small"></el-input>
-            </el-form-item>
+                <el-form-item label="时间:" prop="time" style="margin-top: 20px">
+                    <el-input v-model="form.time"  size="small" clearable ></el-input>
+                </el-form-item>
 
-            <el-form-item label="案情类型:" prop="type">
-                <el-select v-model="form.type"  size="small">
-                    <el-option label="高层建筑火灾" value="高层建筑火灾"></el-option>
-                    <el-option label="低层建筑火灾" value="高层建筑火灾"></el-option>
-                </el-select>
-            </el-form-item>
+                <el-form-item label="案情类型:" prop="type" style="margin-top: 20px">
+                    <el-select v-model="form.type"   clearable size="small">
+                        <el-option label="高层建筑火灾" value="高层建筑火灾"></el-option>
+                        <el-option label="低层建筑火灾" value="高层建筑火灾"></el-option>
+                    </el-select>
+                </el-form-item>
 
-             <el-form-item label="处置对象:" prop="person">
-                <el-input v-model="form.person"  size="small"></el-input>
-            </el-form-item>
-        </el-form>
+                <el-form-item label="处置对象:" prop="person" style="margin-top: 20px">
+                    <el-input v-model="form.person"  clearable size="small"></el-input>
+                </el-form-item>
+           
+                <el-form-item label="队站:" prop="station"   style="margin-top: 20px">
+                    <el-input v-model="form.station" clearable  size="small"></el-input>
+                </el-form-item>
 
-        <el-form ref="form" :model="form" inline="true" label-width="80px">
-            <el-form-item label="队站:" prop="station" >
-                <el-input v-model="form.station"  size="small"></el-input>
-            </el-form-item>
+                <el-form-item label="消防车:" prop="car"  style="margin-top: 20px">
+                    <el-select v-model="form.car" clearable  size="small">
+                        <el-option label="全部" value="全部"></el-option>
+                        <el-option label="部分" value="部分"></el-option>
+                    </el-select>
+                </el-form-item>
 
-            <el-form-item label="消防车:" prop="car">
-                <el-select v-model="form.car"  size="small">
-                    <el-option label="全部" value="全部"></el-option>
-                    <el-option label="部分" value="部分"></el-option>
-                </el-select>
-            </el-form-item>
+                <el-form-item label="关键词:" prop="keyWord"  style="margin-top: 20px">
+                    <el-input v-model="form.keyWord" clearable size="small" placeholder="请输入关键词"></el-input>
+                    
+                </el-form-item>
 
-             <el-form-item label="关键词:" prop="keyWord">
-                <el-input v-model="form.keyWord"  size="small" placeholder="请输入关键词"></el-input>
-                
-            </el-form-item>
-            <el-button inline="true" type="info" round size="small">查询</el-button>
-        </el-form>
+               <el-form-item>
+                <el-button icon="el-icon-search" type="info" size="small" style="margin-top: 23px" >查询</el-button>
+                </el-form-item>
+
+            </el-form>
+        </div>
 
         <el-row :gutter="30" style="margin-top: 30px">
             <el-col :span="8">
@@ -85,6 +89,16 @@
                         >
                     </el-table-column>
                     </el-table>
+
+                    <div  align="right" class="fujian-style">
+                        <el-form ref="form" :model="tipForm" inline="true" label-width="80px" style="margin-top: 23px">
+                        <el-form-item label="" prop="tip">
+                        <el-input v-model="tipForm.tip"  size="small" clearable=""></el-input>
+                        </el-form-item>
+                        <el-button scopped: style="margin-top: 3px" type=""  size="small" icon="el-icon-plus" >附件上传</el-button>
+                        </el-form>
+                    </div> 
+
                 </div>
              </el-col>
 
@@ -105,11 +119,21 @@
                         >
                     </el-table-column>
                     </el-table>
+
+                    <div  align="right" class="fujian-style">
+                        <el-form ref="form" :model="tipForm" inline="true" label-width="80px">
+                        <el-form-item label="" prop="tip">
+                        <el-input v-model="tipForm.tip"  size="small"></el-input>
+                        </el-form-item>
+                        <el-button scopped: style="margin-top: 3px" type=""  size="small" icon="el-icon-plus">附件上传</el-button>
+                        </el-form>
+                    </div> 
+
                 </div>
              </el-col> 
              
              <el-col :span="8">
-                <div class="grid-content bg-purple">
+                <div align:="right" class="grid-content bg-purple">
                     <el-table  v-loading="loading" :cell-style="{padding:'2px'}"  :data="sitongData" stripe  >
                     <el-table-column type="selection"  width="55">
                     </el-table-column>
@@ -124,20 +148,29 @@
                         :filter-method="filterTag"
                         >
                     </el-table-column>
+                        
                     </el-table>
+
+                    <div  align="right" class="fujian-style">
+                       <el-form ref="form" :model="tipForm" inline="true" label-width="80px">
+                        <el-form-item label="" prop="tip">
+                        <el-input v-model="tipForm.tip"  size="small"></el-input>
+                        </el-form-item>
+                        <el-button type=""  size="small" icon="el-icon-plus" scopped: style="margin-top: 3px">附件上传</el-button>
+                        </el-form>
+                    </div> 
+
                 </div>
+                 
              </el-col>
+    
+
+             <div align="center" >
+                 <el-button style="margin-top: 40px" type="primary">倒计时30s</el-button>
+             </div>
 
         </el-row>
 
-        <el-row style="margin-top: 50px">
-             <el-form ref="form" :model="tipForm" inline="true" label-width="80px">
-                <el-form-item label="" prop="tip">
-                <el-input v-model="tipForm.tip"  size="small"></el-input>
-                </el-form-item>
-                <el-button type=""  size="small" icon="el-icon-plus">附件上传</el-button>
-             </el-form>
-        </el-row>
 
 
 
@@ -211,4 +244,11 @@
     color:#fff;
     text-align:center
   }
+.fujian-style{
+    margin-top: 20px;
+    vertical-align: middle ;
+}
+.top-style{
+    background: lightskyblue;
+}
 </style>

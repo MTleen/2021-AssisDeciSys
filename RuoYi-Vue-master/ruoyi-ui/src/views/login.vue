@@ -1,12 +1,19 @@
 <template>
   <div class="login">
+
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">消防作战指挥辅助决策管理系统</h3>
+      <div class=" sidebar-logo-container">
+          <img :src="logo" class="sidebar-logo"/>
+           <span class="title-style">消防作战指挥辅助决策管理系统</span>  
+         
+      </div>
+
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
+
       <el-form-item prop="password">
         <el-input
           v-model="loginForm.password"
@@ -18,6 +25,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
+
       <el-form-item prop="code" v-if="captchaOnOff">
         <el-input
           v-model="loginForm.code"
@@ -33,6 +41,7 @@
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
@@ -41,17 +50,21 @@
           style="width:100%;"
           @click.native.prevent="handleLogin"
         >
-          <span v-if="!loading">登 录</span>
+          <span v-if="!loading" style="height: 45px">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
         <div style="float: right;" v-if="register">
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
       </el-form-item>
+      <div align="center">
+        <img :src="Erweima" class="ewm-style" />
+      </div>
     </el-form>
+     
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
+      <span>消防作战指挥辅助决策管理系统由xxx提供技术服务支持</span>
     </div>
   </div>
 </template>
@@ -60,13 +73,16 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
-
+import logoImg from '@/assets/logo/logo1.png'
+import ErweimaImg from '@/assets/logo/ewm.jpg'
 export default {
   name: "Login",
   data() {
     return {
       codeUrl: "",
+      logo:logoImg,
       cookiePassword: "",
+      Erweima:ErweimaImg ,
       loginForm: {
         username: "admin",
         password: "admin123",
@@ -85,7 +101,7 @@ export default {
       },
       loading: false,
       // 验证码开关
-      captchaOnOff: true,
+      captchaOnOff: false,
       // 注册开关
       register: false,
       redirect: undefined
@@ -167,16 +183,17 @@ export default {
 }
 
 .login-form {
-  border-radius: 6px;
-  background: #ffffff;
-  width: 400px;
-  padding: 25px 25px 5px 25px;
+  border-radius: 7px;
+  width: 500px;
+  
+  // padding: 25px 25px 5px 25px;
   .el-input {
-    height: 38px;
+    height: 50px;
     input {
-      height: 38px;
+      height: 45px;
     }
   }
+
   .input-icon {
     height: 39px;
     width: 14px;
@@ -210,6 +227,36 @@ export default {
   letter-spacing: 1px;
 }
 .login-code-img {
-  height: 38px;
+      width: 38px;
+      height: 40px;
+
+}
+.sidebar-logo {
+      width: 44px;
+      height: 44px;
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 12px;
+}
+.title-style {
+  color: #fff;
+  font-size: 32px;
+  text-align: right;
+  margin-left: 7px;
+  margin: 0;
+}
+
+.sidebar-logo-container {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  line-height: 50px;
+  overflow: hidden;
+}
+.ewm-style{
+  margin-top: 50px;
+  width: 140px;
+  height: 140px;
+
 }
 </style>
