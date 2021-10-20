@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.knowledge;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.knowledge.domain.History;
+import com.ruoyi.knowledge.domain.Knowledge;
 import com.ruoyi.knowledge.service.IHistoryService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import io.swagger.annotations.*;
 
 /**
  * 历史表Controller
@@ -26,6 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author xiaoyu
  * @date 2021-10-15
  */
+@Api("历史表管理")
 @RestController
 @RequestMapping("/knowledge/history")
 public class HistoryController extends BaseController
@@ -42,6 +46,21 @@ public class HistoryController extends BaseController
     {
         startPage();
         List<History> list = historyService.selectHistoryList(history);
+        return getDataTable(list);
+    }
+
+    /**
+     * 根据历史记录查询提示信息表
+     */
+    @ApiOperation("根据历史记录查询提示信息表")
+    @ApiImplicitParam(name="index",value="记录序号",required = true,dataType="Long")
+    @PreAuthorize("@ss.hasPermi('knowledge:history:list')")
+    @GetMapping("/{inf}")
+    public TableDataInfo History2Inform(Long index)
+    {
+        String informIDs="1,2,3"; //从历史表查询结果中获得,这里假设为"1,2,3"
+        List<Knowledge> list=new ArrayList<>();
+        for(String i:informIDs.split(",")){list.add(historyService.selectKnowledgeByInformID(Long.valueOf(i)));}
         return getDataTable(list);
     }
 

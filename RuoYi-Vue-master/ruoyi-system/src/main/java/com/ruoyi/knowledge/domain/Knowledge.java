@@ -3,7 +3,6 @@ package com.ruoyi.knowledge.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 提示信息表对象 Knowledge
@@ -11,9 +10,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author xiaoyu
  * @date 2021-10-15
  */
-public class Knowledge extends BaseEntity
+public class Knowledge
 {
-    private static final long serialVersionUID = 1L;
 
     /** 信息编号 */
     private Long informid;

@@ -2,6 +2,7 @@ package com.ruoyi.knowledge.service;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.History;
+import com.ruoyi.knowledge.domain.Knowledge;
 
 /**
  * 历史表Service接口
@@ -11,6 +12,8 @@ import com.ruoyi.knowledge.domain.History;
  */
 public interface IHistoryService 
 {
+
+    public Knowledge selectKnowledgeByInformID(Long index);
     /**
      * 查询历史表
      * 

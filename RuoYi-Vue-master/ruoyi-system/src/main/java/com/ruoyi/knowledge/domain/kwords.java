@@ -3,7 +3,6 @@ package com.ruoyi.knowledge.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 提示信息表对象 kwords
@@ -11,9 +10,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author MP5Leader
  * @date 2021-10-19
  */
-public class kwords extends BaseEntity
+public class kwords
 {
-    private static final long serialVersionUID = 1L;
     
         /** 险情类型 */
         @Excel(name = "险情类型")
