@@ -239,9 +239,6 @@ export default {
     color:#fff;
     text-align:center
   }
-<<<<<<< HEAD
-</style>
-=======
 .fujian-style{
     margin-top: 20px;
     vertical-align: middle ;
@@ -250,4 +247,3 @@ export default {
     background: lightskyblue;
 }
 </style>
->>>>>>> 1793d56ff7655676a478626be26248d6f748c7ef
