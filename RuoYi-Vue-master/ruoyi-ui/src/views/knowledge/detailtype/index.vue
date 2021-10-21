@@ -12,7 +12,12 @@
       </el-form-item>
       <el-form-item label="险情类型" prop="distype">
         <el-select v-model="queryParams.distype" placeholder="请选择险情类型" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option
+            v-for="item in disastertypeList"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -109,7 +114,12 @@
         </el-form-item>
         <el-form-item label="险情类型" prop="distype">
           <el-select v-model="form.distype" placeholder="请选择险情类型">
-            <el-option label="请选择字典生成" value="" />
+            <el-option 
+              v-for="item in disastertypeList"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -123,6 +133,7 @@
 
 <script>
 import { listDetailtype, getDetailtype, delDetailtype, addDetailtype, updateDetailtype, exportDetailtype } from "@/api/knowledge/detailtype";
+import { listDisastertype } from '@/api/knowledge/disastertype'
 
 export default {
   name: "Detailtype",
@@ -167,6 +178,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getList2();
   },
   
   methods: {
@@ -178,6 +190,17 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    //获取字典 
+    getList2() {
+      this.loading = true;
+      // 查询所有险情类型
+      listDisastertype(this.commonQueryParams).then(response => {
+        this.disastertypeList = response.rows
+        // console.log('险情类型')
+        // console.log(this.disastertypeList)
+      })
+      this.loading = false;
     },
     // 取消按钮
     cancel() {

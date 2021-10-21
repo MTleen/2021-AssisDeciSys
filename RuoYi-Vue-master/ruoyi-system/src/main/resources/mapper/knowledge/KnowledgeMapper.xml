@@ -38,6 +38,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="informtypeid != null "> and a.informtypeID = #{informtypeid}</if>
         </where>
     </select>
+
+    <select id="matchKnowledgeList" parameterType="kwords" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        <where>  
+            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>
+            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>
+            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>
+            <if test="keyword != null "> and a.inform like concat('%',concat(#{keyword},'%'))</if>
+        </where>
+    </select>
     
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
@@ -45,6 +55,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertKnowledge" parameterType="Knowledge">
+        <selectKey keyProperty="informid" resultType="Long" order="BEFORE">
+            SELECT if(max(InformID) is null,1,max(InformID)+1) from Knowledge
+        </selectKey>
         insert into Knowledge
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="informid != null">InformID,</if>

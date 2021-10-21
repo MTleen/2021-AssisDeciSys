@@ -22,7 +22,7 @@ public class History
 
     /** 提示信息编号 */
     @Excel(name = "提示信息编号")
-    private Long informid;
+    private String informid;
 
     public void setIndex(Long index) 
     {
@@ -42,12 +42,12 @@ public class History
     {
         return cautionid;
     }
-    public void setInformid(Long informid) 
+    public void setInformid(String informid) 
     {
         this.informid = informid;
     }
 
-    public Long getInformid() 
+    public String getInformid() 
     {
         return informid;
     }

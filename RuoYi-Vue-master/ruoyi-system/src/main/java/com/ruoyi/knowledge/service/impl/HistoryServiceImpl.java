@@ -22,6 +22,11 @@ public class HistoryServiceImpl implements IHistoryService
     private HistoryMapper historyMapper;
 
     @Override
+    public List<History> selectHistoryListbyRecordid(Long index)
+    {
+        return historyMapper.selectHistoryListbyRecordid(index);
+    }
+    @Override
     public Knowledge selectKnowledgeByInformID(Long index)
     {
         return historyMapper.selectKnowledgeByInformID(index);

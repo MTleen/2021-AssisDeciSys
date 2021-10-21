@@ -13,6 +13,13 @@ import com.ruoyi.knowledge.domain.Knowledge;
 public interface HistoryMapper 
 {
 
+    public List<History> selectHistoryListbyRecordid(Long index);
+    /**
+     * 查询历史表中报警记录为index的项
+     * 
+     * @param index 报警记录ID
+     * @return 结果
+     */
     public Knowledge selectKnowledgeByInformID(Long index);
     /**
      * 查询历史表

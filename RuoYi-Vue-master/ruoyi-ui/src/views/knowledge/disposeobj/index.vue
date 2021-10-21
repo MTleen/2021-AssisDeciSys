@@ -147,6 +147,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        objname: [
+          { required: true, message: '处置对象名称不能为空', trigger: 'blur' }
+        ]
       }
     };
   },

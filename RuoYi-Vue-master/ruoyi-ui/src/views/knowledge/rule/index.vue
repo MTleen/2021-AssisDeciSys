@@ -1,9 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="类型编号" prop="informtype">
-        <el-select v-model="queryParams.informtype" placeholder="请选择类型编号" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+      <el-form-item label="岗位" prop="positionid">
+        <el-select v-model="queryParams.positionid" placeholder="请选择岗位" clearable size="small">
+          <el-option
+            v-for="item in UserpositionList"
+              :key="item.positionid"
+              :label="item.positionname"
+              :value="item.positionid"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="接收数量" prop="num">
@@ -14,16 +19,18 @@
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      <el-form-item label="信息类型" prop="informtype">
+        <el-select v-model="queryParams.informtype" placeholder="请选择信息类型" clearable size="small">
+          <el-option
+            v-for="item in informtypeList"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="岗位编号" prop="positionid">
-        <el-input
-          v-model="queryParams.positionid"
-          placeholder="请输入岗位编号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
+      
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -79,10 +86,10 @@
 
     <el-table v-loading="loading" :data="ruleList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="规则编号" align="center" prop="ruleid" />
-      <el-table-column label="类型编号" align="center" prop="informtype" />
+      <el-table-column label="序号" type="index" width="50" align="center" />
+      <el-table-column label="岗位" align="center" prop="positionid" />
       <el-table-column label="接收数量" align="center" prop="num" />
-      <el-table-column label="岗位编号" align="center" prop="positionid" />
+      <el-table-column label="信息类型" align="center" prop="informtype" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -114,18 +121,30 @@
     <!-- 添加或修改规则表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="类型编号" prop="informtype">
-          <el-select v-model="form.informtype" placeholder="请选择类型编号">
-            <el-option label="请选择字典生成" value="" />
+        <el-form-item label="岗位" prop="positionid">
+          <el-select v-model="form.positionid" placeholder="请选岗位">
+            <el-option
+            v-for="item in UserpositionList"
+              :key="item.positionid"
+              :label="item.positionname"
+              :value="item.positionid"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="接收数量" prop="num">
           <el-input v-model="form.num" placeholder="请输入接收数量" />
         </el-form-item>
-        <el-form-item label="岗位编号" prop="positionid">
-          <el-input v-model="form.positionid" placeholder="请输入岗位编号" />
+        <el-form-item label="信息类型" prop="informtype">
+          <el-select v-model="form.informtype" placeholder="请选择信息类型">
+            <el-option
+              v-for="item in informtypeList"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid"
+            />
+          </el-select>
         </el-form-item>
-      </el-form>
+      </el-form>  
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -136,6 +155,8 @@
 
 <script>
 import { listRule, getRule, delRule, addRule, updateRule, exportRule } from "@/api/knowledge/rule";
+import { listInformtype } from '@/api/knowledge/informtype'
+import { listUserposition } from "@/api/information/userposition";
 
 export default {
   name: "Rule",
@@ -173,11 +194,21 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        positionid: [
+          { required: true, message: '岗位不能为空', trigger: 'blur' }
+        ],
+        num: [
+          { required: true, message: '接收数量不能为空', trigger: 'blur' }
+        ],
+        informtype: [
+          { required: true, message: '信息类型不能为空', trigger: 'blur' }
+        ]
       }
     };
   },
   created() {
     this.getList();
+    this.getList2();
   },
   methods: {
     /** 查询规则表列表 */
@@ -186,6 +217,19 @@ export default {
       listRule(this.queryParams).then(response => {
         this.ruleList = response.rows;
         this.total = response.total;
+        this.loading = false;
+      });
+    },
+    // 获取字典
+    getList2() {
+      this.loading = true;
+      //查询信息类型
+      listInformtype(this.commonQueryParams).then(response => {
+        this.informtypeList = response.rows;
+      })
+      //查询岗位类型
+      listUserposition(this.commonQueryParams).then(response => {
+        this.UserpositionList = response.rows;
         this.loading = false;
       });
     },

@@ -31,11 +31,11 @@ public class Record extends BaseEntity
 
     /** 险情类型 */
     @Excel(name = "险情类型")
-    private Long distypeid;
+    private String distypeid;
 
     /** 处置对象 */
     @Excel(name = "处置对象")
-    private Long dillobject;
+    private String dillobject;
 
     /** 主管单位 */
     @Excel(name = "主管单位")
@@ -49,14 +49,6 @@ public class Record extends BaseEntity
     @Excel(name = "提示信息")
     private String supplement;
 
-    /** 是否存在易燃易爆品 */
-    @Excel(name = "是否存在易燃易爆品")
-    private Integer boom;
-
-    /** 是否存在有毒物品 */
-    @Excel(name = "是否存在有毒物品")
-    private Integer poison;
-
     /** 图片 */
     @Excel(name = "图片")
     private String picture;
@@ -64,6 +56,18 @@ public class Record extends BaseEntity
     /** 任务执行状态 */
     @Excel(name = "任务执行状态")
     private Integer status;
+
+    /** 图片 */
+    @Excel(name = "详细类型")
+    private String detailtype;
+
+    /** 图片 */
+    @Excel(name = "四级标签")
+    private String label4;
+
+    /** 图片 */
+    @Excel(name = "关键字")
+    private String keywords;
 
     public void setCautionid(String cautionid) 
     {
@@ -92,21 +96,21 @@ public class Record extends BaseEntity
     {
         return location;
     }
-    public void setDistypeid(Long distypeid) 
+    public void setDistypeid(String distypeid) 
     {
         this.distypeid = distypeid;
     }
 
-    public Long getDistypeid() 
+    public String getDistypeid() 
     {
         return distypeid;
     }
-    public void setDillobject(Long dillobject) 
+    public void setDillobject(String dillobject) 
     {
         this.dillobject = dillobject;
     }
 
-    public Long getDillobject() 
+    public String getDillobject() 
     {
         return dillobject;
     }
@@ -137,24 +141,6 @@ public class Record extends BaseEntity
     {
         return supplement;
     }
-    public void setBoom(Integer boom) 
-    {
-        this.boom = boom;
-    }
-
-    public Integer getBoom() 
-    {
-        return boom;
-    }
-    public void setPoison(Integer poison) 
-    {
-        this.poison = poison;
-    }
-
-    public Integer getPoison() 
-    {
-        return poison;
-    }
     public void setPicture(String picture) 
     {
         this.picture = picture;
@@ -174,6 +160,36 @@ public class Record extends BaseEntity
         return status;
     }
 
+    public void setDetailtype(String detailtype) 
+    {
+        this.detailtype = detailtype;
+    }
+
+    public String getDetailtype() 
+    {
+        return detailtype;
+    }
+
+    public void setLbel4(String label4) 
+    {
+        this.label4 = label4;
+    }
+
+    public String getLabel4() 
+    {
+        return label4;
+    }
+
+    public void setKeywords(String keywords) 
+    {
+        this.keywords = keywords;
+    }
+
+    public String getKeywords() 
+    {
+        return keywords;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -185,10 +201,11 @@ public class Record extends BaseEntity
             .append("siteid", getSiteid())
             .append("truckid", getTruckid())
             .append("supplement", getSupplement())
-            .append("boom", getBoom())
-            .append("poison", getPoison())
             .append("picture", getPicture())
             .append("status", getStatus())
+            .append("detailtype", getDetailtype())
+            .append("label4", getLabel4())
+            .append("keywords", getKeywords())
             .toString();
     }
 }

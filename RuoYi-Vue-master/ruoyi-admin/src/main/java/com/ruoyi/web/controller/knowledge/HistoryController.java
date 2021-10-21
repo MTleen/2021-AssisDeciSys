@@ -53,15 +53,15 @@ public class HistoryController extends BaseController
      * 根据历史记录查询提示信息表
      */
     @ApiOperation("根据历史记录查询提示信息表")
-    @ApiImplicitParam(name="index",value="记录序号",required = true,dataType="Long")
+    @ApiImplicitParam(name="index",value="报警编号",required = true,dataType="Long")
     @PreAuthorize("@ss.hasPermi('knowledge:history:list')")
     @GetMapping("/{inf}")
     public TableDataInfo History2Inform(Long index)
     {
-        String informIDs="1,2,3"; //从历史表查询结果中获得,这里假设为"1,2,3"
-        List<Knowledge> list=new ArrayList<>();
-        for(String i:informIDs.split(",")){list.add(historyService.selectKnowledgeByInformID(Long.valueOf(i)));}
-        return getDataTable(list);
+        List<History> list = historyService.selectHistoryListbyRecordid(index);
+        List<Knowledge> list2=new ArrayList<>();
+        for(History i:list){list2.add(historyService.selectKnowledgeByInformID(Long.valueOf(i.getInformid())));}
+        return getDataTable(list2);
     }
 
     /**

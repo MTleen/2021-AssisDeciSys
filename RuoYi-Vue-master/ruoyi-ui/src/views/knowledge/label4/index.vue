@@ -147,6 +147,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        labelname: [
+          { required: true, message: "标签名称不能为空", trigger: "blur" }
+        ],
       }
     };
   },

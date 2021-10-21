@@ -1,15 +1,6 @@
 <template>
   <div class="app-container">
     <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-      <el-form-item label="类型 ID" prop="typeid">
-        <el-input
-          v-model="queryParams.typeid"
-          placeholder="请输入类型 ID"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="类型名称" prop="typename">
         <el-input
           v-model="queryParams.typename"
@@ -157,6 +148,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        typename: [
+          { required: true, message: '类型名称不能为空', trigger: 'blur' }
+        ]
       }
     }
   },

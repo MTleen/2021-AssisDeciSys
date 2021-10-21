@@ -2,9 +2,13 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="岗位名称" prop="positionname">
-        <el-select v-model="queryParams.positionname" placeholder="请选择岗位名称" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
-        </el-select>
+        <el-input
+          v-model="queryParams.positionname"
+          placeholder="请输入岗位名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -61,7 +65,7 @@
 
     <el-table v-loading="loading" :data="userpositionList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="岗位名称" align="center" prop="positionid" />
+      <el-table-column label="序号" align="center" width="50" type="index"/>
       <el-table-column label="岗位名称" align="center" prop="positionname" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -95,9 +99,13 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="岗位名称" prop="positionname">
-          <el-select v-model="form.positionname" placeholder="请选择岗位名称">
-            <el-option label="请选择字典生成" value="" />
-          </el-select>
+          <el-input
+          v-model="queryParams.positionname"
+          placeholder="请输入岗位名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
