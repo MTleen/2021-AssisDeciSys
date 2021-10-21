@@ -1,4 +1,12 @@
-package com.ruoyi.information.controller;
+/*
+ * @Description: 
+ * @Author: Shengxiang Hu
+ * @Date: 2021-10-20 19:28:25
+ * @LastEditors: Shengxiang Hu
+ * @LastEditTime: 2021-10-20 19:49:01
+ * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-admin\src\main\java\com\ruoyi\web\controller\information\UserPositionController.java
+ */
+package com.ruoyi.web.controller.information;
 
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;

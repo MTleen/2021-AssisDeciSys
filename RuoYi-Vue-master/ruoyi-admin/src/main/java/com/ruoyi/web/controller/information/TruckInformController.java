@@ -1,4 +1,4 @@
-package com.ruoyi.information.controller;
+package com.ruoyi.web.controller.information;
 
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
