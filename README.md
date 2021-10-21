@@ -1,16 +1,21 @@
-目前分支内容：
-1.在Knowledge表中根据：警情类型、处置对象、详细类型、四级标签、关键字包含关系来匹配提示信息
-2.在History表中根据记录查询Knowledge表中的提示信息
+分支合并了
 
-其中，
-在数据库未修改前，通过selectKey完成主键生成（在Knowledg表中）
-History表的主键名称为index，在mybatis中需要特别标注，否则会引起错误
-取消了Knowledge、kwords、History类对base_entity的继承，在接口里更清晰
-1与2的接口在/tool/swagger中可以看到及测试
+调整了Knowledge中的内容，主要修改内容包括：
+1.隐藏部分表的第一列ID，显示一个由前端自动生成的序号作为替代
+2.实际作为主键的ID仍不连续，作为替代，后端入口查询的结果会将ID替换为文字说明（例如，Record表数据：报警日期-10.21，地址-上海大学，险情类型-1，处置对象-1将会获得以下返回：报警日期-10.21，地址-上海大学，险情类型-火灾，处置对象-居民）
+不过比如报警记录ID这种，不太好处理
 
-关于1：Controller入口在KnowledgeController下的match函数；实现部分可在Service与Mapper中查看；建立了新的类型kwords
+后端功能“通过报警记录ID查询推送的提示信息”功能更新了，现在接受参数为“cautionID”即报警记录ID，会返回所有推送的“Knowledge”数据
+具体请在swagger中尝试
 
-关于2：Controller入口在HistoryController下的History2Inform函数；实现部分可在Service与Mapper中查看；由于History表目前还未完善，假定对应值为"1,2,3"，即该记录发送了第1、2、3条提示信息
+仍待解决的：
+1.Information中的内容，部分需要参照Knowledge内容修改
+2.rule表、record表、TruckInform表等主键特殊的表仍需要设计insert功能
+3.删除数据时询问内容仍为“是否确认删除ID为XX的数据”，需要修改
+4.一些数据库中的唯一问题，例如rule表
 
-这个分支主要为了完成信息匹配和根据案件记录获取提示信息功能的完成，在数据库修改完成后再做相应修改
-仅包括后端部分的实现
+另外，
+2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-ui\src\assets\logo文件夹下应该有个ewm.jpg，看起来是二维码，但我可能弄丢了
+Information中的用户信息、队站信息页面会报404，不太清楚是什么东西造成的
+
+#可以去使用一下各个功能，看看有什么bug
