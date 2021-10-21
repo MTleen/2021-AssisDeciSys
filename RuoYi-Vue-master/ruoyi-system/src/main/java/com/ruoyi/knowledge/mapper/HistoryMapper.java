@@ -2,6 +2,7 @@ package com.ruoyi.knowledge.mapper;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.History;
+import com.ruoyi.knowledge.domain.Knowledge;
 
 /**
  * 历史表Mapper接口
@@ -11,6 +12,8 @@ import com.ruoyi.knowledge.domain.History;
  */
 public interface HistoryMapper 
 {
+
+    public Knowledge selectKnowledgeByInformID(Long index);
     /**
      * 查询历史表
      * 

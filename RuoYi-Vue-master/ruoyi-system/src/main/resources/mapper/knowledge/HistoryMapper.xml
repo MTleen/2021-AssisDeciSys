@@ -5,10 +5,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.knowledge.mapper.HistoryMapper">
     
     <resultMap type="History" id="HistoryResult">
-        <result property="index"    column="index"    />
+        <result property="index"    column="`index`"    />
         <result property="cautionid"    column="cautionID"    />
         <result property="informid"    column="informID"    />
     </resultMap>
+
+    <resultMap type="Knowledge" id="KnowledgeResult">
+        <result property="informid"    column="InformID"    />
+        <result property="inform"    column="inform"    />
+        <result property="weight"    column="weight"    />
+        <result property="disastertype"    column="disastertype"    />
+        <result property="disposeobj"    column="disposeobj"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="informtypeid"    column="informtypeID"    />
+    </resultMap>
+
+    <select id="selectKnowledgeByInformID" parameterType="Long" resultMap="KnowledgeResult">
+        select * from Knowledge where `informID` = #{index}
+    </select>
 
     <sql id="selectHistoryVo">
         select index, cautionID, informID from History
