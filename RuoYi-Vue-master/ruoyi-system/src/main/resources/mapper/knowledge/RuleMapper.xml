@@ -12,21 +12,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectRuleVo">
-        select ruleID, informtype, num, positionId from Rule
+        select a.ruleID, b.typename as informtype, a.num, c.positionname as positionId
+        from Rule a
+        left join InformType b on b.typeID = a.informtype
+        left join UserPosition c on c.positionID = a.positionID
     </sql>
 
     <select id="selectRuleList" parameterType="Rule" resultMap="RuleResult">
         <include refid="selectRuleVo"/>
         <where>  
-            <if test="informtype != null "> and informtype = #{informtype}</if>
-            <if test="num != null "> and num = #{num}</if>
-            <if test="positionid != null "> and positionId = #{positionid}</if>
+            <if test="informtype != null "> and a.informtype = #{informtype}</if>
+            <if test="num != null "> and a.num = #{num}</if>
+            <if test="positionid != null "> and a.positionId = #{positionid}</if>
         </where>
     </select>
     
     <select id="selectRuleByRuleid" parameterType="Long" resultMap="RuleResult">
         <include refid="selectRuleVo"/>
-        where ruleID = #{ruleid}
+        where a.ruleID = #{ruleid}
     </select>
         
     <insert id="insertRule" parameterType="Rule">

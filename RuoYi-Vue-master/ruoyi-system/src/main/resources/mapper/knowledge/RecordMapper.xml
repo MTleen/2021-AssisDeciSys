@@ -13,36 +13,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="siteid"    column="siteID"    />
         <result property="truckid"    column="truckID"    />
         <result property="supplement"    column="supplement"    />
-        <result property="boom"    column="boom"    />
-        <result property="poison"    column="poison"    />
         <result property="picture"    column="picture"    />
         <result property="status"    column="status"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="keywords"    column="keywords"    />        
     </resultMap>
 
     <sql id="selectRecordVo">
-        select cautionID, cautiontime, location, distypeID, dillobject, siteID, truckID, supplement, boom, poison, picture, status from Record
+        select a.cautionID, a.cautiontime, a.location,b.typename as distypeID,c.objname as dillobject, a.siteID, a.truckID, a.supplement, a.picture,a.status,e.typename as detailtype,d.labelname as label4,a.keywords
+        from Record a
+        left join DisasterType b on b.typeID = a.distypeID
+        left join DisposeObj c on c.objID = a.dillobject
+        left join Label4 d on d.labelID = a.label4
+        left join DetailType e on e.typeID = a.detailtype
     </sql>
 
     <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
         <where>  
-            <if test="cautiontime != null "> and cautiontime = #{cautiontime}</if>
-            <if test="location != null  and location != ''"> and location = #{location}</if>
-            <if test="distypeid != null "> and distypeID = #{distypeid}</if>
-            <if test="dillobject != null "> and dillobject = #{dillobject}</if>
-            <if test="siteid != null "> and siteID = #{siteid}</if>
-            <if test="truckid != null "> and truckID = #{truckid}</if>
-            <if test="supplement != null  and supplement != ''"> and supplement = #{supplement}</if>
-            <if test="boom != null "> and boom = #{boom}</if>
-            <if test="poison != null "> and poison = #{poison}</if>
-            <if test="picture != null  and picture != ''"> and picture = #{picture}</if>
-            <if test="status != null "> and status = #{status}</if>
+            <if test="cautiontime != null "> and a.cautiontime = #{cautiontime}</if>
+            <if test="location != null  and location != ''"> and a.location = #{location}</if>
+            <if test="distypeid != null "> and a.distypeID = #{distypeid}</if>
+            <if test="dillobject != null "> and a.dillobject = #{dillobject}</if>
+            <if test="siteid != null "> and a.siteID = #{siteid}</if>
+            <if test="truckid != null "> and a.truckID = #{truckid}</if>
+            <if test="supplement != null  and supplement != ''"> and a.supplement = #{supplement}</if>
+            <if test="picture != null  and picture != ''"> and a.picture = #{picture}</if>
+            <if test="status != null "> and a.status = #{status}</if>
+            <if test="detailtype!= null "> and a.detailtype = #{detailtype}</if>
+            <if test="label4 != null "> and a.label4 = #{label4}</if>
+            <if test="keywords != null "> and a.keywords = #{keywords}</if>
         </where>
     </select>
     
     <select id="selectRecordByCautionid" parameterType="String" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
-        where cautionID = #{cautionid}
+        where a.cautionID = #{cautionid}
     </select>
         
     <insert id="insertRecord" parameterType="Record">

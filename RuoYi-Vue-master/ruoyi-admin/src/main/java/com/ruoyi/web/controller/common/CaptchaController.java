@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Author: Shengxiang Hu
+ * @Date: 2021-10-14 19:50:07
+ * @LastEditors: Shengxiang Hu
+ * @LastEditTime: 2021-10-20 16:30:52
+ * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-admin\src\main\java\com\ruoyi\web\controller\common\CaptchaController.java
+ */
 package com.ruoyi.web.controller.common;
 
 import java.awt.image.BufferedImage;
@@ -49,7 +57,11 @@ public class CaptchaController
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
         AjaxResult ajax = AjaxResult.success();
-        boolean captchaOnOff = configService.selectCaptchaOnOff();
+        // boolean captchaOnOff = configService.selectCaptchaOnOff();
+        
+        // TODO: 暴力关闭验证码，更优雅的方式后续再优化
+        
+        boolean captchaOnOff = false;
         ajax.put("captchaOnOff", captchaOnOff);
         if (!captchaOnOff)
         {

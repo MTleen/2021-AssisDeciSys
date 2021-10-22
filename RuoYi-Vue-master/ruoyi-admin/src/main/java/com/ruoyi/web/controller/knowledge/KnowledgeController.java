@@ -16,9 +16,11 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Kwords;
 import com.ruoyi.knowledge.service.IKnowledgeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import io.swagger.annotations.*;
 
 /**
  * 提示信息表Controller
@@ -26,6 +28,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author xiaoyu
  * @date 2021-10-15
  */
+@Api("提示信息表管理")
 @RestController
 @RequestMapping("/knowledge/knowledge")
 public class KnowledgeController extends BaseController
@@ -56,6 +59,25 @@ public class KnowledgeController extends BaseController
         List<Knowledge> list = knowledgeService.selectKnowledgeList(knowledge);
         ExcelUtil<Knowledge> util = new ExcelUtil<Knowledge>(Knowledge.class);
         return util.exportExcel(list, "提示信息表数据");
+    }
+
+    /**
+     * 匹配提示信息
+     */
+    @ApiOperation("匹配提示信息")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="disastertype",value="险情类型",dataType="String"),
+        @ApiImplicitParam(name="disposeobj",value="处置对象",dataType="String"),
+        @ApiImplicitParam(name="detailtype",value="详细类型",dataType="String"),
+        @ApiImplicitParam(name="keyword",value="关键字",dataType="String")
+    })
+    @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
+    @GetMapping("/match")
+    public TableDataInfo match(Kwords kwords)
+    {
+        startPage();
+        List<Knowledge> list = knowledgeService.matchKnowledgeList(kwords);
+        return getDataTable(list);
     }
 
     /**

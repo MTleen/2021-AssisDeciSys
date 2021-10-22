@@ -74,9 +74,9 @@
 
     <el-table v-loading="loading" :data="historyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="编号" align="center" prop="index" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="报警编号" align="center" prop="cautionid" />
-      <el-table-column label="提示信息编号" align="center" prop="informid" />
+      <el-table-column label="提示信息" align="center" prop="informid" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -125,7 +125,8 @@
 
 <script>
 import { listHistory, getHistory, delHistory, addHistory, updateHistory, exportHistory } from "@/api/knowledge/history";
-
+import { listRecord } from "@/api/knowledge/record";
+import { listKnowledge } from "@/api/knowledge/knowledge";
 export default {
   name: "History",
   data() {
@@ -172,10 +173,20 @@ export default {
     getList() {
       this.loading = true;
       listHistory(this.queryParams).then(response => {
-        this.historyList = response.rows;
-        this.total = response.total;
-        this.loading = false;
+        this.historyList = response.rows
+        this.total = response.total
+      })
+      //获取字典
+      //查询报警记录
+      listRecord(this.queryParams).then(response => {
+        this.recordList = response.rows
+        this.total = response.total
       });
+      //查询提示信息编号
+      listKnowledge(this.queryParams).then(response => {
+        this.knowledgeList = response.rows
+      })
+      this.loading = false
     },
     // 取消按钮
     cancel() {

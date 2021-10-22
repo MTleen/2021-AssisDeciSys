@@ -3,7 +3,6 @@ package com.ruoyi.knowledge.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 提示信息表对象 Knowledge
@@ -11,9 +10,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author xiaoyu
  * @date 2021-10-15
  */
-public class Knowledge extends BaseEntity
+public class Knowledge
 {
-    private static final long serialVersionUID = 1L;
 
     /** 信息编号 */
     private Long informid;
@@ -28,23 +26,23 @@ public class Knowledge extends BaseEntity
 
     /** 险情类型 */
     @Excel(name = "险情类型")
-    private Long disastertype;
+    private String disastertype;
 
     /** 处置对象 */
     @Excel(name = "处置对象")
-    private Long disposeobj;
+    private String disposeobj;
 
     /** 详细类型 */
     @Excel(name = "详细类型")
-    private Long detailtype;
+    private String detailtype;
 
     /** 四级标签 */
     @Excel(name = "四级标签")
-    private Long label4;
+    private String label4;
 
     /** 提示信息类型 */
     @Excel(name = "提示信息类型")
-    private Long informtypeid;
+    private String informtypeid;
 
     public void setInformid(Long informid) 
     {
@@ -73,48 +71,48 @@ public class Knowledge extends BaseEntity
     {
         return weight;
     }
-    public void setDisastertype(Long disastertype) 
+    public void setDisastertype(String disastertype) 
     {
         this.disastertype = disastertype;
     }
 
-    public Long getDisastertype() 
+    public String getDisastertype() 
     {
         return disastertype;
     }
-    public void setDisposeobj(Long disposeobj) 
+    public void setDisposeobj(String disposeobj) 
     {
         this.disposeobj = disposeobj;
     }
 
-    public Long getDisposeobj() 
+    public String getDisposeobj() 
     {
         return disposeobj;
     }
-    public void setDetailtype(Long detailtype) 
+    public void setDetailtype(String detailtype) 
     {
         this.detailtype = detailtype;
     }
 
-    public Long getDetailtype() 
+    public String getDetailtype() 
     {
         return detailtype;
     }
-    public void setLabel4(Long label4) 
+    public void setLabel4(String label4) 
     {
         this.label4 = label4;
     }
 
-    public Long getLabel4() 
+    public String getLabel4() 
     {
         return label4;
     }
-    public void setInformtypeid(Long informtypeid) 
+    public void setInformtypeid(String informtypeid) 
     {
         this.informtypeid = informtypeid;
     }
 
-    public Long getInformtypeid() 
+    public String getInformtypeid() 
     {
         return informtypeid;
     }

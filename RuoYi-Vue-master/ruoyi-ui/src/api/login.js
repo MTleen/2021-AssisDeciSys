@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Author: Shengxiang Hu
+ * @Date: 2021-10-14 19:50:08
+ * @LastEditors: Shengxiang Hu
+ * @LastEditTime: 2021-10-20 16:07:56
+ * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-ui\src\api\login.js
+ */
 import request from '@/utils/request'
 
 // 登录方法

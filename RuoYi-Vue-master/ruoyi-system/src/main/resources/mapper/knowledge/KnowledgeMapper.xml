@@ -16,28 +16,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectKnowledgeVo">
-        select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge
+        <!-- select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge -->
+        select a.InformID, a.inform, a.weight, e.typename as disastertype, f.objname as disposeobj, d.typename as detailtype, c.labelname as label4, b.typename as informtypeid
+        from Knowledge a
+        left join InformType b on b.typeID = a.informtypeID
+        left join Label4 c on c.labelID = a.label4
+        left join DetailType d on d.typeID = a.detailtype
+        left join DisasterType e on e.typeID = a.disastertype
+        left join DisposeObj f on f.objID = a.disposeobj
     </sql>
 
     <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
         <where>  
-            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
-            <if test="weight != null "> and weight = #{weight}</if>
-            <if test="disastertype != null "> and disastertype = #{disastertype}</if>
-            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
-            <if test="detailtype != null "> and detailtype = #{detailtype}</if>
-            <if test="label4 != null "> and label4 = #{label4}</if>
-            <if test="informtypeid != null "> and informtypeID = #{informtypeid}</if>
+            <if test="inform != null  and inform != ''"> and a.inform = #{inform}</if>
+            <if test="weight != null "> and a.weight = #{weight}</if>
+            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>
+            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>
+            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>
+            <if test="label4 != null "> and a.label4 = #{label4}</if>
+            <if test="informtypeid != null "> and a.informtypeID = #{informtypeid}</if>
+        </where>
+    </select>
+
+    <select id="matchKnowledgeList" parameterType="kwords" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        <where>  
+            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>
+            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>
+            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>
+            <if test="keyword != null "> and a.inform like concat('%',concat(#{keyword},'%'))</if>
         </where>
     </select>
     
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
-        where InformID = #{informid}
+        where a.InformID = #{informid}
     </select>
         
     <insert id="insertKnowledge" parameterType="Knowledge">
+        <selectKey keyProperty="informid" resultType="Long" order="BEFORE">
+            SELECT if(max(InformID) is null,1,max(InformID)+1) from Knowledge
+        </selectKey>
         insert into Knowledge
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="informid != null">InformID,</if>

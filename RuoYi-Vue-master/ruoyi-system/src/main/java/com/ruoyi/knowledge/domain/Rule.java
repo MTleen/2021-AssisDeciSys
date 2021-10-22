@@ -20,7 +20,7 @@ public class Rule extends BaseEntity
 
     /** 类型编号 */
     @Excel(name = "类型编号")
-    private Long informtype;
+    private String informtype;
 
     /** 接收数量 */
     @Excel(name = "接收数量")
@@ -28,7 +28,7 @@ public class Rule extends BaseEntity
 
     /** 岗位编号 */
     @Excel(name = "岗位编号")
-    private Long positionid;
+    private String positionid;
 
     public void setRuleid(Long ruleid) 
     {
@@ -39,12 +39,12 @@ public class Rule extends BaseEntity
     {
         return ruleid;
     }
-    public void setInformtype(Long informtype) 
+    public void setInformtype(String informtype) 
     {
         this.informtype = informtype;
     }
 
-    public Long getInformtype() 
+    public String getInformtype() 
     {
         return informtype;
     }
@@ -57,12 +57,12 @@ public class Rule extends BaseEntity
     {
         return num;
     }
-    public void setPositionid(Long positionid) 
+    public void setPositionid(String positionid) 
     {
         this.positionid = positionid;
     }
 
-    public Long getPositionid() 
+    public String getPositionid() 
     {
         return positionid;
     }

@@ -65,7 +65,7 @@
 
     <el-table v-loading="loading" :data="adminList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="权限 ID" align="center" prop="adminid" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="权限名称" align="center" prop="adminname" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

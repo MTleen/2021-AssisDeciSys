@@ -2,6 +2,7 @@ package com.ruoyi.knowledge.service;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.History;
+import com.ruoyi.knowledge.domain.Knowledge;
 
 /**
  * 历史表Service接口
@@ -11,11 +12,19 @@ import com.ruoyi.knowledge.domain.History;
  */
 public interface IHistoryService 
 {
+    public List<History> selectHistoryListbyRecordid(Long index);
+    /**
+     * 查询历史表中报警记录为index的项
+     * 
+     * @param index 报警记录ID
+     * @return 历史表
+     */
+    public Knowledge selectKnowledgeByInformID(Long index);
     /**
      * 查询历史表
      * 
-     * @param index 历史表主键
-     * @return 历史表
+     * @param index 提示信息主键
+     * @return 提示信息表
      */
     public History selectHistoryByIndex(Long index);
 

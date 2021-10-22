@@ -19,22 +19,24 @@
         />
       </el-form-item>
       <el-form-item label="险情类型" prop="distypeid">
-        <el-input
-          v-model="queryParams.distypeid"
-          placeholder="请输入险情类型"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.distypeid" filterable placeholder="请选择险情类型" clearable size="small">
+          <el-option
+            v-for="item in disastertypeList"
+            :key="item.typeid"
+            :label="item.typename"
+            :value="item.typeid"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="处置对象" prop="dillobject">
-        <el-input
-          v-model="queryParams.dillobject"
-          placeholder="请输入处置对象"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.dillobject" filterable placeholder="请选择处置对象" clearable size="small">
+          <el-option
+            v-for="item in disposeobjList"
+            :key="item.objid"
+            :label="item.objname"
+            :value="item.objid"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="主管单位" prop="siteid">
         <el-input
@@ -54,24 +56,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="是否存在易燃易爆品" prop="boom">
-        <el-input
-          v-model="queryParams.boom"
-          placeholder="请输入是否存在易燃易爆品"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否存在有毒物品" prop="poison">
-        <el-input
-          v-model="queryParams.poison"
-          placeholder="请输入是否存在有毒物品"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="图片" prop="picture">
         <el-input
           v-model="queryParams.picture"
@@ -85,6 +69,29 @@
         <el-select v-model="queryParams.status" placeholder="请选择任务执行状态" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="详细类型" prop="detailtype">
+        <el-select v-model="queryParams.detailtype" filterable placeholder="请选择详细类型" clearable size="small">
+          <el-option
+            v-for="item in detailtypeList"
+            :key="item.typeid"
+            :label="item.typename"
+            :value="item.typeid"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="四级标签" prop="label4">
+        <el-select v-model="queryParams.label4" filterable placeholder="请选择四级标签" clearable size="small">
+          <el-option
+            v-for="item in label4List"
+            :key="item.labelid"
+            :label="item.labelname"
+            :value="item.labelid"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="关键字" prop="keywords">
+        <el-input v-model="form.keywords" placeholder="请输入关键字" />  
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -153,10 +160,11 @@
       <el-table-column label="主管单位" align="center" prop="siteid" />
       <el-table-column label="出警车辆" align="center" prop="truckid" />
       <el-table-column label="提示信息" align="center" prop="supplement" />
-      <el-table-column label="是否存在易燃易爆品" align="center" prop="boom" />
-      <el-table-column label="是否存在有毒物品" align="center" prop="poison" />
       <el-table-column label="图片" align="center" prop="picture" />
       <el-table-column label="任务执行状态" align="center" prop="status" />
+      <el-table-column label="详细类型" align="center" prop="detailtype" />
+      <el-table-column label="四级标签" align="center" prop="label4" />
+      <el-table-column label="关键字" align="center" prop="keywords" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -200,10 +208,24 @@
           <el-input v-model="form.location" placeholder="请输入地址" />
         </el-form-item>
         <el-form-item label="险情类型" prop="distypeid">
-          <el-input v-model="form.distypeid" placeholder="请输入险情类型" />
+          <el-select v-model="queryParams.distypeid" filterable placeholder="请选择险情类型" clearable size="small">
+            <el-option
+              v-for="item in disastertypeList"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="处置对象" prop="dillobject">
-          <el-input v-model="form.dillobject" placeholder="请输入处置对象" />
+          <el-select v-model="queryParams.dillobject" filterable placeholder="请选择处置对象" clearable size="small">
+            <el-option
+              v-for="item in disposeobjList"
+              :key="item.objid"
+              :label="item.objname"
+              :value="item.objid"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="主管单位" prop="siteid">
           <el-input v-model="form.siteid" placeholder="请输入主管单位" />
@@ -214,12 +236,6 @@
         <el-form-item label="提示信息" prop="supplement">
           <el-input v-model="form.supplement" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="是否存在易燃易爆品" prop="boom">
-          <el-input v-model="form.boom" placeholder="请输入是否存在易燃易爆品" />
-        </el-form-item>
-        <el-form-item label="是否存在有毒物品" prop="poison">
-          <el-input v-model="form.poison" placeholder="请输入是否存在有毒物品" />
-        </el-form-item>
         <el-form-item label="图片" prop="picture">
           <el-input v-model="form.picture" placeholder="请输入图片" />
         </el-form-item>
@@ -228,6 +244,29 @@
             <el-radio label="1">请选择字典生成</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="详细类型" prop="detailtype">
+          <el-select v-model="form.detailtype" filterable placeholder="请选择详细类型" clearable size="small">
+            <el-option
+              v-for="item in detailtypeList"
+              :key="item.typeid"
+              :label="item.typename"
+              :value="item.typeid"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="四级标签" prop="label4">
+          <el-select v-model="form.label4" filterable placeholder="请选择四级标签" clearable size="small">
+            <el-option
+              v-for="item in label4List"
+              :key="item.labelid"
+              :label="item.labelname"
+              :value="item.labelid"
+            />
+          </el-select>
+        </el-form-item>
+      <el-form-item label="关键字" prop="keywords">
+        <el-input v-model="form.keywords" placeholder="请输入关键字" />  
+      </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -239,6 +278,10 @@
 
 <script>
 import { listRecord, getRecord, delRecord, addRecord, updateRecord, exportRecord } from "@/api/knowledge/record";
+import { listDisastertype } from '@/api/knowledge/disastertype'
+import { listDisposeobj } from '@/api/knowledge/disposeobj'
+import { listDetailtype } from '@/api/knowledge/detailtype'
+import { listLabel4 } from '@/api/knowledge/label4'
 
 export default {
   name: "Record",
@@ -303,9 +346,29 @@ export default {
       listRecord(this.queryParams).then(response => {
         this.recordList = response.rows;
         this.total = response.total;
-        this.loading = false;
       });
-    },
+      // 获取字典
+      // 查询所有险情类型
+      listDisastertype(this.commonQueryParams).then(response => {
+        this.disastertypeList = response.rows
+        // console.log('险情类型')
+        // console.log(this.disastertypeList)
+      })
+      // 查询所有处置对象
+      listDisposeobj(this.commomQueryParams).then(response => {
+        this.disposeobjList = response.rows
+      })
+      // 查询所有详细类型
+      listDetailtype(this.commomQueryParams).then(response => {
+        this.detailtypeList = response.rows
+        // console.log(this.detailtypeList)
+      })
+      // 查询所有四级标签
+      listLabel4(this.commonQueryParams).then(response => {
+        this.label4List = response.rows
+      })
+      this.loading = false
+    },    
     // 取消按钮
     cancel() {
       this.open = false;

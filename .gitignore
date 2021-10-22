@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # customize
-pom.xml
+*/pom.xml
 .vscode
 .idea
 .classpath

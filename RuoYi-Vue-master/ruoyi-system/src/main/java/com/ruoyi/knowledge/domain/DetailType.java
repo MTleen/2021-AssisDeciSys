@@ -24,7 +24,7 @@ public class DetailType extends BaseEntity
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Long distype;
+    private String distype;
 
     public void setTypeid(Long typeid) 
     {
@@ -44,12 +44,12 @@ public class DetailType extends BaseEntity
     {
         return typename;
     }
-    public void setDistype(Long distype) 
+    public void setDistype(String distype) 
     {
         this.distype = distype;
     }
 
-    public Long getDistype() 
+    public String getDistype() 
     {
         return distype;
     }

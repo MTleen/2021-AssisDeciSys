@@ -3,7 +3,6 @@ package com.ruoyi.knowledge.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 历史表对象 History
@@ -11,9 +10,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author xiaoyu
  * @date 2021-10-15
  */
-public class History extends BaseEntity
+public class History
 {
-    private static final long serialVersionUID = 1L;
 
     /** 编号 */
     private Long index;
@@ -24,7 +22,7 @@ public class History extends BaseEntity
 
     /** 提示信息编号 */
     @Excel(name = "提示信息编号")
-    private Long informid;
+    private String informid;
 
     public void setIndex(Long index) 
     {
@@ -44,12 +42,12 @@ public class History extends BaseEntity
     {
         return cautionid;
     }
-    public void setInformid(Long informid) 
+    public void setInformid(String informid) 
     {
         this.informid = informid;
     }
 
-    public Long getInformid() 
+    public String getInformid() 
     {
         return informid;
     }

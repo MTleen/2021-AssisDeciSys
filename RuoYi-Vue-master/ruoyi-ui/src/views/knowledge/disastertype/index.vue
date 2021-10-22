@@ -1,15 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="类型 ID" prop="typeid">
-        <el-input
-          v-model="queryParams.typeid"
-          placeholder="请输入类型 ID"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+    <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
       <el-form-item label="类型名称" prop="typename">
         <el-input
           v-model="queryParams.typename"
@@ -28,74 +19,74 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
+          v-hasPermi="['knowledge:disastertype:add']"
           type="primary"
           plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['knowledge:disastertype:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
+          v-hasPermi="['knowledge:disastertype:edit']"
           type="success"
           plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['knowledge:disastertype:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
+          v-hasPermi="['knowledge:disastertype:remove']"
           type="danger"
           plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['knowledge:disastertype:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
+          v-hasPermi="['knowledge:disastertype:export']"
           type="warning"
           plain
           icon="el-icon-download"
           size="mini"
           :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['knowledge:disastertype:export']"
         >导出</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />
     </el-row>
 
     <el-table v-loading="loading" :data="disastertypeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="类型 ID" align="center" prop="typeid" />
+      <el-table-column label="序号" type="index" width="50" align="center" />
       <el-table-column label="类型名称" align="center" prop="typename" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            v-hasPermi="['knowledge:disastertype:edit']"
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['knowledge:disastertype:edit']"
           >修改</el-button>
           <el-button
+            v-hasPermi="['knowledge:disastertype:remove']"
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['knowledge:disastertype:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -120,10 +111,10 @@
 </template>
 
 <script>
-import { listDisastertype, getDisastertype, delDisastertype, addDisastertype, updateDisastertype, exportDisastertype } from "@/api/knowledge/disastertype";
+import { listDisastertype, getDisastertype, delDisastertype, addDisastertype, updateDisastertype, exportDisastertype } from '@/api/knowledge/disastertype'
 
 export default {
-  name: "Disastertype",
+  name: 'Disastertype',
   data() {
     return {
       // 遮罩层
@@ -143,7 +134,7 @@ export default {
       // 险情类型表格数据
       disastertypeList: [],
       // 弹出层标题
-      title: "",
+      title: '',
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -157,116 +148,119 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        typename: [
+          { required: true, message: '类型名称不能为空', trigger: 'blur' }
+        ]
       }
-    };
+    }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     /** 查询险情类型列表 */
     getList() {
-      this.loading = true;
+      this.loading = true
       listDisastertype(this.queryParams).then(response => {
-        this.disastertypeList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+        this.disastertypeList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     },
     // 取消按钮
     cancel() {
-      this.open = false;
-      this.reset();
+      this.open = false
+      this.reset()
     },
     // 表单重置
     reset() {
       this.form = {
         typeid: null,
         typename: null
-      };
-      this.resetForm("form");
+      }
+      this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      this.queryParams.pageNum = 1
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
+      this.resetForm('queryForm')
+      this.handleQuery()
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.typeid)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加险情类型";
+      this.reset()
+      this.open = true
+      this.title = '添加险情类型'
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset();
+      this.reset()
       const typeid = row.typeid || this.ids
       getDisastertype(typeid).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改险情类型";
-      });
+        this.form = response.data
+        this.open = true
+        this.title = '修改险情类型'
+      })
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.form.typeid != null) {
             updateDisastertype(this.form).then(response => {
-              this.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
+              this.msgSuccess('修改成功')
+              this.open = false
+              this.getList()
+            })
           } else {
             addDisastertype(this.form).then(response => {
-              this.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
+              this.msgSuccess('新增成功')
+              this.open = false
+              this.getList()
+            })
           }
         }
-      });
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const typeids = row.typeid || this.ids;
-      this.$confirm('是否确认删除险情类型编号为"' + typeids + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delDisastertype(typeids);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+      const typeids = row.typeid || this.ids
+      this.$confirm('是否确认删除险情类型编号为"' + typeids + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function() {
+        return delDisastertype(typeids)
+      }).then(() => {
+        this.getList()
+        this.msgSuccess('删除成功')
+      }).catch(() => {})
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有险情类型数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportDisastertype(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+      const queryParams = this.queryParams
+      this.$confirm('是否确认导出所有险情类型数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.exportLoading = true
+        return exportDisastertype(queryParams)
+      }).then(response => {
+        this.download(response.msg)
+        this.exportLoading = false
+      }).catch(() => {})
     }
   }
-};
+}
 </script>
