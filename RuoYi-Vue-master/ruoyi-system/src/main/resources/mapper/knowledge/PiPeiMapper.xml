@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ruoyi.knowledge.mapper.PiPeiMapper">
+
+<resultMap type="PiPei" id="PiPeiResult">
+    <result property="cautionid"    column="cautionID"    />
+    <result property="cautiontime"    column="cautiontime"    />
+    <result property="location"    column="location"    />
+    <result property="distypeid"    column="distypeID"    />
+    <result property="dillobject"    column="dillobject"    />
+    <result property="siteid"    column="siteID"    />
+    <result property="truckid"    column="truckID"    />
+    <result property="supplement"    column="supplement"    />
+    <result property="picture"    column="picture"    />
+    <result property="status"    column="status"    />
+    <result property="detailtype"    column="detailtype"    />
+    <result property="label4"    column="label4"    />
+    <result property="keywords"    column="keywords"    />
+</resultMap>
+
+<sql id="selectPiPeiVo">
+    select a.informID,a.inform
+    from Knowledge a
+
+--     left join DisasterType b on b.typeID = a.distypeID
+--     left join DisposeObj c on c.objID = a.dillobject
+--     left join Label4 d on d.labelID = a.label4
+--     left join DetailType e on e.typeID = a.detailtype
+</sql>
+
+<select id="selectPiPeiList" parameterType="PiPei" resultMap="PiPeiResult">
+    <include refid="selectPiPeiVo"/>
+    <where>
+        <if test="distypeid == null and keywords != null" > and a.inform like concat('%',concat(#{keyword},'%'))</if>
+
+        <if test="distypeid != null and and dillobject != null and detailtype!= null and label4 != null">
+         and a.distypeID = #{distypeid} and a.dillobject = #{dillobject} and a.detailtype = #{detailtype} and a.label4 = #{label4}
+         </if>
+<!--        <if test="dillobject != null "> and a.dillobject = #{dillobject}</if>-->
+<!--        <if test="detailtype!= null "> and a.detailtype = #{detailtype}</if>-->
+<!--        <if test="label4 != null "> and a.label4 = #{label4}</if>-->
+    </where>
+</select>
+
+<insert id="insertPiPei" parameterType="PiPei">
+    insert into PiPei
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="cautionid != null">cautionID,</if>
+        <if test="cautiontime != null">cautiontime,</if>
+        <if test="location != null and location != ''">location,</if>
+        <if test="distypeid != null">distypeID,</if>
+        <if test="dillobject != null">dillobject,</if>
+        <if test="detailtype != null">detailtype,</if>
+        <if test="label4 != null">label4,</if>
+        <if test="siteid != null">siteID,</if>
+        <if test="truckid != null">truckID,</if>
+        <if test="supplement != null">supplement,</if>
+        <if test="picture != null">picture,</if>
+        <if test="status != null">status,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="cautionid != null">#{cautionid},</if>
+        <if test="cautiontime != null">#{cautiontime},</if>
+        <if test="location != null and location != ''">#{location},</if>
+        <if test="distypeid != null">#{distypeid},</if>
+        <if test="dillobject != null">#{dillobject},</if>
+        <if test="siteid != null">#{siteid},</if>
+        <if test="truckid != null">#{truckid},</if>
+        <if test="supplement != null">#{supplement},</if>
+        <if test="label4 != null">label4,</if>
+        <if test="siteid != null">siteID,</if>
+        <if test="picture != null">#{picture},</if>
+        <if test="status != null">#{status},</if>
+    </trim>
+</insert>
+
+<update id="updatePiPei" parameterType="PiPei">
+-- 更新出警记录表
+    update Record
+    <trim prefix="SET" suffixOverrides=",">
+
+        <if test="supplement != null">supplement = #{supplement},</if>
+
+        <if test="picture != null">picture = #{picture},</if>
+        <if test="status != null">status = #{status},</if>
+    </trim>
+    where cautionID = #{cautionid}
+-- 修改车辆状态
+    update TruckInform
+    <trim prefix="SET" suffixOverrides=",">
+
+        <if test="truckid != null">truckstate = 0,</if>
+
+    </trim>
+    where truckID = #{truckid}
+</update>
+
+
+</mapper>
