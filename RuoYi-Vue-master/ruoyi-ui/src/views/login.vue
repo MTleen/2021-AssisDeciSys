@@ -1,12 +1,13 @@
 <template>
   <div class="login">
+    <el-col align='center'>
+    <div class=" title-logo-container">
+      <img :src="logo" class="title-logo">
+      <span class="title-style">消防作战指挥辅助决策管理系统</span>
 
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <div class=" sidebar-logo-container">
-        <img :src="logo" class="sidebar-logo">
-        <span class="title-style">消防作战指挥辅助决策管理系统</span>
-
-      </div>
+      
 
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
@@ -40,14 +41,14 @@
           <img :src="codeUrl" class="login-code-img" @click="getCode">
         </div>
       </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      <!-- <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox> -->
 
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
           size="medium"
           type="primary"
-          style="width:100%;"
+          style="width:50%; height: 50px; margin-top:25px"
           @click.native.prevent="handleLogin"
         >
           <span v-if="!loading" style="height: 45px">登 录</span>
@@ -66,6 +67,7 @@
     <div class="el-login-footer">
       <span>消防作战指挥辅助决策管理系统由上海大学提供技术服务支持</span>
     </div>
+    </el-col>
   </div>
 </template>
 
@@ -187,19 +189,19 @@ export default {
 
 .login-form {
   border-radius: 7px;
-  width: 500px;
+  width: 450px;
 
   // padding: 25px 25px 5px 25px;
-  .el-input {
+.el-input {
     height: 50px;
     input {
       height: 45px;
     }
   }
 
-  .input-icon {
+.input-icon {
     height: 39px;
-    width: 14px;
+    width: 19px;
     margin-left: 2px;
   }
 }
@@ -234,27 +236,28 @@ export default {
       height: 40px;
 
 }
-.sidebar-logo {
-      width: 44px;
-      height: 44px;
-      vertical-align: middle;
-      margin-right: 12px;
-      margin-bottom: 12px;
+.title-logo {
+  width: 100px;
+  height: 100px;
+  vertical-align: middle;
+  margin-right: 12px;
+  margin-bottom: 12px;
 }
 .title-style {
   color: #fff;
-  font-size: 32px;
+  font-size: 35px;
   text-align: right;
   margin-left: 7px;
   margin: 0;
 }
 
-.sidebar-logo-container {
+.title-logo-container {
   position: relative;
   width: 100%;
-  height: 70px;
+  height: 100px;
   line-height: 50px;
   overflow: hidden;
+  margin-bottom: 45px;
 }
 .ewm-style{
   margin-top: 50px;
