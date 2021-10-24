@@ -11,20 +11,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectDetailTypeVo">
-        select typeID, typename, distype from DetailType
+        select a.typeID, a.typename, b.typename as distype
+        from DetailType a
+        left join DisasterType b on b.typeID = a.distype
     </sql>
 
     <select id="selectDetailTypeList" parameterType="DetailType" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
         <where>  
-            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
-            <if test="distype != null "> and distype = #{distype}</if>
+            <if test="typename != null  and typename != ''"> and a.typename like concat('%', #{typename}, '%')</if>
+            <if test="distype != null "> and a.distype = #{distype}</if>
         </where>
     </select>
     
     <select id="selectDetailTypeByTypeid" parameterType="Long" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
-        where typeID = #{typeid}
+        where a.typeID = #{typeid}
     </select>
         
     <insert id="insertDetailType" parameterType="DetailType">

@@ -3,9 +3,9 @@
 
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
       <div class=" sidebar-logo-container">
-          <img :src="logo" class="sidebar-logo"/>
-           <span class="title-style">消防作战指挥辅助决策管理系统</span>  
-         
+        <img :src="logo" class="sidebar-logo">
+        <span class="title-style">消防作战指挥辅助决策管理系统</span>
+
       </div>
 
       <el-form-item prop="username">
@@ -26,7 +26,7 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="code" v-if="captchaOnOff">
+      <el-form-item v-if="captchaOnOff" prop="code">
         <el-input
           v-model="loginForm.code"
           auto-complete="off"
@@ -37,11 +37,11 @@
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
         <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+          <img :src="codeUrl" class="login-code-img" @click="getCode">
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
-      
+
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
@@ -53,51 +53,51 @@
           <span v-if="!loading" style="height: 45px">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
-        <div style="float: right;" v-if="register">
+        <div v-if="register" style="float: right;">
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
         </div>
       </el-form-item>
       <div align="center">
-        <img :src="Erweima" class="ewm-style" />
+        <img :src="Erweima" class="ewm-style">
       </div>
     </el-form>
-     
+
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>消防作战指挥辅助决策管理系统由xxx提供技术服务支持</span>
+      <span>消防作战指挥辅助决策管理系统由上海大学提供技术服务支持</span>
     </div>
   </div>
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login";
-import Cookies from "js-cookie";
+import { getCodeImg } from '@/api/login'
+import Cookies from 'js-cookie'
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 import logoImg from '@/assets/logo/logo1.png'
 import ErweimaImg from '@/assets/logo/ewm.jpg'
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
-      codeUrl: "",
-      logo:logoImg,
-      cookiePassword: "",
-      Erweima:ErweimaImg ,
+      codeUrl: '',
+      logo: logoImg,
+      cookiePassword: '',
+      Erweima: ErweimaImg,
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: 'admin',
+        password: 'admin123',
         rememberMe: false,
-        code: "",
-        uuid: ""
+        code: '',
+        uuid: ''
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", message: "请输入您的账号" }
+          { required: true, trigger: 'blur', message: '请输入您的账号' }
         ],
         password: [
-          { required: true, trigger: "blur", message: "请输入您的密码" }
+          { required: true, trigger: 'blur', message: '请输入您的密码' }
         ],
-        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+        code: [{ required: true, trigger: 'change', message: '请输入验证码' }]
       },
       loading: false,
       // 验证码开关
@@ -105,66 +105,69 @@ export default {
       // 注册开关
       register: false,
       redirect: undefined
-    };
+    }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   created() {
-    this.getCode();
-    this.getCookie();
+    this.getCode()
+    this.getCookie()
   },
   methods: {
     getCode() {
       getCodeImg().then(res => {
-        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff;
+        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff
         if (this.captchaOnOff) {
-          this.codeUrl = "data:image/gif;base64," + res.img;
-          this.loginForm.uuid = res.uuid;
+          this.codeUrl = 'data:image/gif;base64,' + res.img
+          this.loginForm.uuid = res.uuid
         }
-      });
+      })
     },
     getCookie() {
-      const username = Cookies.get("username");
-      const password = Cookies.get("password");
+      const username = Cookies.get('username')
+      const password = Cookies.get('password')
       const rememberMe = Cookies.get('rememberMe')
       this.loginForm = {
         username: username === undefined ? this.loginForm.username : username,
         password: password === undefined ? this.loginForm.password : decrypt(password),
         rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
-      };
+      }
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           if (this.loginForm.rememberMe) {
-            Cookies.set("username", this.loginForm.username, { expires: 30 });
-            Cookies.set("password", encrypt(this.loginForm.password), { expires: 30 });
-            Cookies.set('rememberMe', this.loginForm.rememberMe, { expires: 30 });
+            Cookies.set('username', this.loginForm.username, { expires: 30 })
+            Cookies.set('password', encrypt(this.loginForm.password), { expires: 30 })
+            Cookies.set('rememberMe', this.loginForm.rememberMe, { expires: 30 })
+            // Cookies.set('username', this.loginForm.username)
+            // Cookies.set('password', encrypt(this.loginForm.password))
+            // Cookies.set('rememberMe', this.loginForm.rememberMe)
           } else {
-            Cookies.remove("username");
-            Cookies.remove("password");
-            Cookies.remove('rememberMe');
+            Cookies.remove('username')
+            Cookies.remove('password')
+            Cookies.remove('rememberMe')
           }
-          this.$store.dispatch("Login", this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+          this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' }).catch(() => {})
           }).catch(() => {
-            this.loading = false;
+            this.loading = false
             if (this.captchaOnOff) {
-              this.getCode();
+              this.getCode()
             }
-          });
+          })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
@@ -185,7 +188,7 @@ export default {
 .login-form {
   border-radius: 7px;
   width: 500px;
-  
+
   // padding: 25px 25px 5px 25px;
   .el-input {
     height: 50px;

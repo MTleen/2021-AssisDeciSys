@@ -4,7 +4,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.HistoryMapper;
+import com.ruoyi.knowledge.mapper.KnowledgeMapper;
 import com.ruoyi.knowledge.domain.History;
+import com.ruoyi.knowledge.domain.Knowledge;
 import com.ruoyi.knowledge.service.IHistoryService;
 
 /**
@@ -18,6 +20,17 @@ public class HistoryServiceImpl implements IHistoryService
 {
     @Autowired
     private HistoryMapper historyMapper;
+
+    @Override
+    public List<History> selectHistoryListbyRecordid(Long index)
+    {
+        return historyMapper.selectHistoryListbyRecordid(index);
+    }
+    @Override
+    public Knowledge selectKnowledgeByInformID(Long index)
+    {
+        return historyMapper.selectKnowledgeByInformID(index);
+    }
 
     /**
      * 查询历史表

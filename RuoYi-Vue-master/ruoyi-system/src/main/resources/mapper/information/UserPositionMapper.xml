@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.information.mapper.UserPositionMapper">
+    
+    <resultMap type="UserPosition" id="UserPositionResult">
+        <result property="positionid"    column="positionID"    />
+        <result property="positionname"    column="positionname"    />
+    </resultMap>
+
+    <sql id="selectUserPositionVo">
+        select positionID, positionname from UserPosition
+    </sql>
+
+    <select id="selectUserPositionList" parameterType="UserPosition" resultMap="UserPositionResult">
+        <include refid="selectUserPositionVo"/>
+        <where>  
+            <if test="positionname != null  and positionname != ''"> and positionname like concat('%', #{positionname}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectUserPositionByPositionid" parameterType="Long" resultMap="UserPositionResult">
+        <include refid="selectUserPositionVo"/>
+        where positionID = #{positionid}
+    </select>
+        
+    <insert id="insertUserPosition" parameterType="UserPosition" useGeneratedKeys="true" keyProperty="positionid">
+        insert into UserPosition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="positionname != null and positionname != ''">positionname,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="positionname != null and positionname != ''">#{positionname},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserPosition" parameterType="UserPosition">
+        update UserPosition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="positionname != null and positionname != ''">positionname = #{positionname},</if>
+        </trim>
+        where positionID = #{positionid}
+    </update>
+
+    <delete id="deleteUserPositionByPositionid" parameterType="Long">
+        delete from UserPosition where positionID = #{positionid}
+    </delete>
+
+    <delete id="deleteUserPositionByPositionids" parameterType="String">
+        delete from UserPosition where positionID in 
+        <foreach item="positionid" collection="array" open="(" separator="," close=")">
+            #{positionid}
+        </foreach>
+    </delete>
+</mapper>

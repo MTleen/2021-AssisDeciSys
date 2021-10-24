@@ -39,14 +39,16 @@ public class TokenService
     // 令牌有效期（默认30分钟）
     @Value("${token.expireTime}")
     private int expireTime;
-
+    // TODO: 设置令牌过期时间
     protected static final long MILLIS_SECOND = 1000;
 
+    // protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
+    // 设置 token 永不过期
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
-    @Autowired
+    @Autowired 
     private RedisCache redisCache;
 
     /**

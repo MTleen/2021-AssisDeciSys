@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Author: Shengxiang Hu
+ * @Date: 2021-10-18 09:36:01
+ * @LastEditors: Shengxiang Hu
+ * @LastEditTime: 2021-10-21 10:52:26
+ * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-ui\src\api\information\admin.js
+ */
 import request from '@/utils/request'
 
 // 查询权限表管理列表
