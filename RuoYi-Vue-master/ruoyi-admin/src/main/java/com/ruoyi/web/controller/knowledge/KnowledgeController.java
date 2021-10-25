@@ -66,9 +66,10 @@ public class KnowledgeController extends BaseController
      */
     @ApiOperation("匹配提示信息")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="disastertype",value="险情类型",dataType="String"),
-        @ApiImplicitParam(name="disposeobj",value="处置对象",dataType="String"),
-        @ApiImplicitParam(name="detailtype",value="详细类型",dataType="String"),
+        @ApiImplicitParam(name="disastertype",value="险情类型",dataType="Long"),
+        @ApiImplicitParam(name="disposeobj",value="处置对象",dataType="Long"),
+        @ApiImplicitParam(name="detailtype",value="详细类型",dataType="Long"),
+        @ApiImplicitParam(name="label4",value="label4",dataType="Long"),
         @ApiImplicitParam(name="keyword",value="关键字",dataType="String")
     })
     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
