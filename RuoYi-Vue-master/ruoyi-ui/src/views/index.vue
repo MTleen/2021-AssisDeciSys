@@ -162,13 +162,11 @@
         </div>
 
       </el-col>
-
-      <div align="center">
-        <el-button style="margin-top: 40px" type="primary">倒计时30s</el-button>
-      </div>
-
     </el-row>
 
+    <div align="center">
+        <el-button style="margin-top: 40px" type="primary">倒计时30s</el-button>
+    </div>
   </div>
 </template>
 <script>
