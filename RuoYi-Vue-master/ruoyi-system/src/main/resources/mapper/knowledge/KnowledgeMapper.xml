@@ -25,6 +25,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join DisasterType e on e.typeID = a.disastertype
         left join DisposeObj f on f.objID = a.disposeobj
     </sql>
+    <sql id="matchKnowledgeVo">
+        <!-- select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge -->
+        select a.InformID, a.inform, a.informtypeid
+        from Knowledge a
+        left join Rule b on b.typeID = a.informtypeID
+        left join Label4 c on c.labelID = a.label4
+        left join DetailType d on d.typeID = a.detailtype
+        left join DisasterType e on e.typeID = a.disastertype
+        left join DisposeObj f on f.objID = a.disposeobj
+    </sql>
 
     <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
@@ -39,14 +49,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="matchKnowledgeList" parameterType="kwords" resultMap="KnowledgeResult">
-        <include refid="selectKnowledgeVo"/>
+    <select id="matchKnowledgeList1" parameterType="kwords" resultMap="KnowledgeResult">
+        <include refid="matchKnowledgeVo"/>
         <where>  
-            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>
-            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>
-            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>
-            <if test="keyword != null "> and a.inform like concat('%',concat(#{keyword},'%'))</if>
+<!--            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>-->
+<!--            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>-->
+<!--            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>-->
+<!--            <if test="keyword != null "> and a.inform like concat('%',concat(#{keyword},'%'))</if>-->
+            <if test="detailtype == null and keywords != null" > and a.inform like concat('%',concat(#{keyword},'%'))</if>
+
+            <if test="disastertype != null and disposeobj != null and detailtype!= null and label4 != null">
+                and a.disastertype = #{disastertype} and a.disposeobj = #{disposeobj} and a.detailtype = #{detailtype} and a.label4 = #{label4}
+            </if>
         </where>
+
+    </select>
+
+    <select id="matchKnowledgeList" parameterType="kwords" resultMap="KnowledgeResult">
+        SELECT
+        k.inform
+        FROM
+        Knowledge k
+        <where>
+            k.informtypeID
+            in
+            (SELECT informtype FROM Rule r LEFT join UserPosition u on r.positionId=u.positionID)
+            <if test="detailtype == null and keywords != null" > and k.inform like concat('%',concat(#{keyword},'%'))</if>
+
+            <if test="disastertype != null and disposeobj != null and detailtype!= null and label4 != null">
+                and k.disastertype = #{disastertype} and k.disposeobj = #{disposeobj} and k.detailtype = #{detailtype} and k.label4 = #{label4}
+            </if>
+        </where>
+
     </select>
     
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
