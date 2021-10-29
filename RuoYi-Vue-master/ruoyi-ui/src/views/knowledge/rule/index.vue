@@ -19,6 +19,7 @@
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
       <el-form-item label="信息类型" prop="informtype">
         <el-select v-model="queryParams.informtype" placeholder="请选择信息类型" clearable size="small">
           <el-option
@@ -29,8 +30,7 @@
           />
         </el-select>
       </el-form-item>
-      </el-form-item>
-      
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -109,7 +109,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -144,7 +144,7 @@
             />
           </el-select>
         </el-form-item>
-      </el-form>  
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>

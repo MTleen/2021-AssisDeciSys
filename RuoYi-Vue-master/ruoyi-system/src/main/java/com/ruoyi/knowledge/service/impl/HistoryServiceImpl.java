@@ -4,37 +4,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.HistoryMapper;
-import com.ruoyi.knowledge.mapper.KnowledgeMapper;
 import com.ruoyi.knowledge.domain.History;
-import com.ruoyi.knowledge.domain.Knowledge;
 import com.ruoyi.knowledge.service.IHistoryService;
 
 /**
  * 历史表Service业务层处理
- * 
+ *
  * @author xiaoyu
- * @date 2021-10-15
+ * @date 2021-10-29
  */
 @Service
-public class HistoryServiceImpl implements IHistoryService 
+public class HistoryServiceImpl implements IHistoryService
 {
     @Autowired
     private HistoryMapper historyMapper;
 
-    @Override
-    public List<History> selectHistoryListbyRecordid(Long index)
-    {
-        return historyMapper.selectHistoryListbyRecordid(index);
-    }
-    @Override
-    public Knowledge selectKnowledgeByInformID(Long index)
-    {
-        return historyMapper.selectKnowledgeByInformID(index);
-    }
-
     /**
      * 查询历史表
-     * 
+     *
      * @param index 历史表主键
      * @return 历史表
      */
@@ -46,7 +33,7 @@ public class HistoryServiceImpl implements IHistoryService
 
     /**
      * 查询历史表列表
-     * 
+     *
      * @param history 历史表
      * @return 历史表
      */
@@ -58,7 +45,7 @@ public class HistoryServiceImpl implements IHistoryService
 
     /**
      * 新增历史表
-     * 
+     *
      * @param history 历史表
      * @return 结果
      */
@@ -70,7 +57,7 @@ public class HistoryServiceImpl implements IHistoryService
 
     /**
      * 修改历史表
-     * 
+     *
      * @param history 历史表
      * @return 结果
      */
@@ -82,7 +69,7 @@ public class HistoryServiceImpl implements IHistoryService
 
     /**
      * 批量删除历史表
-     * 
+     *
      * @param indexs 需要删除的历史表主键
      * @return 结果
      */
@@ -94,7 +81,7 @@ public class HistoryServiceImpl implements IHistoryService
 
     /**
      * 删除历史表信息
-     * 
+     *
      * @param index 历史表主键
      * @return 结果
      */

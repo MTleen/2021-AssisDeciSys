@@ -10,14 +10,31 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="提示信息编号" prop="informid">
+      <el-form-item label="提示信息" prop="informid">
         <el-input
           v-model="queryParams.informid"
-          placeholder="请输入提示信息编号"
+          placeholder="请输入提示信息"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="岗位" prop="positionid">
+        <el-input
+          v-model="queryParams.positionid"
+          placeholder="请输入岗位"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="发送时间" prop="sendtime">
+        <el-date-picker clearable size="small"
+                        v-model="queryParams.sendtime"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择发送时间">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -74,9 +91,15 @@
 
     <el-table v-loading="loading" :data="historyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+      <el-table-column label="序号" type="index" width="50" align="center" />
       <el-table-column label="报警编号" align="center" prop="cautionid" />
       <el-table-column label="提示信息" align="center" prop="informid" />
+      <el-table-column label="岗位" align="center" prop="positionid" />
+      <el-table-column label="发送时间" align="center" prop="sendtime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -96,7 +119,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -111,8 +134,19 @@
         <el-form-item label="报警编号" prop="cautionid">
           <el-input v-model="form.cautionid" placeholder="请输入报警编号" />
         </el-form-item>
-        <el-form-item label="提示信息编号" prop="informid">
-          <el-input v-model="form.informid" placeholder="请输入提示信息编号" />
+        <el-form-item label="提示信息" prop="informid">
+          <el-input v-model="form.informid" placeholder="请输入提示信息" />
+        </el-form-item>
+        <el-form-item label="岗位" prop="positionid">
+          <el-input v-model="form.positionid" placeholder="请输入岗位" />
+        </el-form-item>
+        <el-form-item label="发送时间" prop="sendtime">
+          <el-date-picker clearable size="small"
+                          v-model="form.sendtime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择发送时间">
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -125,8 +159,7 @@
 
 <script>
 import { listHistory, getHistory, delHistory, addHistory, updateHistory, exportHistory } from "@/api/knowledge/history";
-import { listRecord } from "@/api/knowledge/record";
-import { listKnowledge } from "@/api/knowledge/knowledge";
+
 export default {
   name: "History",
   data() {
@@ -156,7 +189,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         cautionid: null,
-        informid: null
+        informid: null,
+        positionid: null,
+        sendtime: null
       },
       // 表单参数
       form: {},
@@ -173,20 +208,10 @@ export default {
     getList() {
       this.loading = true;
       listHistory(this.queryParams).then(response => {
-        this.historyList = response.rows
-        this.total = response.total
-      })
-      //获取字典
-      //查询报警记录
-      listRecord(this.queryParams).then(response => {
-        this.recordList = response.rows
-        this.total = response.total
+        this.historyList = response.rows;
+        this.total = response.total;
+        this.loading = false;
       });
-      //查询提示信息编号
-      listKnowledge(this.queryParams).then(response => {
-        this.knowledgeList = response.rows
-      })
-      this.loading = false
     },
     // 取消按钮
     cancel() {
@@ -198,7 +223,9 @@ export default {
       this.form = {
         index: null,
         cautionid: null,
-        informid: null
+        informid: null,
+        positionid: null,
+        sendtime: null
       };
       this.resetForm("form");
     },
@@ -258,30 +285,30 @@ export default {
     handleDelete(row) {
       const indexs = row.index || this.ids;
       this.$confirm('是否确认删除历史表编号为"' + indexs + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delHistory(indexs);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        return delHistory(indexs);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有历史表数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportHistory(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportHistory(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {});
     }
   }
 };
