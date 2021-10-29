@@ -112,7 +112,7 @@
       </el-col>
       <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />
     </el-row>
-
+<div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
     <el-table v-loading="loading" :data="knowledgeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center" />
@@ -150,7 +150,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+</div>
     <!-- 添加或修改提示信息表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
