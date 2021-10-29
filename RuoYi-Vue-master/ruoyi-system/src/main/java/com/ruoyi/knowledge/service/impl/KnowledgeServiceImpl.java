@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.KnowledgeMapper;
 import com.ruoyi.knowledge.domain.Knowledge;
 import com.ruoyi.knowledge.domain.Kwords;
+import com.ruoyi.knowledge.domain.Rule;
 import com.ruoyi.knowledge.service.IKnowledgeService;
 
 /**
@@ -42,6 +43,17 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     public List<Knowledge> selectKnowledgeList(Knowledge knowledge)
     {
         return knowledgeMapper.selectKnowledgeList(knowledge);
+    }
+
+    /**
+     * 查询规则列表
+     * 
+     * @return 规则表
+     */
+    @Override
+    public List<Rule> selectRuleList()
+    {
+        return knowledgeMapper.selectRuleList();
     }
 
     /**

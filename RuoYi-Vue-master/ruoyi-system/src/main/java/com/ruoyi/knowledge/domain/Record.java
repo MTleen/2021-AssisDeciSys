@@ -45,10 +45,6 @@ public class Record extends BaseEntity
     @Excel(name = "出警车辆")
     private Integer truckid;
 
-    /** 提示信息 */
-    @Excel(name = "提示信息")
-    private String supplement;
-
     /** 图片 */
     @Excel(name = "图片")
     private String picture;
@@ -132,15 +128,7 @@ public class Record extends BaseEntity
     {
         return truckid;
     }
-    public void setSupplement(String supplement) 
-    {
-        this.supplement = supplement;
-    }
 
-    public String getSupplement() 
-    {
-        return supplement;
-    }
     public void setPicture(String picture) 
     {
         this.picture = picture;
@@ -200,7 +188,6 @@ public class Record extends BaseEntity
             .append("dillobject", getDillobject())
             .append("siteid", getSiteid())
             .append("truckid", getTruckid())
-            .append("supplement", getSupplement())
             .append("picture", getPicture())
             .append("status", getStatus())
             .append("detailtype", getDetailtype())

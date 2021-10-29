@@ -12,7 +12,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dillobject"    column="dillobject"    />
         <result property="siteid"    column="siteID"    />
         <result property="truckid"    column="truckID"    />
-        <result property="supplement"    column="supplement"    />
         <result property="picture"    column="picture"    />
         <result property="status"    column="status"    />
         <result property="detailtype"    column="detailtype"    />
@@ -21,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectRecordVo">
-        select a.cautionID, a.cautiontime, a.location,b.typename as distypeID,c.objname as dillobject, a.siteID, a.truckID, a.supplement, a.picture,a.status,e.typename as detailtype,d.labelname as label4,a.keywords
+        select a.cautionID, a.cautiontime, a.location,b.typename as distypeID,c.objname as dillobject, a.siteID, a.truckID, a.picture,a.status,e.typename as detailtype,d.labelname as label4,a.keywords
         from Record a
         left join DisasterType b on b.typeID = a.distypeID
         left join DisposeObj c on c.objID = a.dillobject
@@ -38,7 +37,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null "> and a.dillobject = #{dillobject}</if>
             <if test="siteid != null "> and a.siteID = #{siteid}</if>
             <if test="truckid != null "> and a.truckID = #{truckid}</if>
-            <if test="supplement != null  and supplement != ''"> and a.supplement = #{supplement}</if>
             <if test="picture != null  and picture != ''"> and a.picture = #{picture}</if>
             <if test="status != null "> and a.status = #{status}</if>
             <if test="detailtype!= null "> and a.detailtype = #{detailtype}</if>
@@ -62,7 +60,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null">dillobject,</if>
             <if test="siteid != null">siteID,</if>
             <if test="truckid != null">truckID,</if>
-            <if test="supplement != null">supplement,</if>
             <if test="boom != null">boom,</if>
             <if test="poison != null">poison,</if>
             <if test="picture != null">picture,</if>
@@ -76,7 +73,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null">#{dillobject},</if>
             <if test="siteid != null">#{siteid},</if>
             <if test="truckid != null">#{truckid},</if>
-            <if test="supplement != null">#{supplement},</if>
             <if test="boom != null">#{boom},</if>
             <if test="poison != null">#{poison},</if>
             <if test="picture != null">#{picture},</if>
@@ -93,7 +89,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null">dillobject = #{dillobject},</if>
             <if test="siteid != null">siteID = #{siteid},</if>
             <if test="truckid != null">truckID = #{truckid},</if>
-            <if test="supplement != null">supplement = #{supplement},</if>
             <if test="boom != null">boom = #{boom},</if>
             <if test="poison != null">poison = #{poison},</if>
             <if test="picture != null">picture = #{picture},</if>

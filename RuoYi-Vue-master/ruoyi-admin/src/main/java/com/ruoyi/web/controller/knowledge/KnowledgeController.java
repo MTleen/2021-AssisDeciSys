@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.knowledge;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.knowledge.domain.Knowledge;
 import com.ruoyi.knowledge.domain.Kwords;
+import com.ruoyi.knowledge.domain.Kinfo;
+import com.ruoyi.knowledge.domain.Rule;
 import com.ruoyi.knowledge.service.IKnowledgeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -62,13 +67,13 @@ public class KnowledgeController extends BaseController
     }
 
     /**
-     * 匹配提示信息
+     * 匹配提示信息并按规则分组
      */
-    @ApiOperation("匹配提示信息")
+    @ApiOperation("匹配提示信息并按规则分组")
     @ApiImplicitParams({
-        @ApiImplicitParam(name="disastertype",value="险情类型",dataType="String"),
-        @ApiImplicitParam(name="disposeobj",value="处置对象",dataType="String"),
-        @ApiImplicitParam(name="detailtype",value="详细类型",dataType="String"),
+        @ApiImplicitParam(name="disastertype",value="险情类型",required = true,dataType="Long"),
+        @ApiImplicitParam(name="disposeobj",value="处置对象",dataType="Long"),
+        @ApiImplicitParam(name="detailtype",value="详细类型",dataType="Long"),
         @ApiImplicitParam(name="keyword",value="关键字",dataType="String")
     })
     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
@@ -76,8 +81,27 @@ public class KnowledgeController extends BaseController
     public TableDataInfo match(Kwords kwords)
     {
         startPage();
-        List<Knowledge> list = knowledgeService.matchKnowledgeList(kwords);
-        return getDataTable(list);
+        List<Knowledge> knowledges = knowledgeService.matchKnowledgeList(kwords);
+        List<Rule> rules = knowledgeService.selectRuleList();
+        List<Kinfo> result= new ArrayList<Kinfo>();
+        Map<String,List<String>> rulemap = new HashMap<String,List<String>>(); 
+        //规则获取与处理
+        for(Rule x:rules){
+            if(!rulemap.containsKey(x.getPositionid())){
+                rulemap.put(x.getPositionid(),new ArrayList<String>());
+            }
+            rulemap.get(x.getPositionid()).add(x.getInformtype());
+        }
+        //提示信息按岗位整合
+        for(String y:rulemap.keySet()){
+            result.add(new Kinfo(y));
+            for(Knowledge k:knowledges){
+                if(rulemap.get(y).contains(k.getInformtypeid())){
+                    result.get(result.size()-1).addInfo(Long.toString(k.getInformid()),k.getInform(),k.getInformtypeid());
+                }
+            }
+        }
+        return getDataTable(result);
     }
 
     /**

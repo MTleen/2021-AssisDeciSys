@@ -24,6 +24,14 @@ public class History
     @Excel(name = "提示信息编号")
     private String informid;
 
+    /** 岗位编号 */
+    @Excel(name = "岗位编号")
+    private String positionid;
+
+    /** 发送时间 */
+    @Excel(name = "发送时间")
+    private String sendtime;
+
     public void setIndex(Long index) 
     {
         this.index = index;
@@ -33,23 +41,41 @@ public class History
     {
         return index;
     }
+
     public void setCautionid(String cautionid) 
     {
         this.cautionid = cautionid;
     }
-
     public String getCautionid() 
     {
         return cautionid;
     }
+
     public void setInformid(String informid) 
     {
         this.informid = informid;
     }
-
     public String getInformid() 
     {
         return informid;
+    }
+
+    public void setpositionid(String positionid) 
+    {
+        this.positionid = positionid;
+    }
+    public String getpositionid() 
+    {
+        return positionid;
+    }
+
+    public void setsendtime(String sendtime) 
+    {
+        this.sendtime = sendtime;
+    }
+    public String getsendtime() 
+    {
+        return sendtime;
     }
 
     @Override
@@ -58,6 +84,8 @@ public class History
             .append("index", getIndex())
             .append("cautionid", getCautionid())
             .append("informid", getInformid())
+            .append("positionid", getpositionid())
+            .append("sendtime", getsendtime())
             .toString();
     }
 }

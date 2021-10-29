@@ -2,6 +2,7 @@ package com.ruoyi.knowledge.service;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Rule;
 import com.ruoyi.knowledge.domain.Kwords;
 
 /**
@@ -28,6 +29,13 @@ public interface IKnowledgeService
      */
     public List<Knowledge> selectKnowledgeList(Knowledge knowledge);
 
+    /**
+     * 查询提示信息表列表
+     * 
+     * @return 规则表集合
+     */
+    public List<Rule> selectRuleList();
+    
     /**
      * 匹配提示信息表
      * 

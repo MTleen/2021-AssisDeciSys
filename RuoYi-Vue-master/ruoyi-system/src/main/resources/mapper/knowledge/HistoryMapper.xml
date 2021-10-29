@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="index"    column="`index`"    />
         <result property="cautionid"    column="cautionID"    />
         <result property="informid"    column="informID"    />
+        <result property="positionid"    column="positionID"    />
+        <result property="sendtime"    column="sendtime"    />
     </resultMap>
 
     <resultMap type="Knowledge" id="KnowledgeResult">
@@ -22,16 +24,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHistoryVo">
-        select a.`index`, c.location as cautionID, b.inform as informID
+        select a.`index`, c.location as cautionID, b.inform as informID, d.positionname as positionID , a.sendtime
         from History a
         left join Knowledge b on b.informID = a.informID
         left join Record c on c.cautionID = a.cautionID
+        left join UserPosition d on d.positionID = a.positionID
     </sql>
 
     <!--实现Record2Information-->
     <select id="selectHistoryListbyRecordid" parameterType="Long" resultMap="HistoryResult">
-        select `index`, cautionID, informID
-        from History
+        select * from History
         where cautionID = #{index}
     </select>
     <!--实现Record2Information-->
@@ -66,11 +68,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="index != null">index,</if>
             <if test="cautionid != null">cautionID,</if>
             <if test="informid != null">informID,</if>
+            <if test="positionid != null">positionID,</if>
+            <if test="sendtime != null">sendtime,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="index != null">#{index},</if>
             <if test="cautionid != null">#{cautionid},</if>
             <if test="informid != null">#{informid},</if>
+            <if test="positionid != null">#{positionid},</if>
+            <if test="sendtime != null">#{sendtime},</if>
          </trim>
     </insert>
 
@@ -79,6 +85,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="cautionid != null">cautionID = #{cautionid},</if>
             <if test="informid != null">informID = #{informid},</if>
+            <if test="positionid != null">positionID = #{positionid},</if>
+            <if test="sendtime != null">sendtime = #{sendtime},</if>
         </trim>
         where index = #{index}
     </update>
