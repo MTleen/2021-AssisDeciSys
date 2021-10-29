@@ -62,7 +62,7 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
+<div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
     <el-table v-loading="loading" :data="feedbackList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -95,7 +95,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+</div>
     <!-- 添加或修改反馈表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">

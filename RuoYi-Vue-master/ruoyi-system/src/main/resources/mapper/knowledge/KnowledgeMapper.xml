@@ -31,6 +31,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join DisasterType e on e.typeID = a.disastertype
         left join DisposeObj f on f.objID = a.disposeobj
     </sql>
+    <sql id="matchKnowledgeVo">
+        <!-- select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge -->
+        select a.InformID, a.inform, a.informtypeid
+        from Knowledge a
+        left join Rule b on b.typeID = a.informtypeID
+        left join Label4 c on c.labelID = a.label4
+        left join DetailType d on d.typeID = a.detailtype
+        left join DisasterType e on e.typeID = a.disastertype
+        left join DisposeObj f on f.objID = a.disposeobj
+    </sql>
 
     <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
@@ -52,6 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="disastertype != null "> and disastertype = #{disastertype}</if>
             <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
             <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+            <if test="label4 != null "> and label4 = #{label4}</if>
             <if test="keyword != null "> and inform like concat('%',concat(#{keyword},'%'))</if>
         </where>
     </select>

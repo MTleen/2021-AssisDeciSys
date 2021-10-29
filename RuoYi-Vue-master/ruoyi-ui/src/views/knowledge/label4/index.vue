@@ -62,7 +62,7 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
+<div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
     <el-table v-loading="loading" :data="label4List" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
@@ -86,7 +86,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -94,7 +94,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+</div>
     <!-- 添加或修改四级标签对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -107,7 +107,8 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-  </div>
+    </div>
+
 </template>
 
 <script>

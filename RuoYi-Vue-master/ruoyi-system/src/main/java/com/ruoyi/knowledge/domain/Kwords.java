@@ -25,6 +25,10 @@ public class Kwords
         @Excel(name = "详细类型")
         private Long detailtype;
 
+        /** 详细类型 */
+        @Excel(name = "label4")
+        private Long label4;
+
         /** 关键字 */
         @Excel(name = "关键字")
         private String keyword;
@@ -33,34 +37,42 @@ public class Kwords
     {
         this.disastertype = disastertype;
     }
-
     public Long getDisastertype() 
     {
         return disastertype;
     }
+
     public void setDisposeobj(Long disposeobj) 
     {
         this.disposeobj = disposeobj;
     }
-
     public Long getDisposeobj() 
     {
         return disposeobj;
     }
+
     public void setDetailtype(Long detailtype) 
     {
         this.detailtype = detailtype;
     }
-
     public Long getDetailtype() 
     {
         return detailtype;
     }
+
+    public void setLabel4(Long label4)
+    {
+        this.label4 = label4;
+    }
+    public Long getLabel4()
+    {
+        return label4;
+    }
+
     public void setkeyword(String keyword) 
     {
         this.keyword = keyword;
     }
-
     public String getkeyword() 
     {
         return keyword;
@@ -72,6 +84,7 @@ public class Kwords
             .append("disastertype", getDisastertype())
             .append("disposeobj", getDisposeobj())
             .append("detailtype", getDetailtype())
+            .append("label4", getLabel4())
             .append("keyword", getkeyword())
             .toString();
     }

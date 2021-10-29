@@ -74,6 +74,7 @@ public class KnowledgeController extends BaseController
         @ApiImplicitParam(name="disastertype",value="险情类型",required = true,dataType="Long"),
         @ApiImplicitParam(name="disposeobj",value="处置对象",dataType="Long"),
         @ApiImplicitParam(name="detailtype",value="详细类型",dataType="Long"),
+        @ApiImplicitParam(name="label4",value="四级标签",dataType="Long"),
         @ApiImplicitParam(name="keyword",value="关键字",dataType="String")
     })
     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
