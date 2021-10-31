@@ -6,12 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 提示信息匹配返回结果类型 Kinfo
+ * App历史查询返回结果类型 Kappinfo
  * 
  * @author MP5Leader
- * @date 2021-10-29
+ * @date 2021-10-31
  */
-public class Kinfo{
+
+public class Kappinfo{
       
     static class Info{
         private String infoid;
@@ -60,23 +61,23 @@ public class Kinfo{
                 .toString();
         }
     }
-    /** 岗位 */ 
-    public String posid;
-    /** 每个岗位下的条匹配的提示信息 */ 
+    /** 案件记录 */
+    public Record record;
+    /** 每个案件记录中发送的提示信息 */ 
     public List<Info> inform;
 
-    public Kinfo(String posid){
-        this.posid=posid;
+    public Kappinfo(){
+        this.record=new Record();
         this.inform= new ArrayList<Info>();
     }
 
-    public void setPosid(String posid) 
+    public void setRecord(Record record) 
     {
-        this.posid = posid;
+        this.record = record;
     }
-    public String getPosid() 
+    public Record getRecord() 
     {
-        return posid;
+        return record;
     }
 
     public List<Info> getInform() 
@@ -97,7 +98,7 @@ public class Kinfo{
     @Override
     public String toString() {
         ToStringBuilder result=new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE);
-        result.append("posid", getPosid());
+        result.append(record.toString());
         for(Info x:getInform()){
             result.append("infoid", x.getInfoid());
             result.append("text", x.getText());

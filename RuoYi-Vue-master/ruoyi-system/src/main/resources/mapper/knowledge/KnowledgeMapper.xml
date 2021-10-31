@@ -22,6 +22,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="positionid"    column="positionId"    />
     </resultMap>
 
+    <resultMap type="Record" id="RecordResult">
+        <result property="cautionid"    column="cautionID"    />
+        <result property="cautiontime"    column="cautiontime"    />
+        <result property="location"    column="location"    />
+        <result property="distypeid"    column="distypeID"    />
+        <result property="dillobject"    column="dillobject"    />
+        <result property="siteid"    column="siteID"    />
+        <result property="truckid"    column="truckID"    />
+        <result property="picture"    column="picture"    />
+        <result property="status"    column="status"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="keywords"    column="keywords"    />        
+    </resultMap>
+
     <sql id="selectKnowledgeVo">
         select a.InformID, a.inform, a.weight, e.typename as disastertype, f.objname as disposeobj, d.typename as detailtype, c.labelname as label4, b.typename as informtypeid
         from Knowledge a
@@ -69,7 +84,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectRuleList" resultMap="RuleResult">
         select * from Rule
     </select>
-    
+
+    <!--岗位与所属消防车查询 -->
+    <select id="selectPositionIDbyOpenID" parameterType="Long" resultType="String">
+        select positionID from UserInfo where openid=#{openid}
+    </select>
+    <select id="selectTruckIDbyOpenID" parameterType="Long" resultType="String">
+        select truckID from UserInfo where openid=#{openid}
+    </select>
+
+    <!--案件记录查询 -->
+    <select id="selectRecord" resultMap="RecordResult">
+        select * from Record where truckID=#{truckid} and cautiontime>=#{time}
+    </select>
+
+    <!--案件发送的提示信息的时间查询 -->
+    <select id="RecordSendtimeCount" resultType="String">
+        select distinct sendtime from History where cautionID=#{cautionid} and positionID=#{positionid}
+    </select>
+
+    <!--案件发送的提示信息ID查询 -->
+    <select id="selectinformID" resultType="String">
+        select distinct informID from History
+        <where>
+            cautionID=#{cautionid} and positionID=#{positionid}
+            <if test="time!= null and time!= ''">and sendtime=#{time}</if>
+        </where>
+    </select>
+
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
         where a.InformID = #{informid}

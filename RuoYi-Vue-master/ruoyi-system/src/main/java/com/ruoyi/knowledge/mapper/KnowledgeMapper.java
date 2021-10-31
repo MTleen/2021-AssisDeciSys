@@ -2,8 +2,11 @@ package com.ruoyi.knowledge.mapper;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Record;
 import com.ruoyi.knowledge.domain.Kwords;
 import com.ruoyi.knowledge.domain.Rule;
+
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 提示信息表Mapper接口
@@ -43,6 +46,39 @@ public interface KnowledgeMapper
      * @return 提示信息表集合
      */
     public List<Knowledge> matchKnowledgeList(Kwords kwords);
+
+    /**
+     * 岗位与所属消防车查询
+     * 
+     * @param openid 用户OpenID
+     * @return PositionID 与 TruckID
+     */
+    public String selectPositionIDbyOpenID(Long openid);
+    public String selectTruckIDbyOpenID(Long openid);
+
+    /**
+     * 案件记录查询
+     * 
+     * @param truckid,time 消防车ID, 截止时间
+     * @return 案件记录表
+     */
+    public List<Record> selectRecord(@Param("truckid")String truckid,@Param("time") String time);
+
+    /**
+     * 案件发送的提示信息的时间查询
+     * 
+     * @param cautionid,positionid 案件记录ID, 岗位
+     * @return 发送时间
+     */
+    public List<String> RecordSendtimeCount(@Param("cautionid")String cautionid,@Param("positionid") String positionid);
+
+    /**
+     * 案件发送的提示信息ID查询
+     * 
+     * @param cautionid,positionid 案件记录ID, 岗位
+     * @return 提示信息ID
+     */
+    public List<String> selectinformID(@Param("cautionid")String cautionid,@Param("positionid") String positionid,@Param("time")String time);
 
     /**
      * 新增提示信息表

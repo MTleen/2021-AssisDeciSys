@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 出警记录表对象 Record
@@ -13,9 +12,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2021-10-15
  */
-public class Record extends BaseEntity
+public class Record
 {
-    private static final long serialVersionUID = 1L;
 
     /** 报警编号 */
     private String cautionid;
