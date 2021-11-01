@@ -12,12 +12,41 @@
         <result property="sendtime"    column="sendtime"    />
     </resultMap>
 
+    <resultMap type="Knowledge" id="KnowledgeResult">
+        <result property="informid"    column="InformID"    />
+        <result property="inform"    column="inform"    />
+        <result property="weight"    column="weight"    />
+        <result property="disastertype"    column="disastertype"    />
+        <result property="disposeobj"    column="disposeobj"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="informtypeid"    column="informtypeID"    />
+    </resultMap>
+
     <sql id="selectHistoryVo">
         select a.index, a.cautionID, b.inform as informID, c.positionname as positionID, a.sendtime
         from History a
         left join Knowledge b on b.informID = a.informID
         left join UserPosition c on c.positionID = a.positionID
     </sql>
+
+    <!--实现Record2Information-->
+    <select id="selectHistoryListbyRecordid" parameterType="Long" resultMap="HistoryResult">
+        select * from History
+        where cautionID = #{index}
+    </select>
+    <!--实现Record2Information-->
+    <select id="selectKnowledgeByInformID" parameterType="Long" resultMap="KnowledgeResult">
+        <!-- select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge -->
+        select a.InformID, a.inform, a.weight, e.typename as disastertype, f.objname as disposeobj, d.typename as detailtype, c.labelname as label4, b.typename as informtypeid
+        from Knowledge a
+        left join InformType b on b.typeID = a.informtypeID
+        left join Label4 c on c.labelID = a.label4
+        left join DetailType d on d.typeID = a.detailtype
+        left join DisasterType e on e.typeID = a.disastertype
+        left join DisposeObj f on f.objID = a.disposeobj
+        where a.informID = #{index}
+    </select>
 
     <select id="selectHistoryList" parameterType="History" resultMap="HistoryResult">
         <include refid="selectHistoryVo"/>

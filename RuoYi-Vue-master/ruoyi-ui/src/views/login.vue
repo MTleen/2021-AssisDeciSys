@@ -48,7 +48,7 @@
           :loading="loading"
           size="medium"
           type="primary"
-          style="width:50%; height: 50px; margin-top:25px"
+          style="width:50%; height: 50px; margin-top:10%"
           @click.native.prevent="handleLogin"
         >
           <span v-if="!loading" style="height: 45px">登 录</span>
@@ -257,10 +257,10 @@ export default {
   height: 100px;
   line-height: 50px;
   overflow: hidden;
-  margin-bottom: 45px;
+  margin-bottom: 8%;
 }
 .ewm-style{
-  margin-top: 50px;
+  margin-top: 25%;
   width: 140px;
   height: 140px;
 
