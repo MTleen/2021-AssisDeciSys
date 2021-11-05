@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm"  :label-position="left" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="类型名称" prop="typename">
         <el-input
           v-model="queryParams.typename"
@@ -301,3 +301,8 @@ export default {
   }
 };
 </script>
+<style>
+.el-form-item{
+  margin-bottom: 5px;
+}
+</style>

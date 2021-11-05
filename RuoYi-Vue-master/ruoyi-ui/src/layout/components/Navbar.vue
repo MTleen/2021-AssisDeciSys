@@ -1,5 +1,56 @@
 <template>
   <div class="navbar">
+  <el-row>
+    <div class="new-banner">
+      <div>
+          <img :src="logo" class="logo-style">
+           
+      </div>
+      <div class="title-container">
+        <span class="title-style">消防作战指挥辅助决策管理系统</span>
+        <div class="time-style">
+         {{dateFormat(date)}}
+        </div>
+      </div>
+
+      <div class="weather-container"> 
+        <div>
+            <img :src="logo" class="weather-style">
+        </div>
+        <div class="weatherContent">
+          <div class="watherContent-style">
+          <span >天气：多云</span>
+          </div>
+          <div class="watherContent-style">
+          <span >降水概率：50%</span>
+          </div>
+          <div class="watherContent-style">
+          <span >火险等级：一级</span>
+          </div>
+        </div>
+
+        <div class="weatherContent">
+          <div class="watherContent-style">
+          <span >风力：3级</span>
+          </div>
+          <div class="watherContent-style">
+          <span >风向：东南</span>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- <div style="margin-top:5px"> -->
+
+      <!-- <el-col :span="8">
+      <div style="margin-top: 20px;">
+      <span class="title-style">消防作战指挥辅助决策管理系统</span>
+      </div>
+      </el-col> -->
+      <!-- </div> -->
+    </div>
+  </el-row>  
+    
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
@@ -43,6 +94,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    
   </div>
 </template>
 
@@ -56,8 +108,14 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
-
+import logoImg from '@/assets/logo/logo1.png'
 export default {
+  data () {
+    return {
+      logo: logoImg,
+      date: new Date(),
+    }
+  },
   components: {
     Breadcrumb,
     TopNav,
@@ -105,14 +163,43 @@ export default {
           location.href = '/index';
         })
       }).catch(() => {});
-    }
-  }
+    },
+    dateFormat(time) {
+          var date=new Date(time);
+          var year=date.getFullYear();
+          /* 在日期格式中，月份是从0开始的，因此要加0
+          * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+          * */
+          var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+          var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+          var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+          var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+          var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+          // 拼接
+          return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+    },
+    
+  },
+  mounted() {
+            //显示当前日期时间
+            let _this = this// 声明一个变量指向Vue实例this，保证作用域一致
+            this.timer = setInterval(() => {
+            _this.date = new Date(); // 修改数据date
+            }, 1000)
+        },
+        beforeDestroy() {
+        if (this.timer) {
+          clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+        }
+      }
+
 }
+
 </script>
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
+  height: 150px;
   overflow: hidden;
   position: relative;
   background: #fff;
@@ -196,5 +283,60 @@ export default {
       }
     }
   }
+  .logo-style{
+    height: 70px;
+    width: 70px;
+    margin-left: 30px;
+    margin-top: 10px;
+    vertical-align: middle;
+  }
+  .title-container{
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px 20px 20px;
+
+    }
+  .title-style{
+    color: white;
+    font-size: 21px;
+    // display: inline-block;
+
+  }
+  .time-style{
+    color:white;
+    margin: 16px 0px 5px;
+  }
+  .weather-container{
+    margin-left: auto;
+    margin-right: 50px;
+    display: flex;
+  }
+  .weather-style{
+    height: 60px;
+    width: 60px;
+    margin-right:20px;
+    margin-top: 10px ;
+  }
+  .weatherContent{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    margin-top: 7px;
+  }
+  .watherContent-style{
+    margin-top: 6px;
+    margin-right:10px;
+    margin-left:5px;
+    font-size: 14px;
+  }
 }
+.new-banner{
+  height: 100px;
+  width: 100%;
+  background: rgb(38, 159, 235);
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
 </style>

@@ -19,6 +19,8 @@
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+
       <el-form-item label="信息类型" prop="informtype">
         <el-select v-model="queryParams.informtype" placeholder="请选择信息类型" clearable size="small">
           <el-option
@@ -28,7 +30,6 @@
               :value="item.typeid"
           />
         </el-select>
-      </el-form-item>
       </el-form-item>
       
       <el-form-item>

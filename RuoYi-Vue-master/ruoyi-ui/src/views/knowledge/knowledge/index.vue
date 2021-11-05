@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
+    <el-form  v-show="showSearch" ref="queryForm" :model="queryParams"  :inline="true" label-width="68px">
       <el-form-item label="险情类型" prop="disastertype">
         <el-select v-model="queryParams.disastertype" filterable placeholder="请选择险情类型" clearable size="small">
           <el-option
@@ -428,3 +428,8 @@ export default {
   }
 }
 </script>
+<style>
+.el-form-item{
+  margin-bottom: 5px;
+}
+</style>
