@@ -1,11 +1,14 @@
 package com.ruoyi.knowledge.service.impl;
 
 import java.util.List;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.KnowledgeMapper;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Record;
 import com.ruoyi.knowledge.domain.Kwords;
+import com.ruoyi.knowledge.domain.Rule;
 import com.ruoyi.knowledge.service.IKnowledgeService;
 
 /**
@@ -45,6 +48,17 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     }
 
     /**
+     * 查询规则列表
+     * 
+     * @return 规则表
+     */
+    @Override
+    public List<Rule> selectRuleList()
+    {
+        return knowledgeMapper.selectRuleList();
+    }
+
+    /**
      * 匹配提示信息
      * 
      * @param kwords 提示信息表
@@ -54,6 +68,64 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     public List<Knowledge> matchKnowledgeList(Kwords kwords)
     {
         return knowledgeMapper.matchKnowledgeList(kwords);
+    }
+
+    /**
+     * 岗位与所属消防车查询
+     * 
+     * @param openid 用户OpenID
+     * @return PositionID 与 TruckID
+     */
+    @Override
+    public String selectPositionIDbyOpenID(Long openid)
+    {
+        return knowledgeMapper.selectPositionIDbyOpenID(openid);
+    }
+    @Override
+    public String selectTruckIDbyOpenID(Long openid)
+    {
+        return knowledgeMapper.selectTruckIDbyOpenID(openid);
+    }
+
+    /**
+     * 案件记录查询
+     * 
+     * @param truckid,time 消防车ID, 截止时间
+     * @return 案件记录表
+     */
+    @Override
+    public List<Record> selectRecord(String truckid, String time)
+    {
+        return knowledgeMapper.selectRecord(truckid, time);
+    }
+
+    /**
+     * 案件发送的提示信息的时间查询
+     * 
+     * @param cautionid,positionid 案件记录ID, 岗位
+     * @return 发送时间
+     */
+    @Override
+    public List<String> RecordSendtimeCount(String cautionid, String positionid)
+    {
+        return knowledgeMapper.RecordSendtimeCount(cautionid,positionid);
+    }
+
+    /**
+     * 案件发送的提示信息查询
+     * 
+     * @param cautionid,positionid,time 案件记录ID, 岗位, 发送时间
+     * @return 提示信息表
+     */
+    @Override
+    public List<Knowledge> selectKnowledge4App(String cautionid, String positionid, String time)
+    {
+        List<Knowledge> result=new ArrayList<Knowledge>();
+        List<String> informID=knowledgeMapper.selectinformID(cautionid,positionid,time);
+        for(String x:informID){
+            result.add(knowledgeMapper.selectKnowledgeByInformid(Long.valueOf(x)));
+        }
+        return result;
     }
 
     /**

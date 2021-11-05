@@ -2,6 +2,8 @@ package com.ruoyi.knowledge.service;
 
 import java.util.List;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Record;
+import com.ruoyi.knowledge.domain.Rule;
 import com.ruoyi.knowledge.domain.Kwords;
 
 /**
@@ -29,12 +31,52 @@ public interface IKnowledgeService
     public List<Knowledge> selectKnowledgeList(Knowledge knowledge);
 
     /**
+     * 查询提示信息表列表
+     * 
+     * @return 规则表集合
+     */
+    public List<Rule> selectRuleList();
+    
+    /**
      * 匹配提示信息表
      * 
      * @param kwords 提示信息表
      * @return 提示信息表集合
      */
     public List<Knowledge> matchKnowledgeList(Kwords kwords);
+
+    /**
+     * 岗位与所属消防车查询
+     * 
+     * @param openid 用户OpenID
+     * @return PositionID 与 TruckID
+     */
+    public String selectPositionIDbyOpenID(Long openid);
+    public String selectTruckIDbyOpenID(Long openid);
+
+    /**
+     * 案件记录查询
+     * 
+     * @param truckid,time 消防车ID, 截止时间
+     * @return 案件记录表
+     */
+    public List<Record> selectRecord(String truckid, String time);
+
+    /**
+     * 案件发送的提示信息的时间统计
+     * 
+     * @param cautionid,positionid 案件记录ID, 岗位
+     * @return 发送时间
+     */
+    public List<String> RecordSendtimeCount(String cautionid, String positionid);
+
+    /**
+     * 案件发送的提示信息查询
+     * 
+     * @param cautionid,positionid,time 案件记录ID, 岗位, 发送时间
+     * @return 提示信息表
+     */
+    public List<Knowledge> selectKnowledge4App(String cautionid, String positionid, String time);
 
     /**
      * 新增提示信息表

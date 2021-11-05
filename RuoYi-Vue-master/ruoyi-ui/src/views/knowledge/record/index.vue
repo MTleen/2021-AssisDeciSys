@@ -92,7 +92,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="关键字" prop="keywords">
-        <el-input v-model="form.keywords" placeholder="请输入关键字" />  
+        <el-input v-model="form.keywords" placeholder="请输入关键字" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -149,10 +149,11 @@
 <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="报警编号" align="center" prop="cautionid" />
       <el-table-column label="时间" align="center" prop="cautiontime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.cautiontime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.cautiontime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="地址" align="center" prop="location" />
@@ -160,7 +161,6 @@
       <el-table-column label="处置对象" align="center" prop="dillobject" />
       <el-table-column label="主管单位" align="center" prop="siteid" />
       <el-table-column label="出警车辆" align="center" prop="truckid" />
-      <el-table-column label="提示信息" align="center" prop="supplement" />
       <el-table-column label="图片" align="center" prop="picture" />
       <el-table-column label="任务执行状态" align="center" prop="status" />
       <el-table-column label="详细类型" align="center" prop="detailtype" />
@@ -185,7 +185,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -234,9 +234,6 @@
         <el-form-item label="出警车辆" prop="truckid">
           <el-input v-model="form.truckid" placeholder="请输入出警车辆" />
         </el-form-item>
-        <el-form-item label="提示信息" prop="supplement">
-          <el-input v-model="form.supplement" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
         <el-form-item label="图片" prop="picture">
           <el-input v-model="form.picture" placeholder="请输入图片" />
         </el-form-item>
@@ -266,7 +263,7 @@
           </el-select>
         </el-form-item>
       <el-form-item label="关键字" prop="keywords">
-        <el-input v-model="form.keywords" placeholder="请输入关键字" />  
+        <el-input v-model="form.keywords" placeholder="请输入关键字" />
       </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -318,7 +315,6 @@ export default {
         dillobject: null,
         siteid: null,
         truckid: null,
-        supplement: null,
         boom: null,
         poison: null,
         picture: null,
@@ -369,7 +365,7 @@ export default {
         this.label4List = response.rows
       })
       this.loading = false
-    },    
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -385,7 +381,6 @@ export default {
         dillobject: null,
         siteid: null,
         truckid: null,
-        supplement: null,
         boom: null,
         poison: null,
         picture: null,

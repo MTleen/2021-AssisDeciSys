@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.HistoryMapper">
-    
+
     <resultMap type="History" id="HistoryResult">
-        <result property="index"    column="`index`"    />
+        <result property="index"    column="index"    />
         <result property="cautionid"    column="cautionID"    />
         <result property="informid"    column="informID"    />
+        <result property="positionid"    column="positionID"    />
+        <result property="sendtime"    column="sendtime"    />
     </resultMap>
 
     <resultMap type="Knowledge" id="KnowledgeResult">
@@ -22,16 +24,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHistoryVo">
-        select a.`index`, c.location as cautionID, b.inform as informID
+        select a.index, a.cautionID, b.inform as informID, c.positionname as positionID, a.sendtime
         from History a
         left join Knowledge b on b.informID = a.informID
-        left join Record c on c.cautionID = a.cautionID
+        left join UserPosition c on c.positionID = a.positionID
     </sql>
 
     <!--实现Record2Information-->
     <select id="selectHistoryListbyRecordid" parameterType="Long" resultMap="HistoryResult">
-        select `index`, cautionID, informID
-        from History
+        select * from History
         where cautionID = #{index}
     </select>
     <!--实现Record2Information-->
@@ -49,29 +50,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHistoryList" parameterType="History" resultMap="HistoryResult">
         <include refid="selectHistoryVo"/>
-        <where>  
+        <where>
             <if test="cautionid != null  and cautionid != ''"> and a.cautionID = #{cautionid}</if>
-            <if test="informid != null "> and a.informID = #{informid}</if>
+            <if test="informid != null  and informid != ''"> and a.informID = #{informid}</if>
+            <if test="positionid != null  and positionid != ''"> and a.positionID = #{positionid}</if>
+            <if test="sendtime != null "> and a.sendtime = #{sendtime}</if>
         </where>
     </select>
-    
+
     <select id="selectHistoryByIndex" parameterType="Long" resultMap="HistoryResult">
         <include refid="selectHistoryVo"/>
         where a.index = #{index}
     </select>
-        
+
     <insert id="insertHistory" parameterType="History">
         insert into History
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="index != null">index,</if>
             <if test="cautionid != null">cautionID,</if>
             <if test="informid != null">informID,</if>
-         </trim>
+            <if test="positionid != null">positionID,</if>
+            <if test="sendtime != null">sendtime,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="index != null">#{index},</if>
             <if test="cautionid != null">#{cautionid},</if>
             <if test="informid != null">#{informid},</if>
-         </trim>
+            <if test="positionid != null">#{positionid},</if>
+            <if test="sendtime != null">#{sendtime},</if>
+        </trim>
     </insert>
 
     <update id="updateHistory" parameterType="History">
@@ -79,6 +86,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="cautionid != null">cautionID = #{cautionid},</if>
             <if test="informid != null">informID = #{informid},</if>
+            <if test="positionid != null">positionID = #{positionid},</if>
+            <if test="sendtime != null">sendtime = #{sendtime},</if>
         </trim>
         where index = #{index}
     </update>
@@ -88,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteHistoryByIndexs" parameterType="String">
-        delete from History where index in 
+        delete from History where index in
         <foreach item="index" collection="array" open="(" separator="," close=")">
             #{index}
         </foreach>

@@ -15,8 +15,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="informtypeid"    column="informtypeID"    />
     </resultMap>
 
+    <resultMap type="Rule" id="RuleResult">
+        <result property="ruleid"    column="ruleID"    />
+        <result property="informtype"    column="informtype"    />
+        <result property="num"    column="num"    />
+        <result property="positionid"    column="positionId"    />
+    </resultMap>
+
+    <resultMap type="Record" id="RecordResult">
+        <result property="cautionid"    column="cautionID"    />
+        <result property="cautiontime"    column="cautiontime"    />
+        <result property="location"    column="location"    />
+        <result property="distypeid"    column="distypeID"    />
+        <result property="dillobject"    column="dillobject"    />
+        <result property="siteid"    column="siteID"    />
+        <result property="truckid"    column="truckID"    />
+        <result property="picture"    column="picture"    />
+        <result property="status"    column="status"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="keywords"    column="keywords"    />        
+    </resultMap>
+
     <sql id="selectKnowledgeVo">
-        <!-- select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge -->
         select a.InformID, a.inform, a.weight, e.typename as disastertype, f.objname as disposeobj, d.typename as detailtype, c.labelname as label4, b.typename as informtypeid
         from Knowledge a
         left join InformType b on b.typeID = a.informtypeID
@@ -49,40 +70,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="matchKnowledgeList1" parameterType="kwords" resultMap="KnowledgeResult">
-        <include refid="matchKnowledgeVo"/>
+    <!--提示信息匹配核心 -->
+    <select id="matchKnowledgeList" parameterType="Kwords" resultMap="KnowledgeResult">
+        select * from Knowledge
         <where>  
-<!--            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>-->
-<!--            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>-->
-<!--            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>-->
-<!--            <if test="keyword != null "> and a.inform like concat('%',concat(#{keyword},'%'))</if>-->
-            <if test="detailtype == null and keywords != null" > and a.inform like concat('%',concat(#{keyword},'%'))</if>
-
-            <if test="disastertype != null and disposeobj != null and detailtype!= null and label4 != null">
-                and a.disastertype = #{disastertype} and a.disposeobj = #{disposeobj} and a.detailtype = #{detailtype} and a.label4 = #{label4}
-            </if>
+            <if test="disastertype != null "> and disastertype = #{disastertype}</if>
+            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
+            <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+            <if test="label4 != null "> and label4 = #{label4}</if>
+            <if test="keyword != null "> and inform like concat('%',concat(#{keyword},'%'))</if>
         </where>
-
+    </select>
+    <select id="selectRuleList" resultMap="RuleResult">
+        select * from Rule
     </select>
 
-    <select id="matchKnowledgeList" parameterType="kwords" resultMap="KnowledgeResult">
-        SELECT
-        k.inform
-        FROM
-        Knowledge k
+    <!--岗位与所属消防车查询 -->
+    <select id="selectPositionIDbyOpenID" parameterType="Long" resultType="String">
+        select positionID from UserInfo where openid=#{openid}
+    </select>
+    <select id="selectTruckIDbyOpenID" parameterType="Long" resultType="String">
+        select truckID from UserInfo where openid=#{openid}
+    </select>
+
+    <!--案件记录查询 -->
+    <select id="selectRecord" resultMap="RecordResult">
+        select * from Record where truckID=#{truckid} and cautiontime>=#{time}
+    </select>
+
+    <!--案件发送的提示信息的时间查询 -->
+    <select id="RecordSendtimeCount" resultType="String">
+        select distinct sendtime from History where cautionID=#{cautionid} and positionID=#{positionid}
+    </select>
+
+    <!--案件发送的提示信息ID查询 -->
+    <select id="selectinformID" resultType="String">
+        select distinct informID from History
         <where>
-            k.informtypeID
-            in
-            (SELECT informtype FROM Rule r LEFT join UserPosition u on r.positionId=u.positionID)
-            <if test="detailtype == null and keywords != null" > and k.inform like concat('%',concat(#{keyword},'%'))</if>
-
-            <if test="disastertype != null and disposeobj != null and detailtype!= null and label4 != null">
-                and k.disastertype = #{disastertype} and k.disposeobj = #{disposeobj} and k.detailtype = #{detailtype} and k.label4 = #{label4}
-            </if>
+            cautionID=#{cautionid} and positionID=#{positionid}
+            <if test="time!= null and time!= ''">and sendtime=#{time}</if>
         </where>
-
     </select>
-    
+
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
         where a.InformID = #{informid}
