@@ -8,34 +8,38 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 历史表对象 History
+ * 信息历史对象 History
  *
- * @author xiaoyu
- * @date 2021-10-29
+ * @author Mathripper
+ * @date 2021-11-06
  */
 public class History extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 编号 */
+    /** 序号 */
     private Long index;
 
-    /** 报警编号 */
-    @Excel(name = "报警编号")
+    /** 案件编号 */
+    @Excel(name = "案件编号")
     private String cautionid;
 
     /** 提示信息 */
     @Excel(name = "提示信息")
-    private String informid;
+    private Long informid;
 
-    /** 岗位 */
-    @Excel(name = "岗位")
-    private String positionid;
+    /** 队站 */
+    @Excel(name = "队站")
+    private Long positionid;
 
     /** 发送时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date sendtime;
+
+    /** 知识类型 */
+    @Excel(name = "知识类型")
+    private Long librarytype;
 
     public void setIndex(Long index)
     {
@@ -55,21 +59,21 @@ public class History extends BaseEntity
     {
         return cautionid;
     }
-    public void setInformid(String informid)
+    public void setInformid(Long informid)
     {
         this.informid = informid;
     }
 
-    public String getInformid()
+    public Long getInformid()
     {
         return informid;
     }
-    public void setPositionid(String positionid)
+    public void setPositionid(Long positionid)
     {
         this.positionid = positionid;
     }
 
-    public String getPositionid()
+    public Long getPositionid()
     {
         return positionid;
     }
@@ -82,6 +86,15 @@ public class History extends BaseEntity
     {
         return sendtime;
     }
+    public void setLibrarytype(Long librarytype)
+    {
+        this.librarytype = librarytype;
+    }
+
+    public Long getLibrarytype()
+    {
+        return librarytype;
+    }
 
     @Override
     public String toString() {
@@ -91,6 +104,7 @@ public class History extends BaseEntity
                 .append("informid", getInformid())
                 .append("positionid", getPositionid())
                 .append("sendtime", getSendtime())
+                .append("librarytype", getLibrarytype())
                 .toString();
     }
 }

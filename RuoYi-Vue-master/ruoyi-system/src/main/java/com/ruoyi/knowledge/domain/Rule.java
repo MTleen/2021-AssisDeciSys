@@ -6,74 +6,74 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 规则表对象 Rule
- * 
- * @author xiaoyu
- * @date 2021-10-15
+ * 发送规则对象 Rule
+ *
+ * @author Mathripper
+ * @date 2021-11-06
  */
 public class Rule extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 规则编号 */
+    /** $column.columnComment */
     private Long ruleid;
 
-    /** 类型编号 */
-    @Excel(name = "类型编号")
-    private String informtype;
+    /** 通用数量 */
+    @Excel(name = "通用数量")
+    private Long generalnum;
 
-    /** 接收数量 */
-    @Excel(name = "接收数量")
-    private Long num;
+    /** 专项数量 */
+    @Excel(name = "专项数量")
+    private Long securitynum;
 
-    /** 岗位编号 */
-    @Excel(name = "岗位编号")
-    private String positionid;
+    /** 安全数量 */
+    @Excel(name = "安全数量")
+    private Long specialnum;
 
-    public void setRuleid(Long ruleid) 
+    public void setRuleid(Long ruleid)
     {
         this.ruleid = ruleid;
     }
 
-    public Long getRuleid() 
+    public Long getRuleid()
     {
         return ruleid;
     }
-    public void setInformtype(String informtype) 
+    public void setGeneralnum(Long generalnum)
     {
-        this.informtype = informtype;
+        this.generalnum = generalnum;
     }
 
-    public String getInformtype() 
+    public Long getGeneralnum()
     {
-        return informtype;
+        return generalnum;
     }
-    public void setNum(Long num) 
+    public void setSecuritynum(Long securitynum)
     {
-        this.num = num;
-    }
-
-    public Long getNum() 
-    {
-        return num;
-    }
-    public void setPositionid(String positionid) 
-    {
-        this.positionid = positionid;
+        this.securitynum = securitynum;
     }
 
-    public String getPositionid() 
+    public Long getSecuritynum()
     {
-        return positionid;
+        return securitynum;
+    }
+    public void setSpecialnum(Long specialnum)
+    {
+        this.specialnum = specialnum;
+    }
+
+    public Long getSpecialnum()
+    {
+        return specialnum;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("ruleid", getRuleid())
-            .append("informtype", getInformtype())
-            .append("num", getNum())
-            .append("positionid", getPositionid())
-            .toString();
+                .append("ruleid", getRuleid())
+                .append("generalnum", getGeneralnum())
+                .append("securitynum", getSecuritynum())
+                .append("specialnum", getSpecialnum())
+                .toString();
     }
 }

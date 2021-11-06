@@ -8,22 +8,22 @@ import com.ruoyi.knowledge.domain.Rule;
 import com.ruoyi.knowledge.service.IRuleService;
 
 /**
- * 规则表Service业务层处理
- * 
- * @author xiaoyu
- * @date 2021-10-15
+ * 发送规则Service业务层处理
+ *
+ * @author Mathripper
+ * @date 2021-11-06
  */
 @Service
-public class RuleServiceImpl implements IRuleService 
+public class RuleServiceImpl implements IRuleService
 {
     @Autowired
     private RuleMapper ruleMapper;
 
     /**
-     * 查询规则表
-     * 
-     * @param ruleid 规则表主键
-     * @return 规则表
+     * 查询发送规则
+     *
+     * @param ruleid 发送规则主键
+     * @return 发送规则
      */
     @Override
     public Rule selectRuleByRuleid(Long ruleid)
@@ -32,10 +32,10 @@ public class RuleServiceImpl implements IRuleService
     }
 
     /**
-     * 查询规则表列表
-     * 
-     * @param rule 规则表
-     * @return 规则表
+     * 查询发送规则列表
+     *
+     * @param rule 发送规则
+     * @return 发送规则
      */
     @Override
     public List<Rule> selectRuleList(Rule rule)
@@ -44,9 +44,9 @@ public class RuleServiceImpl implements IRuleService
     }
 
     /**
-     * 新增规则表
-     * 
-     * @param rule 规则表
+     * 新增发送规则
+     *
+     * @param rule 发送规则
      * @return 结果
      */
     @Override
@@ -56,9 +56,9 @@ public class RuleServiceImpl implements IRuleService
     }
 
     /**
-     * 修改规则表
-     * 
-     * @param rule 规则表
+     * 修改发送规则
+     *
+     * @param rule 发送规则
      * @return 结果
      */
     @Override
@@ -68,9 +68,9 @@ public class RuleServiceImpl implements IRuleService
     }
 
     /**
-     * 批量删除规则表
-     * 
-     * @param ruleids 需要删除的规则表主键
+     * 批量删除发送规则
+     *
+     * @param ruleids 需要删除的发送规则主键
      * @return 结果
      */
     @Override
@@ -80,9 +80,9 @@ public class RuleServiceImpl implements IRuleService
     }
 
     /**
-     * 删除规则表信息
-     * 
-     * @param ruleid 规则表主键
+     * 删除发送规则信息
+     *
+     * @param ruleid 发送规则主键
      * @return 结果
      */
     @Override

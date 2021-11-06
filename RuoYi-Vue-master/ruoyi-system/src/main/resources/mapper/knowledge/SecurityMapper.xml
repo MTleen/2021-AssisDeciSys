@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.SecurityMapper">
+    
+    <resultMap type="Security" id="SecurityResult">
+        <result property="informid"    column="informID"    />
+        <result property="inform"    column="inform"    />
+        <result property="securitypeid"    column="securitypeID"    />
+    </resultMap>
+
+    <sql id="selectSecurityVo">
+        select informID, inform, securitypeID from Security
+    </sql>
+
+    <select id="selectSecurityList" parameterType="Security" resultMap="SecurityResult">
+        <include refid="selectSecurityVo"/>
+        <where>  
+            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
+            <if test="securitypeid != null "> and securitypeID = #{securitypeid}</if>
+        </where>
+    </select>
+    
+    <select id="selectSecurityByInformid" parameterType="Integer" resultMap="SecurityResult">
+        <include refid="selectSecurityVo"/>
+        where informID = #{informid}
+    </select>
+        
+    <insert id="insertSecurity" parameterType="Security" useGeneratedKeys="true" keyProperty="informid">
+        insert into Security
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inform != null">inform,</if>
+            <if test="securitypeid != null">securitypeID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inform != null">#{inform},</if>
+            <if test="securitypeid != null">#{securitypeid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSecurity" parameterType="Security">
+        update Security
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inform != null">inform = #{inform},</if>
+            <if test="securitypeid != null">securitypeID = #{securitypeid},</if>
+        </trim>
+        where informID = #{informid}
+    </update>
+
+    <delete id="deleteSecurityByInformid" parameterType="Integer">
+        delete from Security where informID = #{informid}
+    </delete>
+
+    <delete id="deleteSecurityByInformids" parameterType="String">
+        delete from Security where informID in 
+        <foreach item="informid" collection="array" open="(" separator="," close=")">
+            #{informid}
+        </foreach>
+    </delete>
+</mapper>

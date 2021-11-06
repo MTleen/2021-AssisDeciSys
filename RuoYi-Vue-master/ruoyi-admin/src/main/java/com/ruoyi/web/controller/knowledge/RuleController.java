@@ -21,10 +21,10 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 规则表Controller
- * 
- * @author xiaoyu
- * @date 2021-10-15
+ * 发送规则Controller
+ *
+ * @author Mathripper
+ * @date 2021-11-06
  */
 @RestController
 @RequestMapping("/knowledge/rule")
@@ -34,7 +34,7 @@ public class RuleController extends BaseController
     private IRuleService ruleService;
 
     /**
-     * 查询规则表列表
+     * 查询发送规则列表
      */
     @PreAuthorize("@ss.hasPermi('knowledge:rule:list')")
     @GetMapping("/list")
@@ -46,20 +46,20 @@ public class RuleController extends BaseController
     }
 
     /**
-     * 导出规则表列表
+     * 导出发送规则列表
      */
     @PreAuthorize("@ss.hasPermi('knowledge:rule:export')")
-    @Log(title = "规则表", businessType = BusinessType.EXPORT)
+    @Log(title = "发送规则", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(Rule rule)
     {
         List<Rule> list = ruleService.selectRuleList(rule);
         ExcelUtil<Rule> util = new ExcelUtil<Rule>(Rule.class);
-        return util.exportExcel(list, "规则表数据");
+        return util.exportExcel(list, "发送规则数据");
     }
 
     /**
-     * 获取规则表详细信息
+     * 获取发送规则详细信息
      */
     @PreAuthorize("@ss.hasPermi('knowledge:rule:query')")
     @GetMapping(value = "/{ruleid}")
@@ -69,10 +69,10 @@ public class RuleController extends BaseController
     }
 
     /**
-     * 新增规则表
+     * 新增发送规则
      */
     @PreAuthorize("@ss.hasPermi('knowledge:rule:add')")
-    @Log(title = "规则表", businessType = BusinessType.INSERT)
+    @Log(title = "发送规则", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Rule rule)
     {
@@ -80,10 +80,10 @@ public class RuleController extends BaseController
     }
 
     /**
-     * 修改规则表
+     * 修改发送规则
      */
     @PreAuthorize("@ss.hasPermi('knowledge:rule:edit')")
-    @Log(title = "规则表", businessType = BusinessType.UPDATE)
+    @Log(title = "发送规则", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Rule rule)
     {
@@ -91,11 +91,11 @@ public class RuleController extends BaseController
     }
 
     /**
-     * 删除规则表
+     * 删除发送规则
      */
     @PreAuthorize("@ss.hasPermi('knowledge:rule:remove')")
-    @Log(title = "规则表", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ruleids}")
+    @Log(title = "发送规则", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{ruleids}")
     public AjaxResult remove(@PathVariable Long[] ruleids)
     {
         return toAjax(ruleService.deleteRuleByRuleids(ruleids));

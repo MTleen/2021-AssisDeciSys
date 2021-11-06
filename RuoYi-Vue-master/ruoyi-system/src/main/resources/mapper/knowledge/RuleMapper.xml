@@ -1,59 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.RuleMapper">
-    
+
     <resultMap type="Rule" id="RuleResult">
         <result property="ruleid"    column="ruleID"    />
-        <result property="informtype"    column="informtype"    />
-        <result property="num"    column="num"    />
-        <result property="positionid"    column="positionId"    />
+        <result property="generalnum"    column="generalnum"    />
+        <result property="securitynum"    column="securitynum"    />
+        <result property="specialnum"    column="specialnum"    />
     </resultMap>
 
     <sql id="selectRuleVo">
-        select a.ruleID, b.typename as informtype, a.num, c.positionname as positionId
-        from Rule a
-        left join InformType b on b.typeID = a.informtype
-        left join UserPosition c on c.positionID = a.positionID
+        select ruleID, generalnum, securitynum, specialnum from Rule
     </sql>
 
     <select id="selectRuleList" parameterType="Rule" resultMap="RuleResult">
         <include refid="selectRuleVo"/>
-        <where>  
-            <if test="informtype != null "> and a.informtype = #{informtype}</if>
-            <if test="num != null "> and a.num = #{num}</if>
-            <if test="positionid != null "> and a.positionId = #{positionid}</if>
+        <where>
+            <if test="generalnum != null "> and generalnum = #{generalnum}</if>
+            <if test="securitynum != null "> and securitynum = #{securitynum}</if>
+            <if test="specialnum != null "> and specialnum = #{specialnum}</if>
         </where>
     </select>
-    
+
     <select id="selectRuleByRuleid" parameterType="Long" resultMap="RuleResult">
         <include refid="selectRuleVo"/>
-        where a.ruleID = #{ruleid}
+        where ruleID = #{ruleid}
     </select>
-        
+
     <insert id="insertRule" parameterType="Rule">
         insert into Rule
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ruleid != null">ruleID,</if>
-            <if test="informtype != null">informtype,</if>
-            <if test="num != null">num,</if>
-            <if test="positionid != null">positionId,</if>
-         </trim>
+            <if test="generalnum != null">generalnum,</if>
+            <if test="securitynum != null">securitynum,</if>
+            <if test="specialnum != null">specialnum,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ruleid != null">#{ruleid},</if>
-            <if test="informtype != null">#{informtype},</if>
-            <if test="num != null">#{num},</if>
-            <if test="positionid != null">#{positionid},</if>
-         </trim>
+            <if test="generalnum != null">#{generalnum},</if>
+            <if test="securitynum != null">#{securitynum},</if>
+            <if test="specialnum != null">#{specialnum},</if>
+        </trim>
     </insert>
 
     <update id="updateRule" parameterType="Rule">
         update Rule
         <trim prefix="SET" suffixOverrides=",">
-            <if test="informtype != null">informtype = #{informtype},</if>
-            <if test="num != null">num = #{num},</if>
-            <if test="positionid != null">positionId = #{positionid},</if>
+            <if test="generalnum != null">generalnum = #{generalnum},</if>
+            <if test="securitynum != null">securitynum = #{securitynum},</if>
+            <if test="specialnum != null">specialnum = #{specialnum},</if>
         </trim>
         where ruleID = #{ruleid}
     </update>
@@ -63,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteRuleByRuleids" parameterType="String">
-        delete from Rule where ruleID in 
+        delete from Rule where ruleID in
         <foreach item="ruleid" collection="array" open="(" separator="," close=")">
             #{ruleid}
         </foreach>

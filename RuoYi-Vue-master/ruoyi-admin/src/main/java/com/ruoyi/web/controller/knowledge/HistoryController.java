@@ -21,10 +21,10 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 历史表Controller
+ * 信息历史Controller
  *
- * @author xiaoyu
- * @date 2021-10-29
+ * @author Mathripper
+ * @date 2021-11-06
  */
 @RestController
 @RequestMapping("/knowledge/history")
@@ -34,7 +34,7 @@ public class HistoryController extends BaseController
     private IHistoryService historyService;
 
     /**
-     * 查询历史表列表
+     * 查询信息历史列表
      */
     @PreAuthorize("@ss.hasPermi('knowledge:history:list')")
     @GetMapping("/list")
@@ -46,20 +46,20 @@ public class HistoryController extends BaseController
     }
 
     /**
-     * 导出历史表列表
+     * 导出信息历史列表
      */
     @PreAuthorize("@ss.hasPermi('knowledge:history:export')")
-    @Log(title = "历史表", businessType = BusinessType.EXPORT)
+    @Log(title = "信息历史", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(History history)
     {
         List<History> list = historyService.selectHistoryList(history);
         ExcelUtil<History> util = new ExcelUtil<History>(History.class);
-        return util.exportExcel(list, "历史表数据");
+        return util.exportExcel(list, "信息历史数据");
     }
 
     /**
-     * 获取历史表详细信息
+     * 获取信息历史详细信息
      */
     @PreAuthorize("@ss.hasPermi('knowledge:history:query')")
     @GetMapping(value = "/{index}")
@@ -69,10 +69,10 @@ public class HistoryController extends BaseController
     }
 
     /**
-     * 新增历史表
+     * 新增信息历史
      */
     @PreAuthorize("@ss.hasPermi('knowledge:history:add')")
-    @Log(title = "历史表", businessType = BusinessType.INSERT)
+    @Log(title = "信息历史", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody History history)
     {
@@ -80,10 +80,10 @@ public class HistoryController extends BaseController
     }
 
     /**
-     * 修改历史表
+     * 修改信息历史
      */
     @PreAuthorize("@ss.hasPermi('knowledge:history:edit')")
-    @Log(title = "历史表", businessType = BusinessType.UPDATE)
+    @Log(title = "信息历史", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody History history)
     {
@@ -91,10 +91,10 @@ public class HistoryController extends BaseController
     }
 
     /**
-     * 删除历史表
+     * 删除信息历史
      */
     @PreAuthorize("@ss.hasPermi('knowledge:history:remove')")
-    @Log(title = "历史表", businessType = BusinessType.DELETE)
+    @Log(title = "信息历史", businessType = BusinessType.DELETE)
     @DeleteMapping("/{indexs}")
     public AjaxResult remove(@PathVariable Long[] indexs)
     {

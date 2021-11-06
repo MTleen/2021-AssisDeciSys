@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.SpecialMapper">
+    
+    <resultMap type="Special" id="SpecialResult">
+        <result property="informid"    column="informID"    />
+        <result property="inform"    column="inform"    />
+        <result property="detailtype"    column="detailtype"    />
+    </resultMap>
+
+    <sql id="selectSpecialVo">
+        select informID, inform, detailtype from Special
+    </sql>
+
+    <select id="selectSpecialList" parameterType="Special" resultMap="SpecialResult">
+        <include refid="selectSpecialVo"/>
+        <where>  
+            <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+        </where>
+    </select>
+    
+    <select id="selectSpecialByInformid" parameterType="Integer" resultMap="SpecialResult">
+        <include refid="selectSpecialVo"/>
+        where informID = #{informid}
+    </select>
+        
+    <insert id="insertSpecial" parameterType="Special" useGeneratedKeys="true" keyProperty="informid">
+        insert into Special
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inform != null">inform,</if>
+            <if test="detailtype != null">detailtype,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inform != null">#{inform},</if>
+            <if test="detailtype != null">#{detailtype},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSpecial" parameterType="Special">
+        update Special
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inform != null">inform = #{inform},</if>
+            <if test="detailtype != null">detailtype = #{detailtype},</if>
+        </trim>
+        where informID = #{informid}
+    </update>
+
+    <delete id="deleteSpecialByInformid" parameterType="Integer">
+        delete from Special where informID = #{informid}
+    </delete>
+
+    <delete id="deleteSpecialByInformids" parameterType="String">
+        delete from Special where informID in 
+        <foreach item="informid" collection="array" open="(" separator="," close=")">
+            #{informid}
+        </foreach>
+    </delete>
+</mapper>

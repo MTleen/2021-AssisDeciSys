@@ -1,147 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.KnowledgeMapper">
-    
+
     <resultMap type="Knowledge" id="KnowledgeResult">
-        <result property="informid"    column="InformID"    />
+        <result property="informid"    column="informID"    />
         <result property="inform"    column="inform"    />
         <result property="weight"    column="weight"    />
         <result property="disastertype"    column="disastertype"    />
         <result property="disposeobj"    column="disposeobj"    />
         <result property="detailtype"    column="detailtype"    />
-        <result property="label4"    column="label4"    />
         <result property="informtypeid"    column="informtypeID"    />
     </resultMap>
 
-    <resultMap type="Rule" id="RuleResult">
-        <result property="ruleid"    column="ruleID"    />
-        <result property="informtype"    column="informtype"    />
-        <result property="num"    column="num"    />
-        <result property="positionid"    column="positionId"    />
-    </resultMap>
-
-    <resultMap type="Record" id="RecordResult">
-        <result property="cautionid"    column="cautionID"    />
-        <result property="cautiontime"    column="cautiontime"    />
-        <result property="location"    column="location"    />
-        <result property="distypeid"    column="distypeID"    />
-        <result property="dillobject"    column="dillobject"    />
-        <result property="siteid"    column="siteID"    />
-        <result property="truckid"    column="truckID"    />
-        <result property="picture"    column="picture"    />
-        <result property="status"    column="status"    />
-        <result property="detailtype"    column="detailtype"    />
-        <result property="label4"    column="label4"    />
-        <result property="keywords"    column="keywords"    />        
-    </resultMap>
-
     <sql id="selectKnowledgeVo">
-        select a.InformID, a.inform, a.weight, e.typename as disastertype, f.objname as disposeobj, d.typename as detailtype, c.labelname as label4, b.typename as informtypeid
-        from Knowledge a
-        left join InformType b on b.typeID = a.informtypeID
-        left join Label4 c on c.labelID = a.label4
-        left join DetailType d on d.typeID = a.detailtype
-        left join DisasterType e on e.typeID = a.disastertype
-        left join DisposeObj f on f.objID = a.disposeobj
-    </sql>
-    <sql id="matchKnowledgeVo">
-        <!-- select InformID, inform, weight, disastertype, disposeobj, detailtype, label4, informtypeID from Knowledge -->
-        select a.InformID, a.inform, a.informtypeid
-        from Knowledge a
-        left join Rule b on b.typeID = a.informtypeID
-        left join Label4 c on c.labelID = a.label4
-        left join DetailType d on d.typeID = a.detailtype
-        left join DisasterType e on e.typeID = a.disastertype
-        left join DisposeObj f on f.objID = a.disposeobj
+        select informID, inform, weight, disastertype, disposeobj, detailtype, informtypeID from Knowledge
     </sql>
 
     <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
-        <where>  
-            <if test="inform != null  and inform != ''"> and a.inform = #{inform}</if>
-            <if test="weight != null "> and a.weight = #{weight}</if>
-            <if test="disastertype != null "> and a.disastertype = #{disastertype}</if>
-            <if test="disposeobj != null "> and a.disposeobj = #{disposeobj}</if>
-            <if test="detailtype != null "> and a.detailtype = #{detailtype}</if>
-            <if test="label4 != null "> and a.label4 = #{label4}</if>
-            <if test="informtypeid != null "> and a.informtypeID = #{informtypeid}</if>
-        </where>
-    </select>
-
-    <!--提示信息匹配核心 -->
-    <select id="matchKnowledgeList" parameterType="Kwords" resultMap="KnowledgeResult">
-        select * from Knowledge
-        <where>  
+        <where>
+            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
             <if test="disastertype != null "> and disastertype = #{disastertype}</if>
             <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
             <if test="detailtype != null "> and detailtype = #{detailtype}</if>
-            <if test="label4 != null "> and label4 = #{label4}</if>
-            <if test="keyword != null "> and inform like concat('%',concat(#{keyword},'%'))</if>
-        </where>
-    </select>
-    <select id="selectRuleList" resultMap="RuleResult">
-        select * from Rule
-    </select>
-
-    <!--岗位与所属消防车查询 -->
-    <select id="selectPositionIDbyOpenID" parameterType="Long" resultType="String">
-        select positionID from UserInfo where openid=#{openid}
-    </select>
-    <select id="selectTruckIDbyOpenID" parameterType="Long" resultType="String">
-        select truckID from UserInfo where openid=#{openid}
-    </select>
-
-    <!--案件记录查询 -->
-    <select id="selectRecord" resultMap="RecordResult">
-        select * from Record where truckID=#{truckid} and cautiontime>=#{time}
-    </select>
-
-    <!--案件发送的提示信息的时间查询 -->
-    <select id="RecordSendtimeCount" resultType="String">
-        select distinct sendtime from History where cautionID=#{cautionid} and positionID=#{positionid}
-    </select>
-
-    <!--案件发送的提示信息ID查询 -->
-    <select id="selectinformID" resultType="String">
-        select distinct informID from History
-        <where>
-            cautionID=#{cautionid} and positionID=#{positionid}
-            <if test="time!= null and time!= ''">and sendtime=#{time}</if>
         </where>
     </select>
 
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
-        where a.InformID = #{informid}
+        where informID = #{informid}
     </select>
-        
-    <insert id="insertKnowledge" parameterType="Knowledge">
-        <selectKey keyProperty="informid" resultType="Long" order="BEFORE">
-            SELECT if(max(InformID) is null,1,max(InformID)+1) from Knowledge
-        </selectKey>
+
+    <insert id="insertKnowledge" parameterType="Knowledge" useGeneratedKeys="true" keyProperty="informid">
         insert into Knowledge
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="informid != null">InformID,</if>
             <if test="inform != null and inform != ''">inform,</if>
             <if test="weight != null">weight,</if>
             <if test="disastertype != null">disastertype,</if>
             <if test="disposeobj != null">disposeobj,</if>
             <if test="detailtype != null">detailtype,</if>
-            <if test="label4 != null">label4,</if>
             <if test="informtypeid != null">informtypeID,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="informid != null">#{informid},</if>
             <if test="inform != null and inform != ''">#{inform},</if>
             <if test="weight != null">#{weight},</if>
             <if test="disastertype != null">#{disastertype},</if>
             <if test="disposeobj != null">#{disposeobj},</if>
             <if test="detailtype != null">#{detailtype},</if>
-            <if test="label4 != null">#{label4},</if>
             <if test="informtypeid != null">#{informtypeid},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateKnowledge" parameterType="Knowledge">
@@ -152,18 +61,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="disastertype != null">disastertype = #{disastertype},</if>
             <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
             <if test="detailtype != null">detailtype = #{detailtype},</if>
-            <if test="label4 != null">label4 = #{label4},</if>
             <if test="informtypeid != null">informtypeID = #{informtypeid},</if>
         </trim>
-        where InformID = #{informid}
+        where informID = #{informid}
     </update>
 
     <delete id="deleteKnowledgeByInformid" parameterType="Long">
-        delete from Knowledge where InformID = #{informid}
+        delete from Knowledge where informID = #{informid}
     </delete>
 
     <delete id="deleteKnowledgeByInformids" parameterType="String">
-        delete from Knowledge where InformID in 
+        delete from Knowledge where informID in
         <foreach item="informid" collection="array" open="(" separator="," close=")">
             #{informid}
         </foreach>

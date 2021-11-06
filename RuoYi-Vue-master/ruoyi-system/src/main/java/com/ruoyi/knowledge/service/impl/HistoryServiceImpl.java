@@ -8,10 +8,10 @@ import com.ruoyi.knowledge.domain.History;
 import com.ruoyi.knowledge.service.IHistoryService;
 
 /**
- * 历史表Service业务层处理
+ * 信息历史Service业务层处理
  *
- * @author xiaoyu
- * @date 2021-10-29
+ * @author Mathripper
+ * @date 2021-11-06
  */
 @Service
 public class HistoryServiceImpl implements IHistoryService
@@ -20,10 +20,10 @@ public class HistoryServiceImpl implements IHistoryService
     private HistoryMapper historyMapper;
 
     /**
-     * 查询历史表
+     * 查询信息历史
      *
-     * @param index 历史表主键
-     * @return 历史表
+     * @param index 信息历史主键
+     * @return 信息历史
      */
     @Override
     public History selectHistoryByIndex(Long index)
@@ -32,10 +32,10 @@ public class HistoryServiceImpl implements IHistoryService
     }
 
     /**
-     * 查询历史表列表
+     * 查询信息历史列表
      *
-     * @param history 历史表
-     * @return 历史表
+     * @param history 信息历史
+     * @return 信息历史
      */
     @Override
     public List<History> selectHistoryList(History history)
@@ -44,9 +44,9 @@ public class HistoryServiceImpl implements IHistoryService
     }
 
     /**
-     * 新增历史表
+     * 新增信息历史
      *
-     * @param history 历史表
+     * @param history 信息历史
      * @return 结果
      */
     @Override
@@ -56,9 +56,9 @@ public class HistoryServiceImpl implements IHistoryService
     }
 
     /**
-     * 修改历史表
+     * 修改信息历史
      *
-     * @param history 历史表
+     * @param history 信息历史
      * @return 结果
      */
     @Override
@@ -68,9 +68,9 @@ public class HistoryServiceImpl implements IHistoryService
     }
 
     /**
-     * 批量删除历史表
+     * 批量删除信息历史
      *
-     * @param indexs 需要删除的历史表主键
+     * @param indexs 需要删除的信息历史主键
      * @return 结果
      */
     @Override
@@ -80,9 +80,9 @@ public class HistoryServiceImpl implements IHistoryService
     }
 
     /**
-     * 删除历史表信息
+     * 删除信息历史信息
      *
-     * @param index 历史表主键
+     * @param index 信息历史主键
      * @return 结果
      */
     @Override
