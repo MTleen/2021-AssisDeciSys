@@ -80,6 +80,7 @@ service.interceptors.response.use(res => {
     })
     return Promise.reject('error')
   } else {
+    // console.log(res.data)
     return res.data
   }
 },

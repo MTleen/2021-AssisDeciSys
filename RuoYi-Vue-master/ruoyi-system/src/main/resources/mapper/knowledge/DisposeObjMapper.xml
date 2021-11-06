@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.DisposeObjMapper">
-    
+
     <resultMap type="DisposeObj" id="DisposeObjResult">
         <result property="objid"    column="objID"    />
         <result property="objname"    column="objname"    />
+        <result property="distype"    column="distype"    />
     </resultMap>
 
     <sql id="selectDisposeObjVo">
-        select objID, objname from DisposeObj
+        select objID, objname, distype from DisposeObj
     </sql>
 
     <select id="selectDisposeObjList" parameterType="DisposeObj" resultMap="DisposeObjResult">
         <include refid="selectDisposeObjVo"/>
-        <where>  
+        <where>
             <if test="objname != null  and objname != ''"> and objname like concat('%', #{objname}, '%')</if>
+            <if test="distype != null "> and distype = #{distype}</if>
         </where>
     </select>
-    
+
     <select id="selectDisposeObjByObjid" parameterType="Long" resultMap="DisposeObjResult">
         <include refid="selectDisposeObjVo"/>
         where objID = #{objid}
     </select>
-        
+
     <insert id="insertDisposeObj" parameterType="DisposeObj">
         insert into DisposeObj
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="objid != null">objID,</if>
             <if test="objname != null">objname,</if>
-         </trim>
+            <if test="distype != null">distype,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="objid != null">#{objid},</if>
             <if test="objname != null">#{objname},</if>
-         </trim>
+            <if test="distype != null">#{distype},</if>
+        </trim>
     </insert>
 
     <update id="updateDisposeObj" parameterType="DisposeObj">
         update DisposeObj
         <trim prefix="SET" suffixOverrides=",">
             <if test="objname != null">objname = #{objname},</if>
+            <if test="distype != null">distype = #{distype},</if>
         </trim>
         where objID = #{objid}
     </update>
@@ -50,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteDisposeObjByObjids" parameterType="String">
-        delete from DisposeObj where objID in 
+        delete from DisposeObj where objID in
         <foreach item="objid" collection="array" open="(" separator="," close=")">
             #{objid}
         </foreach>

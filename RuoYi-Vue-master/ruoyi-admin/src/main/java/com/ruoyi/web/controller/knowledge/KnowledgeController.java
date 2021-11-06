@@ -28,6 +28,7 @@ import com.ruoyi.knowledge.service.IKnowledgeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 import io.swagger.annotations.*;
+import com.ruoyi.common.core.customer.DictDataInfo;
 
 /**
  * 提示信息表Controller
@@ -48,6 +49,16 @@ public class KnowledgeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
     @GetMapping("/list")
+//    public DictDataInfo list(Knowledge knowledge)
+//    {
+//        startPage();
+//        // 查询数据库，返回对象列表
+//        List<Knowledge> list = knowledgeService.selectKnowledgeList(knowledge);
+//        // 构造响应数据对象
+//        DictDataInfo resData = getDictData(list);
+//        // 返回响应数据对象
+//        return resData;
+//    }
     public TableDataInfo list(Knowledge knowledge)
     {
         startPage();

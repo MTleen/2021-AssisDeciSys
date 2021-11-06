@@ -7,59 +7,73 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 详细类型表对象 DetailType
- * 
- * @author xiaoyu
- * @date 2021-10-14
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
 public class DetailType extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+    /** 类型 ID */
     private Long typeid;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    /** 类型名称 */
+    @Excel(name = "类型名称")
     private String typename;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private String distype;
+    /** 处置对象 */
+    @Excel(name = "处置对象")
+    private Long disposeobj;
 
-    public void setTypeid(Long typeid) 
+    /** 通用/专项 */
+    @Excel(name = "通用/专项")
+    private Long priority;
+
+    public void setTypeid(Long typeid)
     {
         this.typeid = typeid;
     }
 
-    public Long getTypeid() 
+    public Long getTypeid()
     {
         return typeid;
     }
-    public void setTypename(String typename) 
+    public void setTypename(String typename)
     {
         this.typename = typename;
     }
 
-    public String getTypename() 
+    public String getTypename()
     {
         return typename;
     }
-    public void setDistype(String distype) 
+    public void setDisposeobj(Long disposeobj)
     {
-        this.distype = distype;
+        this.disposeobj = disposeobj;
     }
 
-    public String getDistype() 
+    public Long getDisposeobj()
     {
-        return distype;
+        return disposeobj;
+    }
+    public void setPriority(Long priority)
+    {
+        this.priority = priority;
+    }
+
+    public Long getPriority()
+    {
+        return priority;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("typeid", getTypeid())
-            .append("typename", getTypename())
-            .append("distype", getDistype())
-            .toString();
+                .append("typeid", getTypeid())
+                .append("typename", getTypename())
+                .append("disposeobj", getDisposeobj())
+                .append("priority", getPriority())
+                .toString();
     }
 }

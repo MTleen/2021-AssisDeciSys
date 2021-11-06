@@ -14,6 +14,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.customer.DictDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -88,6 +89,16 @@ public class BaseController
         rspData.setTotal(new PageInfo(list).getTotal());
         return rspData;
     }
+
+//    响应自定义数据
+protected DictDataInfo getDictData(List<?> list)
+{
+    DictDataInfo rspData = new DictDataInfo();
+    rspData.setCode(HttpStatus.SUCCESS);
+    rspData.setInform(list);
+    rspData.setTotal(new PageInfo(list).getTotal());
+    return rspData;
+}
 
     /**
      * 返回成功

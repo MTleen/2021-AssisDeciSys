@@ -1,53 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.DetailTypeMapper">
-    
+
     <resultMap type="DetailType" id="DetailTypeResult">
         <result property="typeid"    column="typeID"    />
         <result property="typename"    column="typename"    />
-        <result property="distype"    column="distype"    />
+        <result property="disposeobj"    column="disposeobj"    />
+        <result property="priority"    column="priority"    />
     </resultMap>
 
     <sql id="selectDetailTypeVo">
-        select a.typeID, a.typename, b.typename as distype
-        from DetailType a
-        left join DisasterType b on b.typeID = a.distype
+        select typeID, typename, disposeobj, priority from DetailType
     </sql>
 
     <select id="selectDetailTypeList" parameterType="DetailType" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
-        <where>  
-            <if test="typename != null  and typename != ''"> and a.typename like concat('%', #{typename}, '%')</if>
-            <if test="distype != null "> and a.distype = #{distype}</if>
+        <where>
+            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
+            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
+            <if test="priority != null "> and priority = #{priority}</if>
         </where>
     </select>
-    
+
     <select id="selectDetailTypeByTypeid" parameterType="Long" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
-        where a.typeID = #{typeid}
+        where typeID = #{typeid}
     </select>
-        
+
     <insert id="insertDetailType" parameterType="DetailType">
         insert into DetailType
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="typeid != null">typeID,</if>
             <if test="typename != null and typename != ''">typename,</if>
-            <if test="distype != null">distype,</if>
-         </trim>
+            <if test="disposeobj != null">disposeobj,</if>
+            <if test="priority != null">priority,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="typeid != null">#{typeid},</if>
             <if test="typename != null and typename != ''">#{typename},</if>
-            <if test="distype != null">#{distype},</if>
-         </trim>
+            <if test="disposeobj != null">#{disposeobj},</if>
+            <if test="priority != null">#{priority},</if>
+        </trim>
     </insert>
 
     <update id="updateDetailType" parameterType="DetailType">
         update DetailType
         <trim prefix="SET" suffixOverrides=",">
             <if test="typename != null and typename != ''">typename = #{typename},</if>
-            <if test="distype != null">distype = #{distype},</if>
+            <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
+            <if test="priority != null">priority = #{priority},</if>
         </trim>
         where typeID = #{typeid}
     </update>
@@ -57,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteDetailTypeByTypeids" parameterType="String">
-        delete from DetailType where typeID in 
+        delete from DetailType where typeID in
         <foreach item="typeid" collection="array" open="(" separator="," close=")">
             #{typeid}
         </foreach>

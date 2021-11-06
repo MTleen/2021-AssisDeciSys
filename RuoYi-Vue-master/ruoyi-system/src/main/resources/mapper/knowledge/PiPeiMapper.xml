@@ -7,9 +7,9 @@
 <mapper namespace="com.ruoyi.knowledge.mapper.PiPeiMapper">
 
 <resultMap type="Knowledge" id="PiPeiResult">
-    <result property="informID"    column="informID"    />
+    <result property="informid"    column="informID"    />
     <result property="inform"    column="inform"    />
-    <result property="informtypeID"    column="informtypeID"    />
+    <result property="informtypeid"    column="informtypeID"    />
 
 <!--    <result property="cautionid"    column="cautionID"    />-->
 <!--    <result property="cautiontime"    column="cautiontime"    />-->

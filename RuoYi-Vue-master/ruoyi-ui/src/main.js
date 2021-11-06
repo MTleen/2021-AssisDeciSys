@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: Shengxiang Hu
  * @Date: 2021-10-14 19:50:08
  * @LastEditors: Shengxiang Hu
@@ -38,6 +38,11 @@ import ImageUpload from "@/components/ImageUpload"
 import DictTag from '@/components/DictTag'
 // 头部标签组件
 import VueMeta from 'vue-meta'
+import { getToken } from '@/utils/auth'
+import {listDisastertype} from "@/api/knowledge/disastertype";
+import {listDetailtype} from "@/api/knowledge/detailtype";
+import {listDisposeobj} from "@/api/knowledge/disposeobj";
+
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -51,6 +56,52 @@ Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
 // 一次性读取数据库的最大记录数
 Vue.prototype.MAXCOUNT = 1024
+Vue.prototype.totalDetailType = {}
+Vue.prototype.totalDisposeObj = {}
+Vue.prototype.totalDisType = {}
+Vue.prototype.totalSites = {}
+
+// 判断是否登录，如果已登录加载全局对象
+Vue.prototype.loadGlobalData = function (){
+  if (getToken() && Object.keys(Vue.prototype.totalDisType).length === 0) {
+    console.log('加载全局对象')
+    let commonQueryParams = {
+      pageNum: 1,
+      pageSize: Vue.prototype.MAXCOUNT
+    }
+    // load all disaster type
+    listDisastertype(commonQueryParams).then(response => {
+      let totalDisType = {}
+      for (let row of response.rows) {
+        totalDisType[row.typeid] = row.typename
+      }
+      Vue.prototype.totalDisType = totalDisType
+    })
+    // load all detail type
+    listDetailtype(commonQueryParams).then(response => {
+      let totalDetailType = {}
+      // console.log(response.rows)
+      for (let row of response.rows) {
+        totalDetailType[row.typeid] = [row.typename, row.priority]
+      }
+      Vue.prototype.totalDetailType = totalDetailType
+    })
+    // load all dispose objects
+    listDisposeobj(commonQueryParams).then(response => {
+      // console.log(this.prototype)
+      let totalDisposeObj = {}
+      // console.log(response.rows)
+      for (let row of response.rows) {
+        totalDisposeObj[row.objid] = row.objname
+      }
+      Vue.prototype.totalDisposeObj = totalDisposeObj;
+    })
+    // load all sites
+    Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队'}
+  }
+}
+
+Vue.prototype.loadGlobalData()
 
 Vue.prototype.msgSuccess = function (msg) {
   this.$message({ showClose: true, message: msg, type: "success" });

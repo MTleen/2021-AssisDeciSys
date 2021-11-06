@@ -1,23 +1,28 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="类型名称" prop="typename">
-        <el-input
-          v-model="queryParams.typename"
-          placeholder="请输入类型名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="详细类型" prop="typename">
+        <el-select v-model="queryParams.typename" filterable placeholder="请选择详细类型" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDetailType"
+                     :key="key"
+                     :label="value[0]"
+                     :value="value[0]"/>
+        </el-select>
       </el-form-item>
-      <el-form-item label="险情类型" prop="distype">
-        <el-select v-model="queryParams.distype" placeholder="请选择险情类型" clearable size="small">
-          <el-option
-            v-for="item in disastertypeList"
-              :key="item.typeid"
-              :label="item.typename"
-              :value="item.typeid"
-          />
+      <el-form-item label="处置对象" prop="disposeobj">
+        <el-select v-model="queryParams.disposeobj" filterable placeholder="请选择处置对象" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="通用/专项" prop="priority">
+        <el-select v-model="queryParams.priority" filterable placeholder="请选择通用/专项" clearable size="small">
+          <el-option v-for="(value, key, index) in libraryType"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -35,7 +40,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['knowledge:detailtype:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -46,7 +52,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['knowledge:detailtype:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -57,7 +64,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['knowledge:detailtype:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -68,17 +76,27 @@
           :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['knowledge:detailtype:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-   <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
+
     <el-table v-loading="loading" :data="detailtypeList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <!-- <el-table-column label="类型 ID" align="center" prop="typeid" /> -->
-      <el-table-column label="类型名称" align="center" prop="typename" />
-      <el-table-column label="险情类型" align="center" prop="distype" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <!--      <el-table-column label="类型 ID" align="center" prop="typeid" />-->
+      <el-table-column label="序号" align="center" type="index" width="50"/>
+      <el-table-column label="详细类型" align="center" prop="typename"/>
+      <el-table-column label="处置对象" align="center">
+        <template slot-scope="scope">
+          <span>{{ $root.totalDisposeObj[scope.row.disposeobj] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="通用/专项" align="center">
+        <template slot-scope="scope">
+          <span>{{ libraryType[scope.row.priority] }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -87,17 +105,20 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['knowledge:detailtype:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['knowledge:detailtype:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -105,22 +126,27 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-    </div>
 
     <!-- 添加或修改详细类型表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="类型名称" prop="typename">
-          <el-input v-model="form.typename" placeholder="请输入类型名称" />
+        <el-form-item label="详细类型" prop="typename">
+          <el-input v-model="form.typename" placeholder="请输入详细类型"/>
         </el-form-item>
-        <el-form-item label="险情类型" prop="distype">
-          <el-select v-model="form.distype" placeholder="请选择险情类型">
-            <el-option 
-              v-for="item in disastertypeList"
-              :key="item.typeid"
-              :label="item.typename"
-              :value="item.typeid"
-            />
+        <el-form-item label="处置对象" prop="disposeobj">
+          <el-select filterable v-model="form.disposeobj" placeholder="请选择处置对象">
+            <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="通用/专项" prop="priority">
+          <el-select filterable v-model="form.priority" placeholder="请选择通用/专项">
+            <el-option v-for="(value, key, index) in libraryType"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -133,8 +159,14 @@
 </template>
 
 <script>
-import { listDetailtype, getDetailtype, delDetailtype, addDetailtype, updateDetailtype, exportDetailtype } from "@/api/knowledge/detailtype";
-import { listDisastertype } from '@/api/knowledge/disastertype'
+import {
+  listDetailtype,
+  getDetailtype,
+  delDetailtype,
+  addDetailtype,
+  updateDetailtype,
+  exportDetailtype
+} from "@/api/knowledge/detailtype";
 
 export default {
   name: "Detailtype",
@@ -165,23 +197,26 @@ export default {
         pageNum: 1,
         pageSize: 10,
         typename: null,
-        distype: null
+        disposeobj: null,
+        priority: null
+      },
+      libraryType: {
+        0: '通用',
+        1: '专项'
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
         typename: [
-          { required: true, message: "类型名称不能为空", trigger: "blur" }
+          {required: true, message: "类型名称不能为空", trigger: "change"}
         ],
       }
     };
   },
   created() {
     this.getList();
-    this.getList2();
   },
-  
   methods: {
     /** 查询详细类型表列表 */
     getList() {
@@ -191,17 +226,6 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
-    },
-    //获取字典 
-    getList2() {
-      this.loading = true;
-      // 查询所有险情类型
-      listDisastertype(this.commonQueryParams).then(response => {
-        this.disastertypeList = response.rows
-        // console.log('险情类型')
-        // console.log(this.disastertypeList)
-      })
-      this.loading = false;
     },
     // 取消按钮
     cancel() {
@@ -213,7 +237,8 @@ export default {
       this.form = {
         typeid: null,
         typename: null,
-        distype: null
+        disposeobj: null,
+        priority: null
       };
       this.resetForm("form");
     },
@@ -230,7 +255,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.typeid)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -273,30 +298,32 @@ export default {
     handleDelete(row) {
       const typeids = row.typeid || this.ids;
       this.$confirm('是否确认删除详细类型表编号为"' + typeids + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delDetailtype(typeids);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delDetailtype(typeids);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有详细类型表数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportDetailtype(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportDetailtype(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {
+      });
     }
   }
 };

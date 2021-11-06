@@ -9,19 +9,19 @@ import com.ruoyi.knowledge.service.IDisposeObjService;
 
 /**
  * 处置对象Service业务层处理
- * 
- * @author xiaoyu
- * @date 2021-10-15
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
 @Service
-public class DisposeObjServiceImpl implements IDisposeObjService 
+public class DisposeObjServiceImpl implements IDisposeObjService
 {
     @Autowired
     private DisposeObjMapper disposeObjMapper;
 
     /**
      * 查询处置对象
-     * 
+     *
      * @param objid 处置对象主键
      * @return 处置对象
      */
@@ -33,7 +33,7 @@ public class DisposeObjServiceImpl implements IDisposeObjService
 
     /**
      * 查询处置对象列表
-     * 
+     *
      * @param disposeObj 处置对象
      * @return 处置对象
      */
@@ -45,7 +45,7 @@ public class DisposeObjServiceImpl implements IDisposeObjService
 
     /**
      * 新增处置对象
-     * 
+     *
      * @param disposeObj 处置对象
      * @return 结果
      */
@@ -57,7 +57,7 @@ public class DisposeObjServiceImpl implements IDisposeObjService
 
     /**
      * 修改处置对象
-     * 
+     *
      * @param disposeObj 处置对象
      * @return 结果
      */
@@ -69,7 +69,7 @@ public class DisposeObjServiceImpl implements IDisposeObjService
 
     /**
      * 批量删除处置对象
-     * 
+     *
      * @param objids 需要删除的处置对象主键
      * @return 结果
      */
@@ -81,7 +81,7 @@ public class DisposeObjServiceImpl implements IDisposeObjService
 
     /**
      * 删除处置对象信息
-     * 
+     *
      * @param objid 处置对象主键
      * @return 结果
      */

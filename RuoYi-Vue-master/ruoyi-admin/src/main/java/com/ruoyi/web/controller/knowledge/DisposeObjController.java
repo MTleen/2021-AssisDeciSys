@@ -22,9 +22,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 处置对象Controller
- * 
- * @author xiaoyu
- * @date 2021-10-15
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
 @RestController
 @RequestMapping("/knowledge/disposeobj")
@@ -95,7 +95,7 @@ public class DisposeObjController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('knowledge:disposeobj:remove')")
     @Log(title = "处置对象", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{objids}")
+    @DeleteMapping("/{objids}")
     public AjaxResult remove(@PathVariable Long[] objids)
     {
         return toAjax(disposeObjService.deleteDisposeObjByObjids(objids));

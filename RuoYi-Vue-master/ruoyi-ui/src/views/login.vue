@@ -7,7 +7,7 @@
 
     </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      
+
 
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
@@ -144,6 +144,7 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+
           this.loading = true
           if (this.loginForm.rememberMe) {
             Cookies.set('username', this.loginForm.username, { expires: 30 })

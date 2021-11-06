@@ -9,19 +9,19 @@ import com.ruoyi.knowledge.service.IDetailTypeService;
 
 /**
  * 详细类型表Service业务层处理
- * 
- * @author xiaoyu
- * @date 2021-10-14
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
 @Service
-public class DetailTypeServiceImpl implements IDetailTypeService 
+public class DetailTypeServiceImpl implements IDetailTypeService
 {
     @Autowired
     private DetailTypeMapper detailTypeMapper;
 
     /**
      * 查询详细类型表
-     * 
+     *
      * @param typeid 详细类型表主键
      * @return 详细类型表
      */
@@ -33,7 +33,7 @@ public class DetailTypeServiceImpl implements IDetailTypeService
 
     /**
      * 查询详细类型表列表
-     * 
+     *
      * @param detailType 详细类型表
      * @return 详细类型表
      */
@@ -45,7 +45,7 @@ public class DetailTypeServiceImpl implements IDetailTypeService
 
     /**
      * 新增详细类型表
-     * 
+     *
      * @param detailType 详细类型表
      * @return 结果
      */
@@ -57,7 +57,7 @@ public class DetailTypeServiceImpl implements IDetailTypeService
 
     /**
      * 修改详细类型表
-     * 
+     *
      * @param detailType 详细类型表
      * @return 结果
      */
@@ -69,7 +69,7 @@ public class DetailTypeServiceImpl implements IDetailTypeService
 
     /**
      * 批量删除详细类型表
-     * 
+     *
      * @param typeids 需要删除的详细类型表主键
      * @return 结果
      */
@@ -81,7 +81,7 @@ public class DetailTypeServiceImpl implements IDetailTypeService
 
     /**
      * 删除详细类型表信息
-     * 
+     *
      * @param typeid 详细类型表主键
      * @return 结果
      */

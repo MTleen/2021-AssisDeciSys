@@ -2,13 +2,22 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="处置对象名称" prop="objname">
-        <el-input
-          v-model="queryParams.objname"
-          placeholder="请输入处置对象名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.objname" filterable placeholder="请选择处置对象名称" clearable size="small">
+          <el-option
+            v-for="(value, key, index) in $root.totalDisposeObj"
+            :key="key"
+            :label="value"
+            :value="value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="灾情类型" prop="distype">
+        <el-select v-model="queryParams.distype" filterable placeholder="请选择灾情类型" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisType"
+            :key="key"
+            :label="value"
+            :value="key"/>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -62,11 +71,17 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-<div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
-    <el-table v-loading="loading" :data="disposeobjList" @selection-change="handleSelectionChange" >
+
+    <el-table v-loading="loading" :data="disposeobjList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
-      <el-table-column label="处置对象名称" align="center" prop="objname"  />
+<!--      <el-table-column label="处置对象编号" align="center" prop="objid" />-->
+      <el-table-column label="序号" type="index" align="center" width="50" />
+      <el-table-column label="处置对象名称" align="center" prop="objname" />
+      <el-table-column label="灾情类型" align="center" >
+        <template slot-scope="scope">
+          <span>{{$root.totalDisType[scope.row.distype]}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -86,7 +101,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -94,12 +109,22 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-</div>
+
     <!-- 添加或修改处置对象对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="处置对象名称" prop="objname">
-          <el-input v-model="form.objname" placeholder="请输入处置对象名称" />
+          <el-input
+            v-model="form.objname"
+            placeholder="请输入处置对象名称"/>
+        </el-form-item>
+        <el-form-item label="灾情类型" prop="distype">
+          <el-select v-model="form.distype" placeholder="请选择灾情类型">
+            <el-option v-for="(value, key, index) in $root.totalDisType"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -112,7 +137,6 @@
 
 <script>
 import { listDisposeobj, getDisposeobj, delDisposeobj, addDisposeobj, updateDisposeobj, exportDisposeobj } from "@/api/knowledge/disposeobj";
-
 export default {
   name: "Disposeobj",
   data() {
@@ -141,16 +165,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        objname: null
+        objname: null,
+        distype: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        objname: [
-          { required: true, message: '处置对象名称不能为空', trigger: 'blur' }
-        ]
-      }
+      },
     };
   },
   created() {
@@ -175,7 +197,8 @@ export default {
     reset() {
       this.form = {
         objid: null,
-        objname: null
+        objname: null,
+        distype: null
       };
       this.resetForm("form");
     },
@@ -235,30 +258,30 @@ export default {
     handleDelete(row) {
       const objids = row.objid || this.ids;
       this.$confirm('是否确认删除处置对象编号为"' + objids + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delDisposeobj(objids);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        return delDisposeobj(objids);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有处置对象数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportDisposeobj(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportDisposeobj(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {});
     }
   }
 };

@@ -5,15 +5,15 @@ import com.ruoyi.knowledge.domain.DetailType;
 
 /**
  * 详细类型表Mapper接口
- * 
- * @author xiaoyu
- * @date 2021-10-14
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
-public interface DetailTypeMapper 
+public interface DetailTypeMapper
 {
     /**
      * 查询详细类型表
-     * 
+     *
      * @param typeid 详细类型表主键
      * @return 详细类型表
      */
@@ -21,7 +21,7 @@ public interface DetailTypeMapper
 
     /**
      * 查询详细类型表列表
-     * 
+     *
      * @param detailType 详细类型表
      * @return 详细类型表集合
      */
@@ -29,7 +29,7 @@ public interface DetailTypeMapper
 
     /**
      * 新增详细类型表
-     * 
+     *
      * @param detailType 详细类型表
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface DetailTypeMapper
 
     /**
      * 修改详细类型表
-     * 
+     *
      * @param detailType 详细类型表
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface DetailTypeMapper
 
     /**
      * 删除详细类型表
-     * 
+     *
      * @param typeid 详细类型表主键
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface DetailTypeMapper
 
     /**
      * 批量删除详细类型表
-     * 
+     *
      * @param typeids 需要删除的数据主键集合
      * @return 结果
      */

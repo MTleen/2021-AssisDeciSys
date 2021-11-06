@@ -16,6 +16,7 @@ public class Knowledge
     /** 信息编号 */
     private Long informid;
 
+
     /** 信息内容 */
     @Excel(name = "信息内容")
     private String inform;
@@ -116,6 +117,7 @@ public class Knowledge
     {
         return informtypeid;
     }
+
 
     @Override
     public String toString() {

@@ -5,15 +5,15 @@ import com.ruoyi.knowledge.domain.DisposeObj;
 
 /**
  * 处置对象Mapper接口
- * 
- * @author xiaoyu
- * @date 2021-10-15
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
-public interface DisposeObjMapper 
+public interface DisposeObjMapper
 {
     /**
      * 查询处置对象
-     * 
+     *
      * @param objid 处置对象主键
      * @return 处置对象
      */
@@ -21,7 +21,7 @@ public interface DisposeObjMapper
 
     /**
      * 查询处置对象列表
-     * 
+     *
      * @param disposeObj 处置对象
      * @return 处置对象集合
      */
@@ -29,7 +29,7 @@ public interface DisposeObjMapper
 
     /**
      * 新增处置对象
-     * 
+     *
      * @param disposeObj 处置对象
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface DisposeObjMapper
 
     /**
      * 修改处置对象
-     * 
+     *
      * @param disposeObj 处置对象
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface DisposeObjMapper
 
     /**
      * 删除处置对象
-     * 
+     *
      * @param objid 处置对象主键
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface DisposeObjMapper
 
     /**
      * 批量删除处置对象
-     * 
+     *
      * @param objids 需要删除的数据主键集合
      * @return 结果
      */

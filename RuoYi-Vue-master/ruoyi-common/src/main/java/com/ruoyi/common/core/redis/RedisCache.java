@@ -46,7 +46,9 @@ public class RedisCache
      */
     public <T> void setCacheObject(final String key, final T value, final Integer timeout, final TimeUnit timeUnit)
     {
-        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+//        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+        // 设置 redis 缓存不过期
+        redisTemplate.opsForValue().set(key, value);
     }
 
     /**

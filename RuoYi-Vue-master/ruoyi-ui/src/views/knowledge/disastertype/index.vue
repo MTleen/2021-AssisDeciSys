@@ -1,14 +1,13 @@
 <template>
   <div class="app-container">
     <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-      <el-form-item label="类型名称" prop="typename">
-        <el-input
-          v-model="queryParams.typename"
-          placeholder="请输入类型名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="灾情类型" prop="typename">
+        <el-select v-model="queryParams.typename" filterable placeholder="请选择灾情类型" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisType"
+                     :key="key"
+                     :label="value"
+                     :value="value"/>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -66,7 +65,7 @@
     <el-table v-loading="loading" :data="disastertypeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center" />
-      <el-table-column label="类型名称" align="center" prop="typename" />
+      <el-table-column label="灾情类型" align="center" prop="typename" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

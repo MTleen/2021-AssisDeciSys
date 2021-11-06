@@ -22,9 +22,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 详细类型表Controller
- * 
- * @author xiaoyu
- * @date 2021-10-14
+ *
+ * @author Mathripper
+ * @date 2021-11-05
  */
 @RestController
 @RequestMapping("/knowledge/detailtype")
@@ -95,7 +95,7 @@ public class DetailTypeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('knowledge:detailtype:remove')")
     @Log(title = "详细类型表", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{typeids}")
+    @DeleteMapping("/{typeids}")
     public AjaxResult remove(@PathVariable Long[] typeids)
     {
         return toAjax(detailTypeService.deleteDetailTypeByTypeids(typeids));
