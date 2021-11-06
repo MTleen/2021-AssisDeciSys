@@ -14,7 +14,7 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions">
           </el-date-picker>
-            <el-radio-group v-model="AllOrPart">
+            <el-radio-group v-model="AllOrPart" style="margin-left:15px;">
               <el-radio-button label="全部"></el-radio-button>
               <el-radio-button label="已处理"></el-radio-button>
               <el-radio-button label="未处理"></el-radio-button>

@@ -1,10 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams"  ref="queryForm" :inline="true" :label-position="left" v-show="showSearch" label-width="96px">
       <el-form-item label="时间" prop="cautiontime">
         <el-date-picker clearable size="small"
           v-model="queryParams.cautiontime"
           type="date"
+          width="120"
           value-format="yyyy-MM-dd"
           placeholder="选择时间">
         </el-date-picker>
@@ -471,3 +472,8 @@ export default {
   }
 };
 </script>
+<style>
+.el-form-item{
+  margin-bottom: 10px;
+}
+</style>

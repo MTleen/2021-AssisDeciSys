@@ -3,9 +3,12 @@
     <el-col align='center'>
     <div class=" title-logo-container">
       <img :src="logo" class="title-logo">
+      <span class="title-style">宝山区消防救援支队</span><br>
       <span class="title-style">消防作战指挥辅助决策管理系统</span>
-
     </div>
+    
+
+    
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
 
 
@@ -246,7 +249,7 @@ export default {
 }
 .title-style {
   color: #fff;
-  font-size: 35px;
+  font-size: 40px;
   text-align: right;
   margin-left: 7px;
   margin: 0;
@@ -257,11 +260,12 @@ export default {
   width: 100%;
   height: 100px;
   line-height: 50px;
-  overflow: hidden;
-  margin-bottom: 8%;
+  // overflow: hidden;
+  margin-bottom: 15%;
 }
+
 .ewm-style{
-  margin-top: 25%;
+  margin-top: 10%;
   width: 140px;
   height: 140px;
 
