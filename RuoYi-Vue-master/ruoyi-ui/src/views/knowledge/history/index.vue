@@ -25,9 +25,9 @@
       </el-form-item>
       <el-form-item label="知识类型" prop="librarytype">
         <el-select v-model="queryParams.librarytype" placeholder="请选择知识类型" clearable size="small">
-          <el-option v-for="(value, key, index) in $root.totalDetailType"
+          <el-option v-for="(value, key, index) in $root.totalLibType"
                      :key="key"
-                     :label="value[0]"
+                     :label="value"
                      :value="key"/>
         </el-select>
       </el-form-item>
@@ -44,6 +44,7 @@
           plain
           icon="el-icon-plus"
           size="mini"
+          :disabled="single"
           @click="handleAdd"
           v-hasPermi="['knowledge:history:add']"
         >新增
@@ -93,33 +94,41 @@
       <el-table-column label="序号" align="center" type="index" width="50"/>
       <el-table-column label="案件编号" align="center" prop="cautionid"/>
       <el-table-column label="提示信息" align="center" prop="informid"/>
-      <el-table-column label="队站" align="center" prop="positionid"/>
+      <el-table-column label="队站" align="center" prop="positionid">
+        <template slot-scope="scope">
+          <span>{{$root.totalSites[scope.row.positionid]}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="发送时间" align="center" prop="sendtime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="知识类型" align="center" prop="librarytype"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="知识类型" align="center" prop="librarytype">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['knowledge:history:edit']"
-          >修改
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['knowledge:history:remove']"
-          >删除
-          </el-button>
+          <span>{{$root.totalLibType[scope.row.librarytype]}}</span>
         </template>
       </el-table-column>
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['knowledge:history:edit']"-->
+<!--          >修改-->
+<!--          </el-button>-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['knowledge:history:remove']"-->
+<!--          >删除-->
+<!--          </el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination

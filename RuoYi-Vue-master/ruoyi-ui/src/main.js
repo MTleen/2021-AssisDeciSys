@@ -22,9 +22,17 @@ import directive from './directive' //directive
 
 import './assets/icons' // icon
 import './permission' // permission control
-import { getDicts } from "@/api/system/dict/data";
-import { getConfigKey } from "@/api/system/config";
-import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, handleTree } from "@/utils/ruoyi";
+import {getDicts} from "@/api/system/dict/data";
+import {getConfigKey} from "@/api/system/config";
+import {
+  parseTime,
+  resetForm,
+  addDateRange,
+  selectDictLabel,
+  selectDictLabels,
+  download,
+  handleTree
+} from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
 // 自定义表格工具组件
 import RightToolbar from "@/components/RightToolbar"
@@ -38,7 +46,7 @@ import ImageUpload from "@/components/ImageUpload"
 import DictTag from '@/components/DictTag'
 // 头部标签组件
 import VueMeta from 'vue-meta'
-import { getToken } from '@/utils/auth'
+import {getToken} from '@/utils/auth'
 import {listDisastertype} from "@/api/knowledge/disastertype";
 import {listDetailtype} from "@/api/knowledge/detailtype";
 import {listDisposeobj} from "@/api/knowledge/disposeobj";
@@ -62,7 +70,7 @@ Vue.prototype.totalDisType = {}
 Vue.prototype.totalSites = {}
 
 // 判断是否登录，如果已登录加载全局对象
-Vue.prototype.loadGlobalData = function (){
+Vue.prototype.loadGlobalData = function () {
   if (getToken() && Object.keys(Vue.prototype.totalDisType).length === 0) {
     console.log('加载全局对象')
     let commonQueryParams = {
@@ -97,18 +105,20 @@ Vue.prototype.loadGlobalData = function (){
       Vue.prototype.totalDisposeObj = totalDisposeObj;
     })
     // load all sites
-    Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队'}
+    Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
+    // load all library types
+    Vue.prototype.totalLibType = { 1: '通用', 3: '专项', 2: '安全'}
   }
 }
 
 Vue.prototype.loadGlobalData()
 
 Vue.prototype.msgSuccess = function (msg) {
-  this.$message({ showClose: true, message: msg, type: "success" });
+  this.$message({showClose: true, message: msg, type: "success"});
 }
 
 Vue.prototype.msgError = function (msg) {
-  this.$message({ showClose: true, message: msg, type: "error" });
+  this.$message({showClose: true, message: msg, type: "error"});
 }
 
 Vue.prototype.msgInfo = function (msg) {

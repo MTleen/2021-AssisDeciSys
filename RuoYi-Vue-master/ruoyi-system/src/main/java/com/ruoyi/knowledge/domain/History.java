@@ -26,7 +26,7 @@ public class History extends BaseEntity
 
     /** 提示信息 */
     @Excel(name = "提示信息")
-    private Long informid;
+    private String informid;
 
     /** 队站 */
     @Excel(name = "队站")
@@ -59,12 +59,12 @@ public class History extends BaseEntity
     {
         return cautionid;
     }
-    public void setInformid(Long informid)
+    public void setInformid(String informid)
     {
         this.informid = informid;
     }
 
-    public Long getInformid()
+    public String getInformid()
     {
         return informid;
     }

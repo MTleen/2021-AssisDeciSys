@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="通用/专项" prop="priority">
         <el-select v-model="queryParams.priority" filterable placeholder="请选择通用/专项" clearable size="small">
-          <el-option v-for="(value, key, index) in libraryType"
+          <el-option v-for="(value, key, index) in $root.totalLibType"
                      :key="key"
                      :label="value"
                      :value="key"/>
@@ -199,10 +199,6 @@ export default {
         typename: null,
         disposeobj: null,
         priority: null
-      },
-      libraryType: {
-        0: '通用',
-        1: '专项'
       },
       // 表单参数
       form: {},

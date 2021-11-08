@@ -39,7 +39,7 @@
             </el-select>
           </el-form-item>
 
-        <el-row style="margin-top: 2px">
+<!--        <el-row style="margin-top: 2px">-->
           <el-form-item label="主管队站:" prop="station" style="">
             <el-select v-model="form.site1" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalSites"
