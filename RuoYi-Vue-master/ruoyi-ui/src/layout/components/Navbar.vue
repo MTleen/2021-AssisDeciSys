@@ -4,22 +4,22 @@
     <div class="new-banner">
       <div>
           <img :src="logo" class="logo-style">
-           
+
       </div>
       <div class="title-container">
-        <span class="title-style">消防作战指挥辅助决策管理系统</span>
+        <span class="title-style">宝山消防辅助决策管理系统</span>
         <div class="time-style">
          {{dateFormat(date)}}
         </div>
       </div>
 
-      <div class="weather-container"> 
+      <div class="weather-container">
         <div>
             <img :src="logo" class="weather-style">
         </div>
-        <div class="weatherContent">
+        <div class="weatherContent" >
           <div class="watherContent-style">
-          <span >天气：多云</span>
+          <span >天气：{{weatherData.realtime.info}}</span>
           </div>
           <div class="watherContent-style">
           <span >降水概率：50%</span>
@@ -31,26 +31,17 @@
 
         <div class="weatherContent">
           <div class="watherContent-style">
-          <span >风力：3级</span>
+          <span >风力：{{weatherData.realtime.power}}</span>
           </div>
           <div class="watherContent-style">
-          <span >风向：东南</span>
+          <span >风向：{{weatherData.realtime.direct}}</span>
           </div>
         </div>
-        
-      </div>
 
-      <!-- <div style="margin-top:5px"> -->
-
-      <!-- <el-col :span="8">
-      <div style="margin-top: 20px;">
-      <span class="title-style">消防作战指挥辅助决策管理系统</span>
       </div>
-      </el-col> -->
-      <!-- </div> -->
     </div>
-  </el-row>  
-    
+  </el-row>
+
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
@@ -59,7 +50,7 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
-        
+
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -94,7 +85,6 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    
   </div>
 </template>
 
@@ -109,11 +99,13 @@ import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
 import logoImg from '@/assets/logo/logo1.png'
+
 export default {
   data () {
     return {
       logo: logoImg,
       date: new Date(),
+      weatherData: {},
     }
   },
   components: {
@@ -176,22 +168,42 @@ export default {
           var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
           var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
           // 拼接
-          return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+          return year+"年"+month+"月"+day+"日 "+hours+":"+minutes+":"+seconds;
     },
+ 
+    getWeather() {
+      // let url = this.HOSt + '/simpleWeather/query',
+      let that = this
+      this.$axios.get('/weather/simpleWeather/query?city=%E4%B8%8A%E6%B5%B7&key=d51f2bacbdb845a045fcefc04f207d86'
+      
+      ).then(function(reponse){
+        that.weatherData=reponse.data.result;
+        console.log(that.weatherData);
+			}).catch((error) => {
+        console.log(Error);
+      })
+    }
     
+
   },
+
+
   mounted() {
-            //显示当前日期时间
-            let _this = this// 声明一个变量指向Vue实例this，保证作用域一致
-            this.timer = setInterval(() => {
-            _this.date = new Date(); // 修改数据date
-            }, 1000)
-        },
-        beforeDestroy() {
+    this.getWeather()
+    //显示当前日期时间
+    let _this = this// 声明一个变量指向Vue实例this，保证作用域一致
+    this.timer = setInterval(() => {
+    _this.date = new Date(); // 修改数据date
+    }, 1000)
+
+  },
+  beforeDestroy() {
         if (this.timer) {
           clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
         }
-      }
+  },
+
+
 
 }
 

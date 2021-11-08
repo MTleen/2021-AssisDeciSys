@@ -6,9 +6,9 @@
       <span class="title-style">宝山区消防救援支队</span><br>
       <span class="title-style">消防作战指挥辅助决策管理系统</span>
     </div>
-    
 
-    
+
+
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
 
 
@@ -261,7 +261,7 @@ export default {
   height: 100px;
   line-height: 50px;
   // overflow: hidden;
-  margin-bottom: 15%;
+  margin-bottom: 10%;
 }
 
 .ewm-style{

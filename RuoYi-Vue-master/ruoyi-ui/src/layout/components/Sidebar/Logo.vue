@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '消防决策管理系统',
+      title: '宝山消防辅助决策管理系统',
       logo: logoImg
     }
   }
@@ -78,7 +78,7 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 11px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

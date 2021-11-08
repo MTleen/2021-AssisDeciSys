@@ -1,5 +1,5 @@
 /*
- * @Description:
+ * @Description: 
  * @Author: Shengxiang Hu
  * @Date: 2021-10-14 19:50:08
  * @LastEditors: Shengxiang Hu
@@ -51,6 +51,7 @@ import {listDisastertype} from "@/api/knowledge/disastertype";
 import {listDetailtype} from "@/api/knowledge/detailtype";
 import {listDisposeobj} from "@/api/knowledge/disposeobj";
 
+import axios from 'axios'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -64,6 +65,10 @@ Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
 // 一次性读取数据库的最大记录数
 Vue.prototype.MAXCOUNT = 1024
+
+Vue.prototype.$axios = axios
+Vue.prototype.HOST = '/weather'
+
 Vue.prototype.totalDetailType = {}
 Vue.prototype.totalDisposeObj = {}
 Vue.prototype.totalDisType = {}

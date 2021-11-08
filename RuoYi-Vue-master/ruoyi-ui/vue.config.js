@@ -32,6 +32,14 @@ module.exports = {
     port: port,
     open: true,
     proxy: {
+      '/weather':{
+        target: 'http://apis.juhe.cn',
+        changeOrigin: true,
+        secure: true, 
+        pathRewrite: { //把 /module开头的替换成/module
+        '^/weather': '/'
+        }
+      },
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         target: `http://localhost:8080`,
