@@ -94,9 +94,9 @@
       <el-table-column label="序号" align="center" type="index" width="50"/>
       <el-table-column label="案件编号" align="center" prop="cautionid"/>
       <el-table-column label="提示信息" align="center" prop="informid"/>
-      <el-table-column label="队站" align="center" prop="positionid">
+      <el-table-column label="推送对象" align="center" prop="positionid">
         <template slot-scope="scope">
-          <span>{{$root.totalSites[scope.row.positionid]}}</span>
+          <span>{{$root.totalSites[scope.row.positionid]+"/"+scope.row.tele}}</span>
         </template>
       </el-table-column>
       <el-table-column label="发送时间" align="center" prop="sendtime" width="180">

@@ -32,6 +32,10 @@ public class History extends BaseEntity
     @Excel(name = "队站")
     private Long positionid;
 
+    /** 队站 */
+    @Excel(name = "消防员")
+    private String tele;
+
     /** 发送时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -94,6 +98,16 @@ public class History extends BaseEntity
     public Long getLibrarytype()
     {
         return librarytype;
+    }
+
+    public void setTele(String tele)
+    {
+        this.tele = tele;
+    }
+
+    public String getTele()
+    {
+        return tele;
     }
 
     @Override

@@ -30,7 +30,7 @@
         <el-col :span="14">
           <div class="grid-content bg-purple">
             <el-table :v-loading="loading" :data="typeList" stripe height="900" :header-cell-style="tableHeaderColor">
-              <el-table-column label="案件编号" align="center" prop="cautionID" width='60'>
+              <el-table-column label="案件编号" align="center" prop="cautionID" width='80'>
               </el-table-column>
               <el-table-column label="灾情类型" align="center" prop="caseType" width='120'>
               </el-table-column>
@@ -80,9 +80,9 @@
                       :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"/>
               <el-table-column label="提示信息" align="center" prop="informid"/>
-              <el-table-column label="队站" align="center" prop="positionid">
+              <el-table-column label="推送对象" align="center" prop="positionid">
                 <template slot-scope="scope">
-                  <span>{{ $root.totalSites[scope.row.positionid] }}</span>
+                  <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele}}</span>
                 </template>
               </el-table-column>
               <el-table-column label="发送时间" align="center" prop="sendtime" width="180">
@@ -199,7 +199,6 @@ export default {
       return 'background-color:rgb(145, 211, 252);color:black;font-wight:500;text-align:center'
     },
     handleHisQuery(cautionID) {
-      console.log(cautionID)
       this.queryParams.cautionid = cautionID
       this.queryParams.pageNum = 1
       this.hisLoading = true;
@@ -208,7 +207,6 @@ export default {
         this.hisTotal = response.total;
         this.hisLoading = false;
       });
-      console.log(this.historyList)
     }
   }
 }
