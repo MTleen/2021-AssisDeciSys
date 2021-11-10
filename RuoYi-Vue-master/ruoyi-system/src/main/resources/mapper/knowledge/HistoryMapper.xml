@@ -5,24 +5,44 @@
 <mapper namespace="com.ruoyi.knowledge.mapper.HistoryMapper">
 
     <resultMap type="History" id="HistoryResult">
-        <result property="index"    column="index"    />
-        <result property="cautionid"    column="cautionID"    />
-        <result property="informid"    column="informID"    />
-        <result property="positionid"    column="positionID"    />
-        <result property="sendtime"    column="sendtime"    />
-        <result property="librarytype"    column="librarytype"    />
+        <result property="index" column="index"/>
+        <result property="cautionid" column="cautionID"/>
+        <result property="informid" column="informID"/>
+        <result property="positionid" column="positionID"/>
+        <result property="tele" column="tele"/>
+        <result property="sendtime" column="sendtime"/>
+        <result property="librarytype" column="librarytype"/>
     </resultMap>
 
     <sql id="selectHistoryVo">
-        select index, cautionID, informID, positionID, sendtime, librarytype from History
+        select a.`index`, a.cautionID,
+        case a.librarytype
+        when 1
+        then
+        K.inform
+        when 2
+        then
+        SE.inform
+        when 3
+        then
+        S.inform
+        end
+        as informID, U.username as tele, U.positionID, a.sendtime, a.librarytype
+        from History a
+        left join Knowledge K on K.informID = a.informID
+        left join Special S on S.informID = a.informID
+        left join Security SE on SE.inform
+        left join UserInfo U on U.tele = a.tele
     </sql>
+
 
     <select id="selectHistoryList" parameterType="History" resultMap="HistoryResult">
         <include refid="selectHistoryVo"/>
         <where>
-            <if test="positionid != null "> and positionID = #{positionid}</if>
-            <if test="sendtime != null "> and sendtime = #{sendtime}</if>
-            <if test="librarytype != null "> and librarytype = #{librarytype}</if>
+            <if test="tele != null ">and tele = #{tele}</if>
+            <if test="cautionid != null ">and cautionID = #{cautionid}</if>
+            <if test="sendtime != null ">and date(sendtime) = #{sendtime}</if>
+            <if test="librarytype != null ">and librarytype = #{librarytype}</if>
         </where>
     </select>
 
@@ -36,14 +56,14 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="cautionid != null">cautionID,</if>
             <if test="informid != null">informID,</if>
-            <if test="positionid != null">positionID,</if>
+            <if test="tele != null">tele,</if>
             <if test="sendtime != null">sendtime,</if>
             <if test="librarytype != null">librarytype,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cautionid != null">#{cautionid},</if>
             <if test="informid != null">#{informid},</if>
-            <if test="positionid != null">#{positionid},</if>
+            <if test="tele != null">#{tele},</if>
             <if test="sendtime != null">#{sendtime},</if>
             <if test="librarytype != null">#{librarytype},</if>
         </trim>
@@ -54,19 +74,21 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="cautionid != null">cautionID = #{cautionid},</if>
             <if test="informid != null">informID = #{informid},</if>
-            <if test="positionid != null">positionID = #{positionid},</if>
+            <if test="tele != null">tele = #{tele},</if>
             <if test="sendtime != null">sendtime = #{sendtime},</if>
             <if test="librarytype != null">librarytype = #{librarytype},</if>
         </trim>
-        where index = #{index}
+        where `index` = #{index}
     </update>
 
     <delete id="deleteHistoryByIndex" parameterType="Long">
-        delete from History where index = #{index}
+        delete
+        from History
+        where `index` = #{index}
     </delete>
 
     <delete id="deleteHistoryByIndexs" parameterType="String">
-        delete from History where index in
+        delete from History where `index` in
         <foreach item="index" collection="array" open="(" separator="," close=")">
             #{index}
         </foreach>

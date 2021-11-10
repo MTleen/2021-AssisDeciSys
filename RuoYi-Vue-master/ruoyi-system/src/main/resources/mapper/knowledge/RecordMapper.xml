@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.RecordMapper">
-    
+
     <resultMap type="Record" id="RecordResult">
         <result property="cautionid"    column="cautionID"    />
         <result property="cautiontime"    column="cautiontime"    />
@@ -12,46 +12,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dillobject"    column="dillobject"    />
         <result property="siteid"    column="siteID"    />
         <result property="truckid"    column="truckID"    />
-        <result property="picture"    column="picture"    />
-        <result property="status"    column="status"    />
         <result property="detailtype"    column="detailtype"    />
+        <result property="picture"    column="picture"    />
         <result property="label4"    column="label4"    />
-        <result property="keywords"    column="keywords"    />        
+        <result property="status"    column="status"    />
+        <result property="keywords"    column="keywords"    />
+        <result property="siteid2"    column="siteID2"    />
     </resultMap>
 
     <sql id="selectRecordVo">
-        select a.cautionID, a.cautiontime, a.location,b.typename as distypeID,c.objname as dillobject, g.sitename as siteID, a.truckID, a.picture,a.status,e.typename as detailtype,d.labelname as label4,a.keywords
-        from Record a
-        left join DisasterType b on b.typeID = a.distypeID
-        left join DisposeObj c on c.objID = a.dillobject
-        left join Label4 d on d.labelID = a.label4
-        left join DetailType e on e.typeID = a.detailtype
-        left join TruckInform f on f.truckID = a.truckID
-        left join Site g on g.siteID = a.siteID
+        select cautionID, cautiontime, location, distypeID, dillobject, siteID, truckID, detailtype, picture, label4, status, keywords, siteID2 from Record
     </sql>
 
     <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
-        <where>  
-            <if test="cautiontime != null "> and a.cautiontime = #{cautiontime}</if>
-            <if test="location != null  and location != ''"> and a.location = #{location}</if>
-            <if test="distypeid != null "> and a.distypeID = #{distypeid}</if>
-            <if test="dillobject != null "> and a.dillobject = #{dillobject}</if>
-            <if test="siteid != null "> and a.siteID = #{siteid}</if>
-            <if test="truckid != null "> and a.truckID = #{truckid}</if>
-            <if test="picture != null  and picture != ''"> and a.picture = #{picture}</if>
-            <if test="status != null "> and a.status = #{status}</if>
-            <if test="detailtype!= null "> and a.detailtype = #{detailtype}</if>
-            <if test="label4 != null "> and a.label4 = #{label4}</if>
-            <if test="keywords != null "> and a.keywords = #{keywords}</if>
+        <where>
+            <if test="cautiontime != null "> and date(cautiontime) = #{cautiontime}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="distypeid != null "> and distypeID = #{distypeid}</if>
+            <if test="dillobject != null "> and dillobject = #{dillobject}</if>
+            <if test="siteid != null "> and siteID = #{siteid}</if>
+            <if test="truckid != null "> and truckID = #{truckid}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="keywords != null  and keywords != ''"> and keywords = #{keywords}</if>
+            <if test="siteid2 != null  and siteid2 != ''"> and siteID2 = #{siteid2}</if>
         </where>
+        order by cautiontime desc
     </select>
-    
+
     <select id="selectRecordByCautionid" parameterType="String" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
-        where a.cautionID = #{cautionid}
+        where cautionID = #{cautionid}
     </select>
-        
+
     <insert id="insertRecord" parameterType="Record">
         insert into Record
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -62,11 +55,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null">dillobject,</if>
             <if test="siteid != null">siteID,</if>
             <if test="truckid != null">truckID,</if>
-            <if test="boom != null">boom,</if>
-            <if test="poison != null">poison,</if>
+            <if test="detailtype != null">detailtype,</if>
             <if test="picture != null">picture,</if>
+            <if test="label4 != null">label4,</if>
             <if test="status != null">status,</if>
-         </trim>
+            <if test="keywords != null">keywords,</if>
+            <if test="siteid2 != null">siteID2,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cautionid != null">#{cautionid},</if>
             <if test="cautiontime != null">#{cautiontime},</if>
@@ -75,11 +70,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null">#{dillobject},</if>
             <if test="siteid != null">#{siteid},</if>
             <if test="truckid != null">#{truckid},</if>
-            <if test="boom != null">#{boom},</if>
-            <if test="poison != null">#{poison},</if>
+            <if test="detailtype != null">#{detailtype},</if>
             <if test="picture != null">#{picture},</if>
+            <if test="label4 != null">#{label4},</if>
             <if test="status != null">#{status},</if>
-         </trim>
+            <if test="keywords != null">#{keywords},</if>
+            <if test="siteid2 != null">#{siteid2},</if>
+        </trim>
     </insert>
 
     <update id="updateRecord" parameterType="Record">
@@ -91,10 +88,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="dillobject != null">dillobject = #{dillobject},</if>
             <if test="siteid != null">siteID = #{siteid},</if>
             <if test="truckid != null">truckID = #{truckid},</if>
-            <if test="boom != null">boom = #{boom},</if>
-            <if test="poison != null">poison = #{poison},</if>
+            <if test="detailtype != null">detailtype = #{detailtype},</if>
             <if test="picture != null">picture = #{picture},</if>
+            <if test="label4 != null">label4 = #{label4},</if>
             <if test="status != null">status = #{status},</if>
+            <if test="keywords != null">keywords = #{keywords},</if>
+            <if test="siteid2 != null">siteID2 = #{siteid2},</if>
         </trim>
         where cautionID = #{cautionid}
     </update>
@@ -104,7 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteRecordByCautionids" parameterType="String">
-        delete from Record where cautionID in 
+        delete from Record where cautionID in
         <foreach item="cautionid" collection="array" open="(" separator="," close=")">
             #{cautionid}
         </foreach>

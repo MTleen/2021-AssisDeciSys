@@ -1,13 +1,12 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams"  ref="queryForm" :inline="true" :label-position="left" v-show="showSearch" label-width="96px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="时间" prop="cautiontime">
         <el-date-picker clearable size="small"
-          v-model="queryParams.cautiontime"
-          type="date"
-          width="120"
-          value-format="yyyy-MM-dd"
-          placeholder="选择时间">
+                        v-model="queryParams.cautiontime"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="地址" prop="location">
@@ -19,80 +18,47 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="险情类型" prop="distypeid">
-        <el-select v-model="queryParams.distypeid" filterable placeholder="请选择险情类型" clearable size="small">
-          <el-option
-            v-for="item in disastertypeList"
-            :key="item.typeid"
-            :label="item.typename"
-            :value="item.typeid"
-          />
+      <el-form-item label="灾情类型" prop="distypeid">
+        <el-select v-model="queryParams.distypeid" placeholder="请选择灾情类型" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisType"
+                     :label="value"
+                     :value="key" />
         </el-select>
       </el-form-item>
       <el-form-item label="处置对象" prop="dillobject">
-        <el-select v-model="queryParams.dillobject" filterable placeholder="请选择处置对象" clearable size="small">
-          <el-option
-            v-for="item in disposeobjList"
-            :key="item.objid"
-            :label="item.objname"
-            :value="item.objid"
-          />
+        <el-select v-model="queryParams.dillobject" placeholder="请选择处置对象" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                     :label="value"
+                     :value="key" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主管单位" prop="siteid">
-        <el-input
-          v-model="queryParams.siteid"
-          placeholder="请输入主管单位"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="主管队站" prop="siteid">
+        <el-select v-model="queryParams.siteid" placeholder="请选择主管队站" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalSites"
+                     :label="value"
+                     :value="key" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="出警车辆" prop="truckid">
-        <el-input
-          v-model="queryParams.truckid"
-          placeholder="请输入出警车辆"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="图片" prop="picture">
-        <el-input
-          v-model="queryParams.picture"
-          placeholder="请输入图片"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="参战力量" prop="siteid2">
+        <el-select v-model="queryParams.siteid2" placeholder="请选择参战力量" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalSites"
+                     :label="value"
+                     :value="key" />
+        </el-select>
       </el-form-item>
       <el-form-item label="任务执行状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择任务执行状态" clearable size="small">
           <el-option label="请选择字典生成" value="" />
         </el-select>
       </el-form-item>
-      <el-form-item label="详细类型" prop="detailtype">
-        <el-select v-model="queryParams.detailtype" filterable placeholder="请选择详细类型" clearable size="small">
-          <el-option
-            v-for="item in detailtypeList"
-            :key="item.typeid"
-            :label="item.typename"
-            :value="item.typeid"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="四级标签" prop="label4">
-        <el-select v-model="queryParams.label4" filterable placeholder="请选择四级标签" clearable size="small">
-          <el-option
-            v-for="item in label4List"
-            :key="item.labelid"
-            :label="item.labelname"
-            :value="item.labelid"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="关键字" prop="keywords">
-        <el-input v-model="form.keywords" placeholder="请输入关键字" />
+      <el-form-item label="关键词" prop="keywords">
+        <el-input
+          v-model="queryParams.keywords"
+          placeholder="请输入关键词"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -146,10 +112,9 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-<div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
+
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="报警编号" align="center" prop="cautionid" />
       <el-table-column label="时间" align="center" prop="cautiontime" width="180">
         <template slot-scope="scope">
@@ -157,15 +122,29 @@
         </template>
       </el-table-column>
       <el-table-column label="地址" align="center" prop="location" />
-      <el-table-column label="险情类型" align="center" prop="distypeid" />
-      <el-table-column label="处置对象" align="center" prop="dillobject" />
-      <el-table-column label="主管单位" align="center" prop="siteid" />
-      <el-table-column label="出警车辆" align="center" prop="truckid" />
-      <el-table-column label="图片" align="center" prop="picture" />
+      <el-table-column label="灾情类型" align="center" prop="distypeid" >
+        <template slot-scope="scope">
+          <span>{{$root.totalDisType[scope.row.distypeid]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="处置对象" align="center" prop="dillobject" >
+        <template slot-scope="scope">
+          <span>{{$root.totalDisposeObj[scope.row.dillobject]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="主管队站" align="center" prop="siteid" >
+        <template slot-scope="scope">
+          <span>{{$root.totalSites[scope.row.siteid]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="参战力量" align="center" prop="siteid2" >
+        <template slot-scope="scope">
+          <span>{{$root.totalSites[scope.row.siteid2]}}</span>
+        </template>
+      </el-table-column>
+<!--      <el-table-column label="出警车辆" align="center" prop="truckid" />-->
       <el-table-column label="任务执行状态" align="center" prop="status" />
-      <el-table-column label="详细类型" align="center" prop="detailtype" />
-      <el-table-column label="四级标签" align="center" prop="label4" />
-      <el-table-column label="关键字" align="center" prop="keywords" />
+      <el-table-column label="关键词" align="center" prop="keywords" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -193,78 +172,54 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-</div>
+
     <!-- 添加或修改出警记录表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="时间" prop="cautiontime">
           <el-date-picker clearable size="small"
-            v-model="form.cautiontime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择时间">
+                          v-model="form.cautiontime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="地址" prop="location">
           <el-input v-model="form.location" placeholder="请输入地址" />
         </el-form-item>
         <el-form-item label="险情类型" prop="distypeid">
-          <el-select v-model="queryParams.distypeid" filterable placeholder="请选择险情类型" clearable size="small">
-            <el-option
-              v-for="item in disastertypeList"
-              :key="item.typeid"
-              :label="item.typename"
-              :value="item.typeid"
-            />
+          <el-select v-model="form.distypeid" placeholder="请选择险情类型">
+            <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
         <el-form-item label="处置对象" prop="dillobject">
-          <el-select v-model="queryParams.dillobject" filterable placeholder="请选择处置对象" clearable size="small">
-            <el-option
-              v-for="item in disposeobjList"
-              :key="item.objid"
-              :label="item.objname"
-              :value="item.objid"
-            />
+          <el-select v-model="form.dillobject" placeholder="请选择处置对象">
+            <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
         <el-form-item label="主管单位" prop="siteid">
-          <el-input v-model="form.siteid" placeholder="请输入主管单位" />
+          <el-select v-model="form.siteid" placeholder="请选择主管单位">
+            <el-option label="请选择字典生成" value="" />
+          </el-select>
         </el-form-item>
         <el-form-item label="出警车辆" prop="truckid">
-          <el-input v-model="form.truckid" placeholder="请输入出警车辆" />
-        </el-form-item>
-        <el-form-item label="图片" prop="picture">
-          <el-input v-model="form.picture" placeholder="请输入图片" />
-        </el-form-item>
-        <el-form-item label="任务执行状态">
-          <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="详细类型" prop="detailtype">
-          <el-select v-model="form.detailtype" filterable placeholder="请选择详细类型" clearable size="small">
-            <el-option
-              v-for="item in detailtypeList"
-              :key="item.typeid"
-              :label="item.typename"
-              :value="item.typeid"
-            />
+          <el-select v-model="form.truckid" placeholder="请选择出警车辆">
+            <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
-        <el-form-item label="四级标签" prop="label4">
-          <el-select v-model="form.label4" filterable placeholder="请选择四级标签" clearable size="small">
-            <el-option
-              v-for="item in label4List"
-              :key="item.labelid"
-              :label="item.labelname"
-              :value="item.labelid"
-            />
+        <el-form-item label="任务执行状态" prop="status">
+          <el-select v-model="form.status" placeholder="请选择任务执行状态">
+            <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
-      <el-form-item label="关键字" prop="keywords">
-        <el-input v-model="form.keywords" placeholder="请输入关键字" />
-      </el-form-item>
+        <el-form-item label="任务执行状态" prop="keywords">
+          <el-input v-model="form.keywords" placeholder="请输入任务执行状态" />
+        </el-form-item>
+        <el-form-item label="参战力量">
+          <el-checkbox-group v-model="form.siteid2">
+            <el-checkbox>请选择字典生成</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -276,10 +231,6 @@
 
 <script>
 import { listRecord, getRecord, delRecord, addRecord, updateRecord, exportRecord } from "@/api/knowledge/record";
-import { listDisastertype } from '@/api/knowledge/disastertype'
-import { listDisposeobj } from '@/api/knowledge/disposeobj'
-import { listDetailtype } from '@/api/knowledge/detailtype'
-import { listLabel4 } from '@/api/knowledge/label4'
 
 export default {
   name: "Record",
@@ -315,10 +266,9 @@ export default {
         dillobject: null,
         siteid: null,
         truckid: null,
-        boom: null,
-        poison: null,
-        picture: null,
-        status: null
+        status: null,
+        keywords: null,
+        siteid2: null
       },
       // 表单参数
       form: {},
@@ -343,28 +293,8 @@ export default {
       listRecord(this.queryParams).then(response => {
         this.recordList = response.rows;
         this.total = response.total;
+        this.loading = false;
       });
-      // 获取字典
-      // 查询所有险情类型
-      listDisastertype(this.commonQueryParams).then(response => {
-        this.disastertypeList = response.rows
-        // console.log('险情类型')
-        // console.log(this.disastertypeList)
-      })
-      // 查询所有处置对象
-      listDisposeobj(this.commomQueryParams).then(response => {
-        this.disposeobjList = response.rows
-      })
-      // 查询所有详细类型
-      listDetailtype(this.commomQueryParams).then(response => {
-        this.detailtypeList = response.rows
-        // console.log(this.detailtypeList)
-      })
-      // 查询所有四级标签
-      listLabel4(this.commonQueryParams).then(response => {
-        this.label4List = response.rows
-      })
-      this.loading = false
     },
     // 取消按钮
     cancel() {
@@ -381,10 +311,12 @@ export default {
         dillobject: null,
         siteid: null,
         truckid: null,
-        boom: null,
-        poison: null,
+        detailtype: null,
         picture: null,
-        status: 0
+        label4: null,
+        status: null,
+        keywords: null,
+        siteid2: []
       };
       this.resetForm("form");
     },
@@ -416,6 +348,7 @@ export default {
       const cautionid = row.cautionid || this.ids
       getRecord(cautionid).then(response => {
         this.form = response.data;
+        this.form.siteid2 = this.form.siteid2.split(",");
         this.open = true;
         this.title = "修改出警记录表";
       });
@@ -424,6 +357,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.siteid2 = this.form.siteid2.join(",");
           if (this.form.cautionid != null) {
             updateRecord(this.form).then(response => {
               this.msgSuccess("修改成功");
@@ -444,36 +378,31 @@ export default {
     handleDelete(row) {
       const cautionids = row.cautionid || this.ids;
       this.$confirm('是否确认删除出警记录表编号为"' + cautionids + '"的数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return delRecord(cautionids);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        return delRecord(cautionids);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有出警记录表数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          this.exportLoading = true;
-          return exportRecord(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-          this.exportLoading = false;
-        }).catch(() => {});
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportRecord(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {});
     }
   }
 };
 </script>
-<style>
-.el-form-item{
-  margin-bottom: 10px;
-}
-</style>

@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSpecialVo"/>
         <where>  
             <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+            <if test="inform != null  and inform != ''"> and inform like concat('%', #{inform}, '%')</if>
         </where>
     </select>
     

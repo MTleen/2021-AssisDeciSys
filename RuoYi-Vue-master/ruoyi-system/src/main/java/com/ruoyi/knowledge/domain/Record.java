@@ -9,9 +9,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 出警记录表对象 Record
- * 
- * @author ruoyi
- * @date 2021-10-15
+ *
+ * @author Mathripper
+ * @date 2021-11-10
  */
 public class Record extends BaseEntity
 {
@@ -21,8 +21,8 @@ public class Record extends BaseEntity
     private String cautionid;
 
     /** 时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date cautiontime;
 
     /** 地址 */
@@ -31,169 +31,175 @@ public class Record extends BaseEntity
 
     /** 险情类型 */
     @Excel(name = "险情类型")
-    private String distypeid;
+    private Long distypeid;
 
     /** 处置对象 */
     @Excel(name = "处置对象")
-    private String dillobject;
+    private Long dillobject;
 
     /** 主管单位 */
     @Excel(name = "主管单位")
-    private String siteid;
+    private Long siteid;
 
     /** 出警车辆 */
     @Excel(name = "出警车辆")
     private Integer truckid;
 
+    /**  */
+    private Long detailtype;
 
     /** 图片 */
-    @Excel(name = "图片")
     private String picture;
+
+    /** $column.columnComment */
+    private Long label4;
 
     /** 任务执行状态 */
     @Excel(name = "任务执行状态")
     private Integer status;
 
-    /** 图片 */
-    @Excel(name = "详细类型")
-    private String detailtype;
-
-    /** 图片 */
-    @Excel(name = "四级标签")
-    private String label4;
-
-    /** 图片 */
-    @Excel(name = "关键字")
+    /** $column.columnComment */
+    @Excel(name = "任务执行状态")
     private String keywords;
 
-    public void setCautionid(String cautionid) 
+    /** 参战力量 */
+    @Excel(name = "参战力量")
+    private String siteid2;
+
+    public void setCautionid(String cautionid)
     {
         this.cautionid = cautionid;
     }
 
-    public String getCautionid() 
+    public String getCautionid()
     {
         return cautionid;
     }
-    public void setCautiontime(Date cautiontime) 
+    public void setCautiontime(Date cautiontime)
     {
         this.cautiontime = cautiontime;
     }
 
-    public Date getCautiontime() 
+    public Date getCautiontime()
     {
         return cautiontime;
     }
-    public void setLocation(String location) 
+    public void setLocation(String location)
     {
         this.location = location;
     }
 
-    public String getLocation() 
+    public String getLocation()
     {
         return location;
     }
-    public void setDistypeid(String distypeid) 
+    public void setDistypeid(Long distypeid)
     {
         this.distypeid = distypeid;
     }
 
-    public String getDistypeid() 
+    public Long getDistypeid()
     {
         return distypeid;
     }
-    public void setDillobject(String dillobject) 
+    public void setDillobject(Long dillobject)
     {
         this.dillobject = dillobject;
     }
 
-    public String getDillobject() 
+    public Long getDillobject()
     {
         return dillobject;
     }
-    public void setSiteid(String siteid)
+    public void setSiteid(Long siteid)
     {
         this.siteid = siteid;
     }
 
-    public String getSiteid()
+    public Long getSiteid()
     {
         return siteid;
     }
-    public void setTruckid(Integer truckid) 
+    public void setTruckid(Integer truckid)
     {
         this.truckid = truckid;
     }
 
-    public Integer getTruckid() 
+    public Integer getTruckid()
     {
         return truckid;
     }
-
-    public void setPicture(String picture) 
-    {
-        this.picture = picture;
-    }
-
-    public String getPicture() 
-    {
-        return picture;
-    }
-    public void setStatus(Integer status) 
-    {
-        this.status = status;
-    }
-
-    public Integer getStatus() 
-    {
-        return status;
-    }
-
-    public void setDetailtype(String detailtype) 
+    public void setDetailtype(Long detailtype)
     {
         this.detailtype = detailtype;
     }
 
-    public String getDetailtype() 
+    public Long getDetailtype()
     {
         return detailtype;
     }
+    public void setPicture(String picture)
+    {
+        this.picture = picture;
+    }
 
-    public void setLbel4(String label4) 
+    public String getPicture()
+    {
+        return picture;
+    }
+    public void setLabel4(Long label4)
     {
         this.label4 = label4;
     }
 
-    public String getLabel4() 
+    public Long getLabel4()
     {
         return label4;
     }
+    public void setStatus(Integer status)
+    {
+        this.status = status;
+    }
 
-    public void setKeywords(String keywords) 
+    public Integer getStatus()
+    {
+        return status;
+    }
+    public void setKeywords(String keywords)
     {
         this.keywords = keywords;
     }
 
-    public String getKeywords() 
+    public String getKeywords()
     {
         return keywords;
+    }
+    public void setSiteid2(String siteid2)
+    {
+        this.siteid2 = siteid2;
+    }
+
+    public String getSiteid2()
+    {
+        return siteid2;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("cautionid", getCautionid())
-            .append("cautiontime", getCautiontime())
-            .append("location", getLocation())
-            .append("distypeid", getDistypeid())
-            .append("dillobject", getDillobject())
-            .append("siteid", getSiteid())
-            .append("truckid", getTruckid())
-            .append("picture", getPicture())
-            .append("status", getStatus())
-            .append("detailtype", getDetailtype())
-            .append("label4", getLabel4())
-            .append("keywords", getKeywords())
-            .toString();
+                .append("cautionid", getCautionid())
+                .append("cautiontime", getCautiontime())
+                .append("location", getLocation())
+                .append("distypeid", getDistypeid())
+                .append("dillobject", getDillobject())
+                .append("siteid", getSiteid())
+                .append("truckid", getTruckid())
+                .append("detailtype", getDetailtype())
+                .append("picture", getPicture())
+                .append("label4", getLabel4())
+                .append("status", getStatus())
+                .append("keywords", getKeywords())
+                .append("siteid2", getSiteid2())
+                .toString();
     }
 }

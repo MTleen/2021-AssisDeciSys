@@ -4,7 +4,7 @@
       <el-form-item label="专项类型" prop="detailtype">
         <el-select v-model="queryParams.detailtype" placeholder="请选择专项类型" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalDetailType"
-                     v-if="value[1] === 1"
+                     v-if="value[1] === 3"
                      :key="key"
                      :label="value[0]"
                      :value="key"/>
@@ -68,7 +68,11 @@
 <!--      <el-table-column label="专项类型" align="center" prop="informid" />-->
       <el-table-column label="序号" type="index" align="center" width="50" />
       <el-table-column label="提示信息" align="center" prop="inform" />
-      <el-table-column label="专项类型" align="center" prop="detailtype" />
+      <el-table-column label="专项类型" align="center" prop="detailtype">
+        <template slot-scope="scope">
+          <span>{{$root.totalDetailType[scope.row.detailtype][0]}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

@@ -32,13 +32,13 @@ public class History extends BaseEntity
     @Excel(name = "队站")
     private Long positionid;
 
-    /** 队站 */
-    @Excel(name = "消防员")
+    /** 推送对象 */
+    @Excel(name = "推送对象")
     private String tele;
 
     /** 发送时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date sendtime;
 
     /** 知识类型 */

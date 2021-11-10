@@ -40,6 +40,9 @@ public class Knowledge extends BaseEntity
     /** 提示信息类型 */
     private Long informtypeid;
 
+    /** 关键词 */
+    private String keywords;
+
     public void setInformid(Long informid)
     {
         this.informid = informid;
@@ -102,6 +105,15 @@ public class Knowledge extends BaseEntity
     public Long getInformtypeid()
     {
         return informtypeid;
+    }
+    public void setKeywords(String keywords)
+    {
+        this.keywords = keywords;
+    }
+
+    public String getKeywords()
+    {
+        return keywords;
     }
 
     @Override

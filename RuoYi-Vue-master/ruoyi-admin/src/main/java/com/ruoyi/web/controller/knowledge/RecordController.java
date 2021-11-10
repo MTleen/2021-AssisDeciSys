@@ -22,9 +22,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 出警记录表Controller
- * 
- * @author ruoyi
- * @date 2021-10-15
+ *
+ * @author Mathripper
+ * @date 2021-11-10
  */
 @RestController
 @RequestMapping("/knowledge/record")
@@ -95,7 +95,7 @@ public class RecordController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('knowledge:record:remove')")
     @Log(title = "出警记录表", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{cautionids}")
+    @DeleteMapping("/{cautionids}")
     public AjaxResult remove(@PathVariable String[] cautionids)
     {
         return toAjax(recordService.deleteRecordByCautionids(cautionids));

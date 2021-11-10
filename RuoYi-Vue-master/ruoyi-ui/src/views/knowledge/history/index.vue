@@ -1,20 +1,20 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="队站" prop="positionid">
-        <el-select
-          v-model="queryParams.positionid"
-          placeholder="请输入队站"
-          filterable
-          clearable
-          size="small"
-        >
-          <el-option v-for="(value, key, index) in $root.totalSites"
-                     :key="key"
-                     :label="value"
-                     :value="key"/>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="队站" prop="positionid">-->
+<!--        <el-select-->
+<!--          v-model="queryParams.positionid"-->
+<!--          placeholder="请输入队站"-->
+<!--          filterable-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--        >-->
+<!--          <el-option v-for="(value, key, index) in $root.totalSites"-->
+<!--                     :key="key"-->
+<!--                     :label="value"-->
+<!--                     :value="key"/>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
       <el-form-item label="发送时间" prop="sendtime">
         <el-date-picker clearable size="small"
                         v-model="queryParams.sendtime"

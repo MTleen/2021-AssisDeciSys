@@ -13,9 +13,9 @@
           <el-form-item label="立案时间" prop="date">
             <el-date-picker clearable size="small"
                             v-model="form.date"
-                            type="date"
-                            value-format="yyyy-MM-dd"
-                            placeholder="选择时间">
+                            type="datetime"
+
+                            placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>
 
@@ -155,14 +155,15 @@
               :total="total"
               :page.sync="form.pageNum"
               :limit.sync="form.pageSize"
+              :pager-count="pagerCount"
               @pagination="getInfo"
             />
 
             <div align="left" class="fujian-style">
-              <el-form ref="form" :model="tipForm">
+              <el-form ref="form" :model="customerInfo">
                 <el-form-item label="" prop="tip">
                   <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">
-                    <el-input v-model="tipForm.tip" size="small" placeholder="请输入特别警示..." style="float:left;"/>
+                    <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="float:left;"/>
                   </el-col>
                   <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">
                     <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">
@@ -294,9 +295,12 @@ export default {
       seconds: 0,
       total: 0,
       timerId: null,
+      pagerCount: 2,
       form: {
         pageNum: 1,
         pageSize: 10,
+        cautionID: null,
+        keyWords: null,
         inform: [],
         address: null,
         date: null,
@@ -307,11 +311,8 @@ export default {
         securityType: null,
         siteID1: null,
         siteID2: null,
-        keyWords: null
       },
-      tipForm: {
-        tip: ''
-      },
+      customerInfo: null,
       informList: [],
       generalInfo: [],
       specialInfo: [],
@@ -334,6 +335,7 @@ export default {
   methods: {
     /** 搜索按钮操作 */
     handleQuery() {
+      this.resetTimer()
       this.form.pageNum = 1
       this.getInfo()
       // 延迟 0.5s，等待数据库结果返回
@@ -343,6 +345,10 @@ export default {
     },
     // 发送消息
     sendInfo(){
+      // 判断自定义消息是否为 null，若不为 null 则加入 inform 列表
+      if (this.customerInfo){
+        this.form.inform.push({informid: null, inform: this.customerInfo})
+      }
       console.log('send info')
       console.log(this.form)
     },
@@ -363,10 +369,7 @@ export default {
     },
     // 多选消息
     handleSelectChange(val){
-      if(this.timerId){
-        clearInterval(this.timerId)
-        this.seconds = 0
-      }
+      this.resetTimer()
       console.log(val)
       this.form.inform = val
     },
@@ -396,7 +399,8 @@ export default {
         let queryParams = {
           pageNum: this.form.pageNum,
           pageSize: this.form.pageSize,
-          detailtype: this.form.sepcialType
+          detailtype: this.form.sepcialType,
+          inform: this.form.keyWords
         }
         listSpecial(queryParams).then(response => {
           this.informList = response.rows
@@ -409,13 +413,21 @@ export default {
           pageSize: this.form.pageSize,
           disastertype: this.form.distype,
           disposeobj: this.form.disposeObj,
-          detailtype: this.form.generalType
+          detailtype: this.form.generalType,
+          inform: this.form.keyWords
         }
         listKnowledge(queryParams).then(response => {
           this.informList = response.rows
           this.total = response.total
           this.loading = false
         })
+      }
+    },
+    // 取消倒计时
+    resetTimer(){
+      if(this.timerId){
+        clearInterval(this.timerId)
+        this.seconds = 0
       }
     }
   }

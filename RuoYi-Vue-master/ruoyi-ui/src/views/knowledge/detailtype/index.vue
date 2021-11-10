@@ -94,7 +94,7 @@
       </el-table-column>
       <el-table-column label="通用/专项" align="center">
         <template slot-scope="scope">
-          <span>{{ libraryType[scope.row.priority] }}</span>
+          <span>{{ $root.totalLibType[scope.row.priority] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -143,7 +143,7 @@
         </el-form-item>
         <el-form-item label="通用/专项" prop="priority">
           <el-select filterable v-model="form.priority" placeholder="请选择通用/专项">
-            <el-option v-for="(value, key, index) in libraryType"
+            <el-option v-for="(value, key, index) in $root.totalLibType"
                        :key="key"
                        :label="value"
                        :value="key"/>

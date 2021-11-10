@@ -21,7 +21,7 @@
     <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
         <where>
-            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
+            <if test="inform != null  and inform != ''"> and inform like concat('%', #{inform}, '%')</if>
             <if test="disastertype != null "> and disastertype = #{disastertype}</if>
             <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
             <if test="detailtype != null "> and detailtype = #{detailtype}</if>

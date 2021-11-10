@@ -29,16 +29,20 @@
       <el-row :gutter="40">
         <el-col :span="14">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :data="typeList" stripe height="900" :header-cell-style="tableHeaderColor">
-              <el-table-column label="案件编号" align="center" prop="cautionID" width='80'>
+            <el-table :v-loading="loading" :data="recordList" stripe height="900" :header-cell-style="tableHeaderColor">
+              <el-table-column label="序号" align="center" type="index"></el-table-column>
+              <el-table-column label="案件编号" align="center" prop="cautionid" width='80'>
               </el-table-column>
-              <el-table-column label="灾情类型" align="center" prop="caseType" width='120'>
-              </el-table-column>
-              <el-table-column label="案发地址" align="center" prop="caseAdress" :show-overflow-tooltip="false">
-              </el-table-column>
-              <el-table-column label="立案时间" align="center" prop="createTime" width="180">
+              <el-table-column label="灾情类型" align="center" prop="distypeid" width='120'>
                 <template slot-scope="scope">
-                  <span>{{ parseTime(scope.row.createTime) }}</span>
+                  {{$root.totalDisType[scope.row.distypeid]}}
+                </template>
+              </el-table-column>
+              <el-table-column label="案发地址" align="center" prop="location" :show-overflow-tooltip="false">
+              </el-table-column>
+              <el-table-column label="立案时间" align="center" prop="cautiontime" width="180">
+                <template slot-scope="scope">
+                  <span>{{ parseTime(scope.row.cautiontime) }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="状态" align="center" prop="status" width='120'>
@@ -54,7 +58,7 @@
                     type="primary"
                     class="btn-style">推送
                   </el-button>
-                  <el-button size="mini" type="success" class="btn-style" @click="handleHisQuery(scope.row.cautionID)">
+                  <el-button size="mini" type="success" class="btn-style" @click="handleHisQuery(scope.row.cautionid)">
                     查看
                   </el-button>
                 </template>
@@ -63,13 +67,12 @@
           </div>
           <div class="block" style="margin-top: 30px;float:right">
             <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="20"
+              v-show="total>0"
+              :total="total"
+              :page.sync="recordQueryParams.pageNum"
+              :limit.sync="recordQueryParams.pageSize"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="100">
+              @pagination="listRecordInfo">
             </el-pagination>
           </div>
         </el-col>
@@ -144,7 +147,21 @@ export default {
         sendtime: null,
         librarytype: null
       },
+      recordQueryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        cautiontime: null,
+        location: null,
+        distypeid: null,
+        dillobject: null,
+        siteid: null,
+        truckid: null,
+        status: null,
+        keywords: null,
+        siteid2: null
+      },
       historyList: [],
+      recordList: [],
       loading: false,
       hisLoading: false,
       typeList: [{
@@ -156,8 +173,6 @@ export default {
       }],
       total: 0,
       hisTotal: 0,
-      handleQuery: history.methods.handleQuery,
-      getList: history.methods.getList,
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
@@ -189,6 +204,9 @@ export default {
       value2: ''
     };
   },
+  created() {
+    this.handleRecordQuery()
+  },
   methods: {
     filterTag(value, row, column) {
       const property = column['property'];
@@ -198,15 +216,30 @@ export default {
     tableHeaderColor({row, column, rowIndex, columnIndex}) {
       return 'background-color:rgb(145, 211, 252);color:black;font-wight:500;text-align:center'
     },
+    handleRecordQuery(){
+      this.recordQueryParams.pageNum = 1
+      this.listRecordInfo()
+    },
     handleHisQuery(cautionID) {
       this.queryParams.cautionid = cautionID
       this.queryParams.pageNum = 1
+      this.listHisInfo()
+    },
+    listHisInfo() {
       this.hisLoading = true;
       listHistory(this.queryParams).then(response => {
         this.historyList = response.rows;
         this.hisTotal = response.total;
         this.hisLoading = false;
       });
+    },
+    listRecordInfo(){
+      this.loading = true
+      listRecord(this.recordQueryParams).then(response => {
+        this.recordList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     }
   }
 }

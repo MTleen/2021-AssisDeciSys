@@ -9,19 +9,19 @@ import com.ruoyi.knowledge.service.IRecordService;
 
 /**
  * 出警记录表Service业务层处理
- * 
- * @author ruoyi
- * @date 2021-10-15
+ *
+ * @author Mathripper
+ * @date 2021-11-10
  */
 @Service
-public class RecordServiceImpl implements IRecordService 
+public class RecordServiceImpl implements IRecordService
 {
     @Autowired
     private RecordMapper recordMapper;
 
     /**
      * 查询出警记录表
-     * 
+     *
      * @param cautionid 出警记录表主键
      * @return 出警记录表
      */
@@ -33,7 +33,7 @@ public class RecordServiceImpl implements IRecordService
 
     /**
      * 查询出警记录表列表
-     * 
+     *
      * @param record 出警记录表
      * @return 出警记录表
      */
@@ -45,7 +45,7 @@ public class RecordServiceImpl implements IRecordService
 
     /**
      * 新增出警记录表
-     * 
+     *
      * @param record 出警记录表
      * @return 结果
      */
@@ -57,7 +57,7 @@ public class RecordServiceImpl implements IRecordService
 
     /**
      * 修改出警记录表
-     * 
+     *
      * @param record 出警记录表
      * @return 结果
      */
@@ -69,7 +69,7 @@ public class RecordServiceImpl implements IRecordService
 
     /**
      * 批量删除出警记录表
-     * 
+     *
      * @param cautionids 需要删除的出警记录表主键
      * @return 结果
      */
@@ -81,7 +81,7 @@ public class RecordServiceImpl implements IRecordService
 
     /**
      * 删除出警记录表信息
-     * 
+     *
      * @param cautionid 出警记录表主键
      * @return 结果
      */
