@@ -43,6 +43,7 @@ export default {
   },
   computed: {
     theme() {
+      console.log(this.$store)
       return this.$store.state.settings.theme;
     },
     // 顶部显示菜单

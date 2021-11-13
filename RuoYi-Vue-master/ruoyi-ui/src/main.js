@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: Shengxiang Hu
  * @Date: 2021-10-14 19:50:08
  * @LastEditors: Shengxiang Hu
@@ -44,6 +44,8 @@ import FileUpload from "@/components/FileUpload"
 import ImageUpload from "@/components/ImageUpload"
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+// 日期选择组件
+import CusDatePicker from "@/components/CusDatePicker";
 // 头部标签组件
 import VueMeta from 'vue-meta'
 import {getToken} from '@/utils/auth'
@@ -73,6 +75,33 @@ Vue.prototype.totalDetailType = {}
 Vue.prototype.totalDisposeObj = {}
 Vue.prototype.totalDisType = {}
 Vue.prototype.totalSites = {}
+Vue.prototype. pickerOptions = {
+  shortcuts: [{
+    text: '最近一周',
+    onClick(picker) {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+      picker.$emit('pick', [start, end]);
+    }
+  }, {
+    text: '最近一个月',
+    onClick(picker) {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+      picker.$emit('pick', [start, end]);
+    }
+  }, {
+    text: '最近三个月',
+    onClick(picker) {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+      picker.$emit('pick', [start, end]);
+    }
+  }]
+},
 
 // 判断是否登录，如果已登录加载全局对象
 Vue.prototype.loadGlobalData = function () {
@@ -137,6 +166,7 @@ Vue.component('RightToolbar', RightToolbar)
 Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
+Vue.component('CusDatePicker', CusDatePicker)
 
 Vue.use(directive)
 Vue.use(VueMeta)

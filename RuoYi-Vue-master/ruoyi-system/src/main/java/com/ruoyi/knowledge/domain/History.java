@@ -41,6 +41,12 @@ public class History extends BaseEntity
     @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date sendtime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date sendtimeStart;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date sendtimeEnd;
+
     /** 知识类型 */
     @Excel(name = "知识类型")
     private Long librarytype;
@@ -89,6 +95,26 @@ public class History extends BaseEntity
     public Date getSendtime()
     {
         return sendtime;
+    }
+
+    public void setSendtimeStart(Date sendtimeStart)
+    {
+        this.sendtimeStart = sendtimeStart;
+    }
+
+    public Date getSendtimeStart()
+    {
+        return sendtimeStart;
+    }
+
+    public void setSendtimeEnd(Date sendtimeEnd)
+    {
+        this.sendtimeEnd = sendtimeEnd;
+    }
+
+    public Date getSendtimeEnd()
+    {
+        return sendtimeEnd;
     }
     public void setLibrarytype(Long librarytype)
     {

@@ -11,6 +11,8 @@
         <result property="positionid" column="positionID"/>
         <result property="tele" column="tele"/>
         <result property="sendtime" column="sendtime"/>
+<!--        <result property="sendtimeStart" column="sendtime"/>-->
+<!--        <result property="sendtimeEnd" column="sendtime"/>-->
         <result property="librarytype" column="librarytype"/>
     </resultMap>
 
@@ -41,9 +43,10 @@
         <where>
             <if test="tele != null ">and tele = #{tele}</if>
             <if test="cautionid != null ">and cautionID = #{cautionid}</if>
-            <if test="sendtime != null ">and date(sendtime) = #{sendtime}</if>
+            <if test="sendtimeStart != null and sendtimeEnd != null">and date(sendtime) between #{sendtimeStart} and #{sendtimeEnd}</if>
             <if test="librarytype != null ">and librarytype = #{librarytype}</if>
         </where>
+        order by a.sendtime desc
     </select>
 
     <select id="selectHistoryByIndex" parameterType="Long" resultMap="HistoryResult">

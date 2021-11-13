@@ -4,16 +4,17 @@
       <el-col :span="24">
         <div class="grid-content bg-purple-dark" align='center'>
           <div class="block">
-            <el-date-picker
-              v-model="value2"
-              type="daterange"
-              align="right"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions">
-            </el-date-picker>
+<!--            <el-date-picker-->
+<!--              v-model="value2"-->
+<!--              type="daterange"-->
+<!--              align="right"-->
+<!--              unlink-panels-->
+<!--              range-separator="至"-->
+<!--              start-placeholder="开始日期"-->
+<!--              end-placeholder="结束日期"-->
+<!--              :picker-options="pickerOptions">-->
+<!--            </el-date-picker>-->
+            <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
             <el-radio-group v-model="AllOrPart" style="margin-left:15px;">
               <el-radio-button label="全部"></el-radio-button>
               <el-radio-button label="已处理"></el-radio-button>
@@ -25,7 +26,7 @@
       </el-col>
     </el-row>
 
-    <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
+    <div style="margin-top: 20px; background: white; padding: 20px 20px 30px 30px;">
       <el-row :gutter="40">
         <el-col :span="14">
           <div class="grid-content bg-purple">
@@ -35,7 +36,7 @@
               </el-table-column>
               <el-table-column label="灾情类型" align="center" prop="distypeid" width='120'>
                 <template slot-scope="scope">
-                  {{$root.totalDisType[scope.row.distypeid]}}
+                  {{ $root.totalDisType[scope.row.distypeid] }}
                 </template>
               </el-table-column>
               <el-table-column label="案发地址" align="center" prop="location" :show-overflow-tooltip="false">
@@ -56,7 +57,8 @@
                   <el-button
                     size="mini"
                     type="primary"
-                    class="btn-style">推送
+                    class="btn-style"
+                    @click="handleSendInfo(scope.row)">推送
                   </el-button>
                   <el-button size="mini" type="success" class="btn-style" @click="handleHisQuery(scope.row.cautionid)">
                     查看
@@ -85,7 +87,7 @@
               <el-table-column label="提示信息" align="center" prop="informid"/>
               <el-table-column label="推送对象" align="center" prop="positionid">
                 <template slot-scope="scope">
-                  <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele}}</span>
+                  <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="发送时间" align="center" prop="sendtime" width="180">
@@ -130,14 +132,14 @@
 
 </template>
 <script>
-import {listHistory, getHistory, delHistory, addHistory, updateHistory, exportHistory} from "@/api/knowledge/history";
-import {listRecord, getRecord, delRecord, addRecord, updateRecord, exportRecord} from "@/api/knowledge/record";
-import history from "@/views/knowledge/history"
+import {listHistory} from "@/api/knowledge/history";
+import {listRecord} from "@/api/knowledge/record";
 
 export default {
   data() {
     return {
       AllOrPart: '全部',
+      sendtimes: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -150,7 +152,8 @@ export default {
       recordQueryParams: {
         pageNum: 1,
         pageSize: 10,
-        cautiontime: null,
+        cautiontimeStart: null,
+        cautiontimeEnd: null,
         location: null,
         distypeid: null,
         dillobject: null,
@@ -173,33 +176,6 @@ export default {
       }],
       total: 0,
       hisTotal: 0,
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
-      },
       value1: '',
       value2: ''
     };
@@ -208,6 +184,10 @@ export default {
     this.handleRecordQuery()
   },
   methods: {
+    handleChange(val){
+      this.sendtimes = val
+      this.handleRecordQuery()
+    },
     filterTag(value, row, column) {
       const property = column['property'];
       return row[property] === value;
@@ -216,14 +196,26 @@ export default {
     tableHeaderColor({row, column, rowIndex, columnIndex}) {
       return 'background-color:rgb(145, 211, 252);color:black;font-wight:500;text-align:center'
     },
-    handleRecordQuery(){
+    handleRecordQuery() {
       this.recordQueryParams.pageNum = 1
+      if (this.sendtimes && this.sendtimes.length > 0){
+        this.recordQueryParams.cautiontimeStart = this.sendtimes[0]
+        this.recordQueryParams.cautiontimeEnd = this.sendtimes[1]
+      }else{
+        this.recordQueryParams.cautiontimeStart = null
+        this.recordQueryParams.cautiontimeEnd = null
+      }
       this.listRecordInfo()
     },
     handleHisQuery(cautionID) {
       this.queryParams.cautionid = cautionID
       this.queryParams.pageNum = 1
       this.listHisInfo()
+    },
+    handleSendInfo(caution) {
+      console.log(caution)
+      console.log(this.$router)
+      this.$router.push({path: '/index', query: caution})
     },
     listHisInfo() {
       this.hisLoading = true;
@@ -233,7 +225,7 @@ export default {
         this.hisLoading = false;
       });
     },
-    listRecordInfo(){
+    listRecordInfo() {
       this.loading = true
       listRecord(this.recordQueryParams).then(response => {
         this.recordList = response.rows

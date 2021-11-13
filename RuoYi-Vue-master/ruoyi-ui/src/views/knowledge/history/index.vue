@@ -1,27 +1,22 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-<!--      <el-form-item label="队站" prop="positionid">-->
-<!--        <el-select-->
-<!--          v-model="queryParams.positionid"-->
-<!--          placeholder="请输入队站"-->
-<!--          filterable-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--        >-->
-<!--          <el-option v-for="(value, key, index) in $root.totalSites"-->
-<!--                     :key="key"-->
-<!--                     :label="value"-->
-<!--                     :value="key"/>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="队站" prop="positionid">-->
+      <!--        <el-select-->
+      <!--          v-model="queryParams.positionid"-->
+      <!--          placeholder="请输入队站"-->
+      <!--          filterable-->
+      <!--          clearable-->
+      <!--          size="small"-->
+      <!--        >-->
+      <!--          <el-option v-for="(value, key, index) in $root.totalSites"-->
+      <!--                     :key="key"-->
+      <!--                     :label="value"-->
+      <!--                     :value="key"/>-->
+      <!--        </el-select>-->
+      <!--      </el-form-item>-->
       <el-form-item label="发送时间" prop="sendtime">
-        <el-date-picker clearable size="small"
-                        v-model="queryParams.sendtime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择发送时间">
-        </el-date-picker>
+        <CusDatePicker @change="handleChange" :sendtimes="sendtimes"></CusDatePicker>
       </el-form-item>
       <el-form-item label="知识类型" prop="librarytype">
         <el-select v-model="queryParams.librarytype" placeholder="请选择知识类型" clearable size="small">
@@ -96,7 +91,7 @@
       <el-table-column label="提示信息" align="center" prop="informid"/>
       <el-table-column label="推送对象" align="center" prop="positionid">
         <template slot-scope="scope">
-          <span>{{$root.totalSites[scope.row.positionid]+"/"+scope.row.tele}}</span>
+          <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
         </template>
       </el-table-column>
       <el-table-column label="发送时间" align="center" prop="sendtime" width="180">
@@ -106,29 +101,29 @@
       </el-table-column>
       <el-table-column label="知识类型" align="center" prop="librarytype">
         <template slot-scope="scope">
-          <span>{{$root.totalLibType[scope.row.librarytype]}}</span>
+          <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-edit"-->
-<!--            @click="handleUpdate(scope.row)"-->
-<!--            v-hasPermi="['knowledge:history:edit']"-->
-<!--          >修改-->
-<!--          </el-button>-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-delete"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--            v-hasPermi="['knowledge:history:remove']"-->
-<!--          >删除-->
-<!--          </el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <el-button-->
+      <!--            size="mini"-->
+      <!--            type="text"-->
+      <!--            icon="el-icon-edit"-->
+      <!--            @click="handleUpdate(scope.row)"-->
+      <!--            v-hasPermi="['knowledge:history:edit']"-->
+      <!--          >修改-->
+      <!--          </el-button>-->
+      <!--          <el-button-->
+      <!--            size="mini"-->
+      <!--            type="text"-->
+      <!--            icon="el-icon-delete"-->
+      <!--            @click="handleDelete(scope.row)"-->
+      <!--            v-hasPermi="['knowledge:history:remove']"-->
+      <!--          >删除-->
+      <!--          </el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
 
     <pagination
@@ -178,12 +173,14 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      sendtimes: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         positionid: null,
-        sendtime: null,
+        sendtimeStart: null,
+        sendtimeEnd: null,
         librarytype: null
       },
       // 表单参数
@@ -222,13 +219,27 @@ export default {
       };
       this.resetForm("form");
     },
+    // 接收 CusDatePicker 的日期值
+    handleChange(sendtimes){
+      this.sendtimes = sendtimes
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
+      if (this.sendtimes.length > 0){
+        this.queryParams.sendtimeStart = this.sendtimes[0]
+        this.queryParams.sendtimeEnd = this.sendtimes[1]
+      }else{
+        this.queryParams.sendtimeStart = null
+        this.queryParams.sendtimeEnd = null
+      }
+      console.log(this.queryParams)
       this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.sendtimes = []
+      // this.handleChange([])
       this.resetForm("queryForm");
       this.handleQuery();
     },

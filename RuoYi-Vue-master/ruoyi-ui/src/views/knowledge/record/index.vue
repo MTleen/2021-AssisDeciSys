@@ -2,12 +2,14 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="时间" prop="cautiontime">
-        <el-date-picker clearable size="small"
-                        v-model="queryParams.cautiontime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择时间">
-        </el-date-picker>
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.cautiontime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择时间">-->
+<!--        </el-date-picker>-->
+       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
+
       </el-form-item>
       <el-form-item label="地址" prop="location">
         <el-input
@@ -172,6 +174,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+<!--    <Pagination :total="total"></Pagination>-->
 
     <!-- 添加或修改出警记录表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -179,8 +182,8 @@
         <el-form-item label="时间" prop="cautiontime">
           <el-date-picker clearable size="small"
                           v-model="form.cautiontime"
-                          type="date"
-                          value-format="yyyy-MM-dd"
+                          type="datetime"
+                          value-format="yyyy-MM-dd HH:mm:ss"
                           placeholder="选择时间">
           </el-date-picker>
         </el-form-item>
@@ -256,11 +259,13 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      sendtimes: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        cautiontime: null,
+        cautiontimeStart: null,
+        cautiontimeEnd: null,
         location: null,
         distypeid: null,
         dillobject: null,
@@ -287,6 +292,11 @@ export default {
     this.getList();
   },
   methods: {
+    // 接收 CusDatePicker 的日期值
+    handleChange(sendtimes){
+      this.sendtimes = sendtimes
+
+    },
     /** 查询出警记录表列表 */
     getList() {
       this.loading = true;
@@ -323,10 +333,19 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
-      this.getList();
+      if (this.sendtimes.length > 0){
+        this.queryParams.cautiontimeStart = this.sendtimes[0]
+        this.queryParams.cautiontimeEnd = this.sendtimes[1]
+      }else{
+        this.queryParams.cautiontimeStart = null
+        this.queryParams.cautiontimeEnd = null
+      }
+      console.log(this.queryParams)
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.sendtimes = []
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -348,7 +367,9 @@ export default {
       const cautionid = row.cautionid || this.ids
       getRecord(cautionid).then(response => {
         this.form = response.data;
-        this.form.siteid2 = this.form.siteid2.split(",");
+        if (this.form.siteid2){
+          this.form.siteid2 = this.form.siteid2.split(",");
+        }
         this.open = true;
         this.title = "修改出警记录表";
       });
@@ -357,7 +378,9 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.form.siteid2 = this.form.siteid2.join(",");
+          if (this.form.siteid2){
+            this.form.siteid2 = this.form.siteid2.join(",");
+          }
           if (this.form.cautionid != null) {
             updateRecord(this.form).then(response => {
               this.msgSuccess("修改成功");

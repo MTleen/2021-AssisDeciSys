@@ -25,6 +25,14 @@ public class Record extends BaseEntity
     @Excel(name = "时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date cautiontime;
 
+    /** 开始时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date cautiontimeStart;
+
+    /** 结束时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date cautiontimeEnd;
+
     /** 地址 */
     @Excel(name = "地址")
     private String location;
@@ -83,6 +91,23 @@ public class Record extends BaseEntity
     public Date getCautiontime()
     {
         return cautiontime;
+    }
+    public Date getCautiontimeStart()
+    {
+        return cautiontimeStart;
+    }
+    public void setCautiontimeStart(Date cautiontime)
+{
+    this.cautiontimeStart = cautiontime;
+}
+    public void setCautiontimeEnd(Date cautiontime)
+    {
+        this.cautiontimeEnd = cautiontime;
+    }
+
+    public Date getCautiontimeEnd()
+    {
+        return cautiontimeEnd;
     }
     public void setLocation(String location)
     {

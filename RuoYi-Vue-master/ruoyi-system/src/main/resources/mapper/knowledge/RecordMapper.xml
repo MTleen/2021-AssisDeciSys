@@ -27,7 +27,7 @@
     <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
         <where>
-            <if test="cautiontime != null "> and date(cautiontime) = #{cautiontime}</if>
+            <if test="cautiontimeStart != null and cautiontimeEnd != null"> and date(cautiontime) between #{cautiontimeStart} and #{cautiontimeEnd}</if>
             <if test="location != null  and location != ''"> and location = #{location}</if>
             <if test="distypeid != null "> and distypeID = #{distypeid}</if>
             <if test="dillobject != null "> and dillobject = #{dillobject}</if>

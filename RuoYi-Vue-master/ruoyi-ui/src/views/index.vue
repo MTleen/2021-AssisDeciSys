@@ -40,7 +40,7 @@
           <el-form-item label="通用类型:" prop="generalType" style="">
             <el-select v-model="form.generalType" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDetailType"
-                         v-if="value[1]===0"
+                         v-if="value[1]===1"
                          :key="key"
                          :label="value[0]"
                          :value="key"/>
@@ -69,7 +69,7 @@
           <el-form-item label="专项类型:" prop="specialType" style="">
             <el-select v-model="form.specialType" clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDetailType"
-                         v-if="value[1]===1"
+                         v-if="value[1]===3"
                          :key="key"
                          :label="value[0]"
                          :value="key"/>
@@ -331,6 +331,17 @@ export default {
   },
   created() {
     this.$root.loadGlobalData()
+    console.log(this.$route.query)
+    let queryParameters = this.$route.query
+    if (queryParameters && queryParameters){
+      this.form.cautionID = queryParameters.cautionid
+      this.form.date = queryParameters.cautiontime
+      this.form.distype = queryParameters.distypeid
+      this.form.disposeObj = queryParameters.dillobject
+      this.form.address = queryParameters.location
+      this.form.siteID1 = queryParameters.siteid
+      this.form.siteID2 = queryParameters.siteid2
+    }
   },
   methods: {
     /** 搜索按钮操作 */
