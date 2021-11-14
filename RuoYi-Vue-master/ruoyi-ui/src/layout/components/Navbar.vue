@@ -14,18 +14,23 @@
       </div>
 
       <div class="weather-container">
-        <div>
-            <img :src="logo" class="weather-style">
+        <div class="weather-style">
+          <div>
+            <span>今 日</span>
+          </div>
+          <div class="weatherword-style">
+            <span>天 气</span>
+          </div>
         </div>
         <div class="weatherContent" >
           <div class="watherContent-style">
           <span >天气：{{weatherData.realtime.info}}</span>
           </div>
           <div class="watherContent-style">
-          <span >降水概率：50%</span>
+          <span >温度：{{weatherData.realtime.temperature}}℃</span>
           </div>
           <div class="watherContent-style">
-          <span >火险等级：一级</span>
+          <span >湿度：{{weatherData.realtime.humidity}}%</span>
           </div>
         </div>
 
@@ -48,7 +53,7 @@
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <!-- <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
@@ -65,7 +70,7 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-      </template>
+      </template> -->
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -211,7 +216,7 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 150px;
+  height: 70%;
   overflow: hidden;
   position: relative;
   background: #fff;
@@ -247,7 +252,7 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    // line-height: 50px;
 
     &:focus {
       outline: none;
@@ -324,10 +329,16 @@ export default {
     display: flex;
   }
   .weather-style{
-    height: 60px;
-    width: 60px;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
     margin-right:20px;
-    margin-top: 10px ;
+    margin-top: 5% ;
+  }
+  .weatherword-style{
+  margin-top: 10px;
+  margin-bottom: 10px ;
   }
   .weatherContent{
     display: flex;
@@ -343,7 +354,7 @@ export default {
   }
 }
 .new-banner{
-  height: 100px;
+  height: 65%;
   width: 100%;
   background: rgb(38, 159, 235);
   display: flex;

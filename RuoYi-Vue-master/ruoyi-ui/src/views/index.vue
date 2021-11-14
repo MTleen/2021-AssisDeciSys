@@ -10,17 +10,17 @@
           <!--          <el-form-item label="立案时间:" prop="time" style="">-->
           <!--            <el-input v-model="form.time" size="small" clearable/>-->
           <!--          </el-form-item>-->
-          <el-form-item label="立案时间" prop="date">
+          <el-form-item label="立案时间:" prop="date">
             <el-date-picker clearable size="small"
                             v-model="form.date"
                             type="datetime"
-
+                            style="width: 208px;"
                             placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>
 
           <el-form-item label="灾情类型:" prop="distype" style="">
-            <el-select v-model="form.distype" filterable learable size="small">
+            <el-select v-model="form.distype" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDisType"
                          :key="key"
                          :label="value"
@@ -77,7 +77,7 @@
           </el-form-item>
 
           <el-form-item label="关键词:" prop="keyWords" style="">
-            <el-input v-model="form.keyWords" clearable style="width: 165px;" size="small" prefix-icon=" el-icon-search"
+            <el-input v-model="form.keyWords" clearable style="width: 208px;" size="small" prefix-icon=" el-icon-search"
                       placeholder="请输入关键词"/>
 
           </el-form-item>
@@ -99,13 +99,14 @@
 
     <div class="table-style">
       <el-row :gutter="30" style="margin-top: 20px;">
-        <el-col :span="8">
+        <el-col :span="24">
           <el-card>
-            <i class="el-icon-s-flag" style="float:left; padding: 4px 0px 4px 4px;"></i>
-            <a style="font-size:16px;float:left; padding-left: 5px;">指挥员</a>
+            <i class="el-icon-s-flag" style="text-align:center; padding: 4px 0px 4px 4px;"></i>
+            <a style=" font-size:16px;text-align:center; padding-left: 5px;">指挥员</a>
           </el-card>
         </el-col>
-        <el-col :span="8">
+
+        <!-- <el-col :span="8">
           <el-card>
             <i class="el-icon-service" style="float:left; padding: 4px 0px 4px 4px;"></i>
             <span style="font-size:16px;float:left;padding-left: 5px;">战斗员</span>
@@ -116,14 +117,15 @@
             <i class="el-icon-phone-outline" style="float:left; padding: 4px 0px 4px 4px;"></i>
             <span style="font-size:16px;float:left; padding-left:5px; ">司通员</span>
           </el-card>
-        </el-col>
+        </el-col> -->
+
       </el-row>
 
 
       <el-row :gutter="30">
-        <el-col :span="8">
+        <el-col :span="24">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange">
+            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height="800px">
               <el-table-column type="selection" align="center" width="50"/>
 
               <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
@@ -159,21 +161,39 @@
               @pagination="getInfo"
             />
 
-            <div align="left" class="fujian-style">
+            <!-- <div align="left" class="fujian-style">
               <el-form ref="form" :model="customerInfo">
                 <el-form-item label="" prop="tip">
+                <div class="width:100px">
                   <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">
                     <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="float:left;"/>
                   </el-col>
+                </div>
+                <div>
                   <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">
                     <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">
                       附件上传
                     </el-button>
                   </el-col>
+                </div>
                 </el-form-item>
               </el-form>
-            </div>
+            </div> -->
 
+          <el-form ref="form" :model="customerInfo">  
+            <el-form-item label="" prop="tip">
+              <div  class="fujian-style">
+                <div style="margin-right:10px; width:40%">
+                  <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:100%"/>
+                </div>
+                <div>
+                  <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">
+                          附件上传
+                  </el-button>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
           </div>
         </el-col>
 
@@ -278,7 +298,7 @@
 
       <div align="center">
         <el-button style="margin-top: 40px" type="primary" v-if="seconds > 0">{{ seconds }} s</el-button>
-        <el-button style="margin-top: 40px" type="primary" v-else @click="sendInfo" :disabled="informList.length === 0">发 送</el-button>
+        <el-button style="margin-top: 40px" type="primary" size="middle" v-else @click="sendInfo" :disabled="informList.length === 0">发 送</el-button>
       </div>
     </div>
   </div>
@@ -298,7 +318,7 @@ export default {
       pagerCount: 2,
       form: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 30,
         cautionID: null,
         keyWords: null,
         inform: [],
@@ -466,10 +486,13 @@ export default {
 
 .fujian-style {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 30px;
   vertical-align: middle;
   float: left;
+  display: flex;
+   justify-content:  flex-end;
 }
+
 
 .el-card {
   height: 40px;
@@ -496,7 +519,7 @@ element.style {
 }
 
 /* .app-container{
-  background: rgb(145, 211, 252);
+  overflow:scroll;
 } */
 
 
