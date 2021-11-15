@@ -28,7 +28,7 @@
 
     <div style="margin-top: 20px; background: white; padding: 20px 20px 30px 30px;">
       <el-row :gutter="40">
-        <el-col :span="14">
+        <el-col :span="13">
           <div class="grid-content bg-purple">
             <el-table :v-loading="loading" :data="recordList" stripe height="900" :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"></el-table-column>
@@ -79,23 +79,23 @@
           </div>
         </el-col>
 
-        <el-col :span="10">
+        <el-col :span="11">
           <div class="grid-content bg-purple">
             <el-table :v-loading="hisLoading" :data="historyList" stripe height="900"
                       :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"/>
               <el-table-column label="提示信息" align="center" prop="informid"/>
-              <el-table-column label="推送对象" align="center" prop="positionid">
+              <el-table-column label="推送对象" align="center" prop="positionid" >
                 <template slot-scope="scope">
                   <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="发送时间" align="center" prop="sendtime" width="180">
+              <el-table-column label="发送时间" align="center" prop="sendtime" width="150">
                 <template slot-scope="scope">
                   <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="知识类型" align="center" prop="librarytype">
+              <el-table-column label="知识类型" align="center" prop="librarytype" width="100">
                 <template slot-scope="scope">
                   <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
                 </template>
@@ -194,7 +194,7 @@ export default {
     },
     //设置表头行的样式
     tableHeaderColor({row, column, rowIndex, columnIndex}) {
-      return 'background-color:rgb(145, 211, 252);color:black;font-wight:500;text-align:center'
+      return 'background-color:rgb(167, 196, 237);color:black;font-wight:500;text-align:center'
     },
     handleRecordQuery() {
       this.recordQueryParams.pageNum = 1

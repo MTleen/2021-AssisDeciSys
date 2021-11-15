@@ -72,7 +72,17 @@
 
       </template> -->
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+       <el-button class="button-style"  @click.native="logout">
+         <i class="el-icon-switch-button"></i>
+            <span>退出登录</span>
+       </el-button>
+
+        <!-- <el-dropdown-item divided @click.native="logout">
+          <i class="el-icon-switch-button"></i>
+          <span>退出登录</span>
+        </el-dropdown-item> -->
+
+      <!-- <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
           <i class="el-icon-caret-bottom" />
@@ -88,7 +98,7 @@
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
-      </el-dropdown>
+      </el-dropdown> -->
     </div>
   </div>
 </template>
@@ -352,11 +362,16 @@ export default {
     margin-left:5px;
     font-size: 14px;
   }
+  .button-style{
+    margin-top:8px;
+    border:none;
+    size: medium;
+  }
 }
 .new-banner{
   height: 65%;
   width: 100%;
-  background: rgb(38, 159, 235);
+  background: rgb(3, 92, 185);
   display: flex;
   justify-content: flex-start;
   flex-direction: row;

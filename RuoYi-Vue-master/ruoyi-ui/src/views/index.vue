@@ -14,13 +14,13 @@
             <el-date-picker clearable size="small"
                             v-model="form.date"
                             type="datetime"
-                            style="width: 208px;"
+                            style="width: 214px;"
                             placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>
 
           <el-form-item label="灾情类型:" prop="distype" style="">
-            <el-select v-model="form.distype" filterable clearable size="small">
+            <el-select v-model="form.distype" filterable clearable size="small"  style="width: 214px;">
               <el-option v-for="(value, key, index) in $root.totalDisType"
                          :key="key"
                          :label="value"
@@ -29,7 +29,7 @@
           </el-form-item>
 
           <el-form-item label="处置对象:" prop="disposeObj" style="">
-            <el-select v-model="form.disposeObj" filterable clearable size="small">
+            <el-select v-model="form.disposeObj" filterable clearable size="small" style="width: 214px;">
               <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                          :key="key"
                          :label="value"
@@ -38,7 +38,7 @@
           </el-form-item>
 
           <el-form-item label="通用类型:" prop="generalType" style="">
-            <el-select v-model="form.generalType" filterable clearable size="small">
+            <el-select v-model="form.generalType" filterable clearable size="small" style="width: 214px;">
               <el-option v-for="(value, key, index) in $root.totalDetailType"
                          v-if="value[1]===1"
                          :key="key"
@@ -49,7 +49,7 @@
 
           <!--        <el-row style="margin-top: 2px">-->
           <el-form-item label="主管队站:" prop="siteID1" style="">
-            <el-select v-model="form.siteID1" filterable clearable size="small">
+            <el-select v-model="form.siteID1" filterable clearable size="small" style="width: 214px;">
               <el-option v-for="(value, key, index) in $root.totalSites"
                          :key="key"
                          :label="value"
@@ -58,7 +58,7 @@
           </el-form-item>
 
           <el-form-item label="参战力量:" prop="siteID2" style="">
-            <el-select v-model="form.siteID2" filterable clearable size="small">
+            <el-select v-model="form.siteID2" filterable clearable size="small" style="width: 214px;">
               <el-option v-for="(value, key, index) in $root.totalSites"
                          :key="key"
                          :label="value"
@@ -67,7 +67,7 @@
           </el-form-item>
 
           <el-form-item label="专项类型:" prop="specialType" style="">
-            <el-select v-model="form.specialType" clearable size="small">
+            <el-select v-model="form.specialType" clearable size="small" style="width: 214px;">
               <el-option v-for="(value, key, index) in $root.totalDetailType"
                          v-if="value[1]===3"
                          :key="key"
@@ -77,7 +77,7 @@
           </el-form-item>
 
           <el-form-item label="关键词:" prop="keyWords" style="">
-            <el-input v-model="form.keyWords" clearable style="width: 208px;" size="small" prefix-icon=" el-icon-search"
+            <el-input v-model="form.keyWords" clearable style="width: 214px;" size="small" prefix-icon=" el-icon-search"
                       placeholder="请输入关键词"/>
 
           </el-form-item>
@@ -97,7 +97,7 @@
     </div>
 
 
-    <div class="table-style">
+    <div class="table-style" >
       <el-row :gutter="30" style="margin-top: 20px;">
         <el-col :span="24">
           <el-card>
@@ -125,7 +125,7 @@
       <el-row :gutter="30">
         <el-col :span="24">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height="800px">
+            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height="600px">
               <el-table-column type="selection" align="center" width="50"/>
 
               <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
@@ -187,7 +187,7 @@
                   <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:100%"/>
                 </div>
                 <div>
-                  <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">
+                  <el-button type="" size="small" icon="el-icon-plus" >
                           附件上传
                   </el-button>
                 </div>
@@ -318,7 +318,7 @@ export default {
       pagerCount: 2,
       form: {
         pageNum: 1,
-        pageSize: 30,
+        pageSize: 20,
         cautionID: null,
         keyWords: null,
         inform: [],
@@ -331,6 +331,7 @@ export default {
         securityType: null,
         siteID1: null,
         siteID2: null,
+        vdaH:0,
       },
       customerInfo: null,
       informList: [],
@@ -362,6 +363,8 @@ export default {
       this.form.siteID1 = queryParameters.siteid
       this.form.siteID2 = queryParameters.siteid2
     }
+    let h = document.documentElement.clientHeight || document.body.clientHeight;
+    this.vdaH = h - 130 + 'px';
   },
   methods: {
     /** 搜索按钮操作 */
@@ -506,7 +509,6 @@ export default {
 .table-style {
   background: white;
   padding: 5px 20px 30px 30px;
-  height: 100%;
 }
 
 .el-form-item {
