@@ -10,6 +10,7 @@
     end-placeholder="结束日期"
     value-format="yyyy-MM-dd"
     :picker-options="pickerOptions"
+    size="small"
   @change="handleChange">
   </el-date-picker>
 </template>

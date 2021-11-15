@@ -98,28 +98,28 @@
 
 
     <div class="table-style">
-      <el-row :gutter="30" style="margin-top: 20px;">
-        <el-col :span="24">
-          <el-card>
-            <i class="el-icon-s-flag" style="text-align:center; padding: 4px 0px 4px 4px;"></i>
-            <a style=" font-size:16px;text-align:center; padding-left: 5px;">指挥员</a>
-          </el-card>
-        </el-col>
+<!--      <el-row :gutter="30" style="margin-top: 20px;">-->
+<!--        <el-col :span="24">-->
+<!--          <el-card>-->
+<!--            <i class="el-icon-s-flag" style="text-align:center; padding: 4px 0px 4px 4px;"></i>-->
+<!--            <a style=" font-size:16px;text-align:center; padding-left: 5px;">指挥员</a>-->
+<!--          </el-card>-->
+<!--        </el-col>-->
 
-        <!-- <el-col :span="8">
-          <el-card>
-            <i class="el-icon-service" style="float:left; padding: 4px 0px 4px 4px;"></i>
-            <span style="font-size:16px;float:left;padding-left: 5px;">战斗员</span>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card>
-            <i class="el-icon-phone-outline" style="float:left; padding: 4px 0px 4px 4px;"></i>
-            <span style="font-size:16px;float:left; padding-left:5px; ">司通员</span>
-          </el-card>
-        </el-col> -->
+<!--        &lt;!&ndash; <el-col :span="8">-->
+<!--          <el-card>-->
+<!--            <i class="el-icon-service" style="float:left; padding: 4px 0px 4px 4px;"></i>-->
+<!--            <span style="font-size:16px;float:left;padding-left: 5px;">战斗员</span>-->
+<!--          </el-card>-->
+<!--        </el-col> -->
+<!--        <el-col :span="8">-->
+<!--          <el-card>-->
+<!--            <i class="el-icon-phone-outline" style="float:left; padding: 4px 0px 4px 4px;"></i>-->
+<!--            <span style="font-size:16px;float:left; padding-left:5px; ">司通员</span>-->
+<!--          </el-card>-->
+<!--        </el-col> &ndash;&gt;-->
 
-      </el-row>
+<!--      </el-row>-->
 
 
       <el-row :gutter="30">
@@ -134,13 +134,14 @@
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 
               <el-table-column label="提示信息" align="center" prop="inform" :show-overflow-tooltip="false"/>
-              <!--              <el-table-column-->
-              <!--                width="60"-->
-              <!--                label="信息类型"-->
-              <!--                align="center"-->
-              <!--                prop="detailtype"-->
-              <!--                :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
-              <!--                :filter-method="filterTag">-->
+              <el
+<!--                            <el-table-column-->
+<!--                              width="60"-->
+<!--                              label="信息类型"-->
+<!--                              align="center"-->
+<!--                              prop="detailtype"-->
+<!--                              :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
+<!--                              :filter-method="filterTag">-->
 
               <!--                <template slot-scope="scope">-->
               <!--                  <i class='el-icon-question' v-if="scope.row.ZHIcon === '1'">-->
@@ -180,7 +181,7 @@
               </el-form>
             </div> -->
 
-          <el-form ref="form" :model="customerInfo">  
+          <el-form ref="form" :model="customerInfo">
             <el-form-item label="" prop="tip">
               <div  class="fujian-style">
                 <div style="margin-right:10px; width:40%">
@@ -337,16 +338,6 @@ export default {
       generalInfo: [],
       specialInfo: [],
       securityInfo: [],
-      sitongData: [{
-        STId: '1',
-        STcontent: '利用防烟楼梯登高',
-        STIcon: '1'
-      }, {
-        STId: '2',
-        STcontent: '严禁停靠着火层或穿越着火层',
-        STIcon: '3'
-      }]
-
     }
   },
   created() {
