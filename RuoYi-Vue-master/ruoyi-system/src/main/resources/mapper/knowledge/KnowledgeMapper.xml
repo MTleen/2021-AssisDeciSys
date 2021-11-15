@@ -13,6 +13,20 @@
         <result property="detailtype"    column="detailtype"    />
         <result property="informtypeid"    column="informtypeID"    />
     </resultMap>
+    <resultMap type="Record" id="RecordResult">
+        <result property="cautionid"    column="cautionID"    />
+        <result property="cautiontime"    column="cautiontime"    />
+        <result property="location"    column="location"    />
+        <result property="distypeid"    column="distypeID"    />
+        <result property="dillobject"    column="dillobject"    />
+        <result property="siteid"    column="siteID"    />
+        <result property="truckid"    column="truckID"    />
+        <result property="picture"    column="picture"    />
+        <result property="status"    column="status"    />
+        <result property="detailtype"    column="detailtype"    />
+        <result property="label4"    column="label4"    />
+        <result property="keywords"    column="keywords"    />
+    </resultMap>
 
     <sql id="selectKnowledgeVo">
         select informID, inform, weight, disastertype, disposeobj, detailtype, informtypeID from Knowledge
@@ -76,4 +90,46 @@
             #{informid}
         </foreach>
     </delete>
+
+
+    <!--小程序信息查询 -->
+    <select id="selecttelebyOpenID" parameterType="String" resultType="String">
+        select tele from UserInfo where openid=#{openid}
+    </select>
+    <select id="selectCautionbytele" parameterType="String" resultType="History">
+        select cautionID from History where tele=#{tele}
+    </select>
+    <select id="selectStatusbyCaution" parameterType="String" resultType="Boolean">
+        select status from Record where cautionID=#{cautionid}
+    </select>
+    <select id="selectInformIDbytele" resultType="History">
+        select informID,sendtime from History where tele=#{tele} and sendtime >= #{sendtime} and cautionID=#{cautionid} order by sendtime
+    </select>
+    <select id="selectInformIDbytele1" resultType="History">
+        select informID,sendtime from History where tele=#{tele} and sendtime = #{sendtime}
+    </select>
+    <select id="selectInformIDbycau" resultType="History">
+        select informID from History where tele=#{tele} and cautionID= #{cautionid}
+    </select>
+    <select id="selectKnow1" parameterType="Long" resultMap="KnowledgeResult">
+        select *
+        from Knowledge k
+        where k.informID=#{informid}
+    </select>
+    <select id="selectRecord1" resultMap="RecordResult">
+        select *
+        from Record r
+                 LEFT join History h on h.tele=#{tele} and h.sendtime=#{sendtime1}
+        where r.cautionID=h.cautionID
+--         group by r.cautionID
+    </select>
+    <select id="selectRecord2" resultMap="RecordResult">
+        select *
+        from Record r
+        where r.cautionID=#{cautionid}
+--         group by r.cautionID
+    </select>
+    <select id="selectDisaster" parameterType="String" resultType="String">
+        select typename from DisasterType where typeID=#{disastertype}
+    </select>
 </mapper>

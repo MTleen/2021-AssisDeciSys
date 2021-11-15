@@ -1,7 +1,11 @@
 package com.ruoyi.knowledge.service;
 
+import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.knowledge.domain.History;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Record;
 
 /**
  * 通用知识库Service接口
@@ -58,4 +62,21 @@ public interface IKnowledgeService
      * @return 结果
      */
     public int deleteKnowledgeByInformid(Long informid);
+
+    /**
+     * 小程序信息查询
+     *
+     * @param openid 用户OpenID
+     * @return PositionID 与 TruckID
+     */
+    public String selecttelebyOpenID(String openid);
+    public Boolean selectStatusbyCaution(String cautionid);
+    public List<History> selectCautionbytele(String tele);
+    public String selectDisaster(String disastertype);
+    public List<History> selectInformIDbytele(String tele, Date sendtime, String cautionid);
+    public List<History> selectInformIDbycau(String tele, String cautionid);
+    public List<History> selectInformIDbytele1(String tele, Date sendtime);
+    public List<Knowledge> selectKnow1(Long informid);
+    public List<Record> selectRecord1(String tele, Date sendtime1);
+    public List<Record> selectRecord2(String cautionid);
 }
