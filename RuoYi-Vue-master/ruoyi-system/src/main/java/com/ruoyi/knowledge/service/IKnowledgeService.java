@@ -73,8 +73,8 @@ public interface IKnowledgeService
     public Boolean selectStatusbyCaution(String cautionid);
     public List<History> selectCautionbytele(String tele);
     public String selectDisaster(String disastertype);
-    public List<History> selectInformIDbytele(String tele, Date sendtime, String cautionid);
-    public List<History> selectInformIDbycau(String tele, String cautionid);
+    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime);
+    public List<History> selectInformIDbycau(String tele, String cautionid,Date sendtime);
     public List<History> selectInformIDbytele1(String tele, Date sendtime);
     public List<Knowledge> selectKnow1(Long informid);
     public List<Record> selectRecord1(String tele, Date sendtime1);

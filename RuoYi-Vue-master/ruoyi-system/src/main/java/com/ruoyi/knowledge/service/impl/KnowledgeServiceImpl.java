@@ -123,14 +123,14 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     }
 
     @Override
-    public List<History> selectInformIDbytele(String tele, Date sendtime, String cautionid)
+    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime)
     {
-        return knowledgeMapper.selectInformIDbytele(tele,sendtime,cautionid);
+        return knowledgeMapper.selectInformIDbytele(tele,cautionid,sendtime);
     }
     @Override
-    public List<History> selectInformIDbycau(String tele, String cautionid)
+    public List<History> selectInformIDbycau(String tele, String cautionid,Date sendtime)
     {
-        return knowledgeMapper.selectInformIDbycau(tele,cautionid);
+        return knowledgeMapper.selectInformIDbycau(tele,cautionid,sendtime);
     }
 
     @Override
