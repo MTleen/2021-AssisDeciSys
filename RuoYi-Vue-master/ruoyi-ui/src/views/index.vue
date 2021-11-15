@@ -14,13 +14,13 @@
             <el-date-picker clearable size="small"
                             v-model="form.date"
                             type="datetime"
-                            style="width: 208px;"
+                            style="width: 214px;"
                             placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>
 
           <el-form-item label="灾情类型:" prop="distype" style="">
-            <el-select v-model="form.distype" filterable clearable size="small">
+            <el-select v-model="form.distype" filterable clearable size="small" >
               <el-option v-for="(value, key, index) in $root.totalDisType"
                          :key="key"
                          :label="value"
@@ -77,7 +77,7 @@
           </el-form-item>
 
           <el-form-item label="关键词:" prop="keyWords" style="">
-            <el-input v-model="form.keyWords" clearable style="width: 208px;" size="small" prefix-icon=" el-icon-search"
+            <el-input v-model="form.keyWords" clearable style="width: 214px;" size="small" prefix-icon=" el-icon-search"
                       placeholder="请输入关键词"/>
 
           </el-form-item>
@@ -125,7 +125,7 @@
       <el-row :gutter="30">
         <el-col :span="24">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height="800px">
+            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height="600px">
               <el-table-column type="selection" align="center" width="50"/>
 
               <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
@@ -319,7 +319,7 @@ export default {
       pagerCount: 2,
       form: {
         pageNum: 1,
-        pageSize: 30,
+        pageSize: 20,
         cautionID: null,
         keyWords: null,
         inform: [],
