@@ -103,13 +103,23 @@
         select status from Record where cautionID=#{cautionid}
     </select>
     <select id="selectInformIDbytele" resultType="History">
-        select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} order by sendtime
+        <if test="sendtime != null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} order by sendtime
+        </if>
+        <if test="sendtime == null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} order by sendtime
+        </if>
     </select>
     <select id="selectInformIDbytele1" resultType="History">
         select informID,sendtime from History where tele=#{tele} and sendtime = #{sendtime}
     </select>
     <select id="selectInformIDbycau" resultType="History">
-        select informID from History where tele=#{tele} and cautionID= #{cautionid} and sendtime >= #{sendtime}
+        <if test="sendtime != null">
+            select informID from History where tele=#{tele} and cautionID= #{cautionid} and sendtime >= #{sendtime}
+        </if>
+        <if test="sendtime == null">
+            select informID from History where tele=#{tele} and cautionID= #{cautionid}
+        </if>
     </select>
     <select id="selectKnow1" parameterType="Long" resultMap="KnowledgeResult">
         select *
