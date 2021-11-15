@@ -1,13 +1,16 @@
 package com.ruoyi.web.controller.knowledge;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-
-import com.ruoyi.knowledge.domain.History;
-import com.ruoyi.knowledge.domain.Kappinfo;
-import com.ruoyi.knowledge.domain.Record;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.knowledge.domain.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +25,11 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.knowledge.domain.Knowledge;
 import com.ruoyi.knowledge.service.IKnowledgeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+//import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * 通用知识库Controller
@@ -124,6 +128,21 @@ public class KnowledgeController extends BaseController
         return newList;
     }
 
+
+    @GetMapping("/pushOneUser")
+    public String pushOneUser() {
+//        Date currentTime = new Date();
+        String str="2001-01-01";
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd ");
+        Date date= null;
+        try {
+            date=format1.parse(str);}
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return applist("1",date);
+    }
+
     /**
      * App查询推送历史记录
      */
@@ -134,7 +153,8 @@ public class KnowledgeController extends BaseController
     })
     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
     @GetMapping("/applist")
-    public TableDataInfo applist(String openid, Date sendtime) {
+    public String applist(String openid, Date sendtime) {
+//    public TableDataInfo applist(String openid, Date sendtime) {
 
 //        查询手机号
         String location = null;
@@ -252,7 +272,33 @@ public class KnowledgeController extends BaseController
                 result.add(info1);
             }
         }
+        WxMssVo wxMssVo = new WxMssVo();
+        wxMssVo.setTouser(openid);//用户的openid（要发送给那个用户，通常这里应该动态传进来的）
+        wxMssVo.setTemplate_id("CFeSWarQLMPyPjwmiy6AV4eB-IZcipu48V8bFLkBzTU");//订阅消息模板id
+        wxMssVo.setPage("pages/index/index");
         result.add(info);
-        return getDataTable(result);
+        wxMssVo.setData(result);
+//        return getDataTable(result);
+        String url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + getAccessToken();
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity =
+                restTemplate.postForEntity(url, wxMssVo, String.class);
+        return responseEntity.getBody();
+    }
+
+    @GetMapping("/getAccessToken")
+    public String getAccessToken() {
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> params = new HashMap<>();
+        params.put("APPID", "wx7c54942dfc87f4d8");  //
+        params.put("APPSECRET", "5873a729c365b65ab42bb5fc82d2ed49");  //
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
+                "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}", String.class, params);
+        String body = responseEntity.getBody();
+        JSONObject object = JSON.parseObject(body);
+        String Access_Token = object.getString("access_token");
+        String expires_in = object.getString("expires_in");
+        System.out.println("有效时长expires_in：" + expires_in);
+        return Access_Token;
     }
 }
