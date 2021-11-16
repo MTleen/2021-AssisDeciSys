@@ -124,7 +124,7 @@ public class KnowledgeController extends BaseController {
             @ApiImplicitParam(name = "openid", value = "OpenId", dataType = "String"),
             @ApiImplicitParam(name = "sendtime", value = "截止时间", dataType = "Date")
     })
-    @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
+//    @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
     @GetMapping("/applist")
     public TableDataInfo applist(String openid, Date sendtime) {
 
