@@ -30,7 +30,8 @@
       <el-row :gutter="40">
         <el-col :span="13">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :data="recordList" stripe height="900" :header-cell-style="tableHeaderColor">
+            <div class="table-height">
+            <el-table :v-loading="loading" :data="recordList" stripe height=100% :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"></el-table-column>
               <el-table-column label="案件编号" align="center" prop="cautionid" width='80'>
               </el-table-column>
@@ -66,6 +67,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </div>
           <div class="block" style="margin-top: 30px;float:right">
             <el-pagination
@@ -81,7 +83,7 @@
 
         <el-col :span="11">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="hisLoading" :data="historyList" stripe height="900"
+            <el-table :v-loading="hisLoading" :data="historyList" stripe     
                       :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"/>
               <el-table-column label="提示信息" align="center" prop="informid"/>
@@ -242,7 +244,9 @@ export default {
 }
 };
 <style>
-
+.table-height{
+   height: calc(65vh);     
+}
 .btn-style {
   min-width: 50px;
   min-height: 25px;

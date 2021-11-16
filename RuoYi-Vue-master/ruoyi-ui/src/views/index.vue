@@ -2,30 +2,29 @@
   <div class="app-container">
     <div class="top-style">
       <el-form label-position="left" ref="form" :model="form" :inline="true" label-width="80px">
-        <el-row style="margin-top: 15px">
-          <el-form-item label="案发地址:" prop="address" style="">
-            <el-input v-model="form.address" size="small" clearable/>
+        <el-row style="margin-top: 15px; margin-left: 15px">
+          <el-form-item label="案发地址:" prop="address" style=" ">
+            <el-input v-model="form.address" size="small" clearable  placeholder="请输入内容"/>
           </el-form-item>
 
-          <!--          <el-form-item label="立案时间:" prop="time" style="">-->
-          <!--            <el-input v-model="form.time" size="small" clearable/>-->
-          <!--          </el-form-item>-->
-          <el-form-item label="立案时间:" prop="date">
-            <el-date-picker clearable size="small"
+          <el-form-item label="立案时间:" prop="date"  >
+            <el-date-picker :clearable ="false"
+                            size="small"
                             v-model="form.date"
                             type="datetime"
-                            style="width: 214px;"
+                            style=""
                             placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>
 
-          <el-form-item label="灾情类型:" prop="distype" style="">
-            <el-select v-model="form.distype" filterable clearable size="small" >
+          <el-form-item label="灾情类型:" prop="distype" style="" >
+            <el-select v-model="form.distype" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDisType"
                          :key="key"
                          :label="value"
                          :value="key"/>
             </el-select>
+
           </el-form-item>
 
           <el-form-item label="处置对象:" prop="disposeObj" style="">
@@ -77,9 +76,9 @@
           </el-form-item>
 
           <el-form-item label="关键词:" prop="keyWords" style="">
-            <el-input v-model="form.keyWords" clearable style="width: 214px;" size="small" prefix-icon=" el-icon-search"
-                      placeholder="请输入关键词"/>
-
+            <el-input v-model="form.keyWords" clearable  size="small" placeholder="请输入关键词"/>
+                      
+            <!-- prefix-icon=" el-icon-search" -->
           </el-form-item>
 
           <el-form-item>
@@ -125,7 +124,8 @@
       <el-row :gutter="30">
         <el-col :span="24">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height="600px">
+            <div class="height-style">
+            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height=100%>
               <el-table-column type="selection" align="center" width="50"/>
 
               <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
@@ -134,7 +134,7 @@
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 
               <el-table-column label="提示信息" align="center" prop="inform" :show-overflow-tooltip="false"/>
-              <el
+              <!-- <el -->
 <!--                            <el-table-column-->
 <!--                              width="60"-->
 <!--                              label="信息类型"-->
@@ -153,6 +153,7 @@
               <!--                </template>-->
               <!--              </el-table-column>-->
             </el-table>
+            </div>
             <pagination
               v-show="total>0"
               :total="total"
@@ -185,7 +186,7 @@
             <el-form-item label="" prop="tip">
               <div  class="fujian-style">
                 <div style="margin-right:10px; width:40%">
-                  <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:100%"/>
+                  <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:90%"/>
                 </div>
                 <div>
                   <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">
@@ -497,9 +498,10 @@ export default {
 .table-style {
   background: white;
   padding: 5px 20px 30px 30px;
-  height: 100%;
 }
-
+.height-style{
+  height: calc(55vh);
+}
 .el-form-item {
   margin-bottom: 5px;
 }
@@ -509,9 +511,11 @@ element.style {
   padding-right: 0px;
 }
 
-/* .app-container{
-  overflow:scroll;
-} */
-
+.el-date-editor.el-input, .el-date-editor.el-input__inner{
+  width: 208px;
+}
+.el-input {
+  width: 208px;
+}
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="98px">
       <el-form-item label="处置对象名称" prop="objname">
         <el-select v-model="queryParams.objname" filterable placeholder="请选择处置对象名称" clearable size="small">
           <el-option

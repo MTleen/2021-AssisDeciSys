@@ -1,16 +1,9 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="时间" prop="cautiontime">
-<!--        <el-date-picker clearable size="small"-->
-<!--                        v-model="queryParams.cautiontime"-->
-<!--                        type="date"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        placeholder="选择时间">-->
-<!--        </el-date-picker>-->
-       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-position="right" label-width="98px">
+     
 
-      </el-form-item>
+
       <el-form-item label="地址" prop="location">
         <el-input
           v-model="queryParams.location"
@@ -34,6 +27,18 @@
                      :value="key" />
         </el-select>
       </el-form-item>
+
+      <el-form-item label="时间" prop="cautiontime">
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.cautiontime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择时间">-->
+<!--        </el-date-picker>-->
+       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
+      </el-form-item>
+
+
       <el-form-item label="主管队站" prop="siteid">
         <el-select v-model="queryParams.siteid" placeholder="请选择主管队站" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalSites"

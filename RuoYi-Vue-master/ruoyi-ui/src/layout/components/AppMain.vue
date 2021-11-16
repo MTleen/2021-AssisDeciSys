@@ -25,7 +25,7 @@ export default {
 <style lang="scss" scoped>
 .app-main {
   /* 50= navbar  50  */
-  // min-height: calc(100vh - 50px); //最小高度
+  //  height: calc(100vh-100px); //最小高度
   // height: 500px;
   width: 100%;
   position: relative;
