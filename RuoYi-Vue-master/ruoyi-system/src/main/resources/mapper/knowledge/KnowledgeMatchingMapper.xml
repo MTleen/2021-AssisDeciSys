@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.KnowledgeMatchingMapper">
+
+    <select id="selectUserTelebySiteID" parameterType="Long" resultType="String">
+        select tele from UserInfo where siteID = #{siteid}
+    </select>
+
+    <select id="selectUserOpenIDbySiteID" parameterType="Long" resultType="String">
+        select openid from UserInfo where siteID = #{siteid}
+    </select>
+
+    <select id="selectUserTelebyOpenID" parameterType="String" resultType="String">
+        select tele from UserInfo where openid = #{openid} limit 1
+    </select>
+
+    <!--特殊Record插入方式-->
+    <insert id="insertRecord" parameterType="Record">
+        <selectKey resultType="String" order="AFTER" keyProperty="cautionID">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into Record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cautiontime != null">cautiontime,</if>
+            <if test="location != null and location != ''">location,</if>
+            <if test="distypeid != null">distypeID,</if>
+            <if test="dillobject != null">dillobject,</if>
+            <if test="siteid != null">siteID,</if>
+            <if test="truckid != null">truckID,</if>
+            <if test="detailtype != null">detailtype,</if>
+            <if test="picture != null">picture,</if>
+            <if test="label4 != null">label4,</if>
+            <if test="status != null">status,</if>
+            <if test="keywords != null">keywords,</if>
+            <if test="siteid2 != null">siteID2,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cautiontime != null">#{cautiontime},</if>
+            <if test="location != null and location != ''">#{location},</if>
+            <if test="distypeid != null">#{distypeid},</if>
+            <if test="dillobject != null">#{dillobject},</if>
+            <if test="siteid != null">#{siteid},</if>
+            <if test="truckid != null">#{truckid},</if>
+            <if test="detailtype != null">#{detailtype},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="label4 != null">#{label4},</if>
+            <if test="status != null">#{status},</if>
+            <if test="keywords != null">#{keywords},</if>
+            <if test="siteid2 != null">#{siteid2},</if>
+        </trim>
+    </insert>
+
+</mapper>
