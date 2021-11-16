@@ -82,24 +82,24 @@
     <el-table v-loading="loading" :data="knowledgeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="详细类型" align="center" prop="informid" />-->
-      <el-table-column label="序号" align="center" type="index" width="50" />
-      <el-table-column label="信息内容" align="center" prop="inform" />
-      <el-table-column label="灾情类型" align="center" prop="disastertype" >
+      <el-table-column label="序号" align="center" type="index" width="100" />
+      <el-table-column label="信息内容" align="left" prop="inform" />
+      <el-table-column label="灾情类型" align="center" prop="disastertype"  width="150">
         <template slot-scope="scope">
           <span>{{$root.totalDisType[scope.row.disastertype]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="处置对象" align="center" prop="disposeobj" >
+      <el-table-column label="处置对象" align="center" prop="disposeobj" width="150" >
         <template slot-scope="scope">
           <span>{{$root.totalDisposeObj[scope.row.disposeobj]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="通用类型" align="center" prop="detailtype">
+      <el-table-column label="通用类型" align="center" prop="detailtype" width="200">
         <template slot-scope="scope">
           <span>{{$root.totalDetailType[scope.row.detailtype][0]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
         <template slot-scope="scope">
           <el-button
             size="mini"

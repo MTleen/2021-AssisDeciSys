@@ -87,9 +87,9 @@
     <el-table v-loading="loading" :data="historyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="序号" align="center" type="index" width="50"/>
-      <el-table-column label="案件编号" align="center" prop="cautionid"/>
-      <el-table-column label="提示信息" align="center" prop="informid"/>
-      <el-table-column label="推送对象" align="center" prop="positionid">
+      <el-table-column label="案件编号" align="center" prop="cautionid" width="150"/>
+      <el-table-column label="提示信息" align="left" prop="informid"/>
+      <el-table-column label="推送对象" align="center" prop="positionid" width="200">
         <template slot-scope="scope">
           <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
         </template>
@@ -99,7 +99,7 @@
           <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="知识类型" align="center" prop="librarytype">
+      <el-table-column label="知识类型" align="center" prop="librarytype" width="100">
         <template slot-scope="scope">
           <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
         </template>

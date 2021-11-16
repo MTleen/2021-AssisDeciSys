@@ -511,11 +511,11 @@ element.style {
   padding-right: 0px;
 }
 
-.el-date-editor.el-input, .el-date-editor.el-input__inner{
+/* .el-date-editor.el-input, .el-date-editor.el-input__inner{
   width: 208px;
-}
-.el-input {
+} */
+/* .el-input {
   width: 208px;
-}
+} */
 
 </style>

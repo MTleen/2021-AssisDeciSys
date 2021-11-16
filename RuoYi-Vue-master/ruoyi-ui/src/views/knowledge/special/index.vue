@@ -66,14 +66,14 @@
     <el-table v-loading="loading" :data="specialList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="专项类型" align="center" prop="informid" />-->
-      <el-table-column label="序号" type="index" align="center" width="50" />
-      <el-table-column label="提示信息" align="center" prop="inform" />
-      <el-table-column label="专项类型" align="center" prop="detailtype">
+      <el-table-column label="序号" type="index" align="center" width="100" />
+      <el-table-column label="提示信息" align="left" prop="inform" />
+      <el-table-column label="专项类型" align="center" prop="detailtype" width="200">
         <template slot-scope="scope">
           <span>{{$root.totalDetailType[scope.row.detailtype][0]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -107,7 +107,7 @@
         <el-form-item label="提示信息" prop="inform">
           <el-input v-model="form.inform" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="专项类型" prop="detailtype">
+        <el-form-item label="专项类型" prop="detailtype" >
           <el-select v-model="form.detailtype" placeholder="请选择专项类型">
             <el-option v-for="(value, key, index) in $root.totalDetailType"
                        v-if="value[1] === 1"

@@ -65,10 +65,10 @@
 
     <el-table v-loading="loading" :data="securityList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" type="index" width="50" />
-      <el-table-column label="提示信息" align="center" prop="inform" />
-      <el-table-column label="安全类型" align="center" prop="securitypeid" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="序号" align="center" type="index" width="100" />
+      <el-table-column label="提示信息" align="left" prop="inform" />
+      <el-table-column label="安全类型" align="center" prop="securitypeid"  width="200"/>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
         <template slot-scope="scope">
           <el-button
             size="mini"

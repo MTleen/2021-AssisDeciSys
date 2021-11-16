@@ -436,3 +436,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.el-date-editor .el-range-input{
+  width: 70%;
+}
+</style>

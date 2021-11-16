@@ -83,11 +83,11 @@
 
     <el-table v-loading="loading" :data="siteList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" type="index" width="50" />
-      <el-table-column label="队站" align="center" prop="sitename" />
-      <el-table-column label="地址" align="center" prop="siteposition" />
-      <el-table-column label="电话" align="center" prop="tele" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="序号" align="center" type="index" width="100" />
+      <el-table-column label="队站" align="left" prop="sitename" />
+      <el-table-column label="地址" align="left" prop="siteposition" />
+      <el-table-column label="电话" align="center" prop="tele" width="180"/>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
         <template slot-scope="scope">
           <el-button
             size="mini"

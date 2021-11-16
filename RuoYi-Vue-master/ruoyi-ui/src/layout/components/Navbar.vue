@@ -320,7 +320,7 @@ export default {
   .title-container{
     display: flex;
     flex-direction: column;
-    margin: 20px 10px 20px 20px;
+    margin: 10px 60px 15px 20px;
 
     }
   .title-style{
@@ -369,7 +369,7 @@ export default {
   }
 }
 .new-banner{
-  height: 65%;
+  height: 60%;
   width: 100%;
   background: rgb(3, 92, 185);
   display: flex;
