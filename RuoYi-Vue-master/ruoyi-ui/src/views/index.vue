@@ -312,6 +312,7 @@
 
 import {listKnowledge} from "@/api/knowledge/knowledge";
 import {listSpecial} from "@/api/knowledge/special";
+import {sendMessage} from "@/api/msg";
 
 export default {
   data() {
@@ -373,10 +374,13 @@ export default {
     sendInfo(){
       // 判断自定义消息是否为 null，若不为 null 则加入 inform 列表
       if (this.customerInfo){
-        this.form.inform.push({informid: null, inform: this.customerInfo})
+        this.form.inform.push({informid: null, inform: this.customerInfo, librarytype: null})
       }
-      console.log('send info')
-      console.log(this.form)
+      console.log('this.form:', this.form)
+      sendMessage(this.form).then(response => {
+        console.log(response)
+      })
+      // console.log('send info')
     },
     // 倒计时结束自动发送
     autoSend() {
@@ -444,7 +448,6 @@ export default {
           inform: this.form.keyWords
         }
         listKnowledge(queryParams).then(response => {
-          console.log(response.rows)
           this.informList = response.rows
           this.total = response.total
           this.loading = false
