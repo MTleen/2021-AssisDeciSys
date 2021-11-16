@@ -164,14 +164,14 @@ public class KnowledgeMatchingController  extends BaseController
         }
         else
         {
-            if(query.getgeneralType()!=null)
-            {
+//            if(query.getgeneralType()!=null)
+//            {
                 record.setDetailtype(query.getgeneralType());
-            }
-            else
-            {
-                return AjaxResult.error("专项类型与通用类型不能都为空");
-            }
+//            }
+//            else
+//            {
+//                return AjaxResult.error("专项类型与通用类型不能都为空");
+//            }
         }
         record.setKeywords(query.getkeyWords());
         record.setSiteid(query.getsiteID1());
