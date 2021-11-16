@@ -8,18 +8,16 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Date;
+
+import com.ruoyi.sendToWeChat.domain.TemplateData;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.web.controller.sendToWeChat.sendMessage;
 import com.ruoyi.knowledge.domain.*;
 import com.ruoyi.knowledge.domain.Record;
 import com.ruoyi.knowledge.service.*;
@@ -91,6 +89,11 @@ public class KnowledgeMatchingController  extends BaseController
 
     @Autowired
     private IHistoryService historyService;
+    @Autowired
+    private IDisasterTypeService disasterTypeService;
+
+    @Autowired
+    private sendMessage sendMessage;
 
     /**
      * 随机生成推送列表
@@ -117,49 +120,24 @@ public class KnowledgeMatchingController  extends BaseController
         }
         return result;
     }
- 
-    @ApiOperation("推送功能测试入口")
-    @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
-    @GetMapping("/test")
-    public AjaxResult preprocess(Long cautionID,String address,Date date,Long distype,Long disposeObj,Long generalType,Long specialType,String keyWords,Long siteID1,Long siteID2_1,Long siteID2_2,Long k1id,String k1,Long k1type,Long k2id,String k2,Long k2type)
-    {
-        // Long cautionID; // 案件 ID，若为 null 表示该案件为新案件，需要存入 record 表，若不为空，说明是二次推送，不需要存入 record 表
-		// String address; // 地址
-		// String date; // 时间
-		// Long distype; // 灾情类型（一级标签）
-		// Long disposeObj; // 处置对象（二级标签）
-		// Long generalType; // 通用类型（通用知识库，三级标签），专项类型和通用类型互斥，只能有一个不为空
-		// Long specialType; // 专项类型（专项知识库）
-		// Long securityType; // 安全类型（安全知识库）
-		// String keyWords=null; // 关键词
-		// Long siteID1; // 主管对站 ID
-		List<Long> siteID2=new ArrayList<Long>(); // 参战对站 IDs，参数为一个 list，每个元素表示一个对战的 ID
-        if (siteID2_1!=null){siteID2.add(siteID2_1);}
-        if (siteID2_2!=null){siteID2.add(siteID2_2);}
-        List<Kinfo> klist=new ArrayList<Kinfo>();
-        if (k1!=null&&k1!=""){Kinfo info=new Kinfo();info.informID=k1id;info.inform=k1;info.libraryType=k1type;klist.add(info);}
-        if (k2!=null&&k2!=""){Kinfo info=new Kinfo();info.informID=k2id;info.inform=k2;info.libraryType=k2type;klist.add(info);}
-
-        Kwords query=new Kwords();
-        query.setcautionID(cautionID);
-        query.setaddress(address);
-        query.setdate(date);
-        query.setdistype(distype);
-        query.setdisposeObj(disposeObj);
-        query.setgeneralType(generalType);
-        query.setspecialType(specialType);
-        query.setkeyWords(keyWords);
-        query.setsiteID1(siteID1);
-        query.setsiteID2(siteID2);
-        query.setinform(klist);
-
-        //return AjaxResult.success(query);
-        return distribution(query);
-    }
 
     /**
      * 提示信息推送接口
      */
+    @ApiOperation("提示信息推送接口")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="cautionID",value="案件编号（为空则生成新案件记录）"),
+        @ApiImplicitParam(name="address",value="地址"),
+        @ApiImplicitParam(name="date",value="时间"),
+        @ApiImplicitParam(name="distype",value="灾情类型（一级标签）",required =true),
+        @ApiImplicitParam(name="disposeObj",value="处置对象（二级标签）",required = true),
+        @ApiImplicitParam(name="generalType",value="通用类型（通用知识库，三级标签），专项类型和通用类型互斥，只能有一个不为空"),
+        @ApiImplicitParam(name="specialType",value="专项类型（专项知识库，三级标签），专项类型和通用类型互斥，只能有一个不为空"),
+        @ApiImplicitParam(name="securityType",value="安全类型（安全知识库）"),
+        @ApiImplicitParam(name="keyWords",value="关键词"),
+        @ApiImplicitParam(name="siteID1",value="主管对站ID",required = true),
+        @ApiImplicitParam(name="siteID2",value="参战对站ID列表"),
+    })
     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
     @PostMapping("/distribution")
     public AjaxResult distribution(Kwords query)
@@ -196,23 +174,25 @@ public class KnowledgeMatchingController  extends BaseController
         }
         record.setKeywords(query.getkeyWords());
         record.setSiteid(query.getsiteID1());
-        String sites="";
-        for(Long x:query.getsiteID2())
+        String sites=new String();
+        if(query.getsiteID2()!=null)
         {
-            if(sites!="")
+            for(Long x:query.getsiteID2())
             {
-                sites=sites+","+x.toString();
-            }
-            else
-            {
-                sites=x.toString();
+                if(sites!=null&&!sites.isEmpty())
+                {
+                    sites=sites+","+x.toString();
+                }
+                else
+                {
+                    sites=x.toString();
+                }
             }
         }
         record.setSiteid2(sites);
         if(query.getcautionID()==null)//保存至Record
-            {
-                //knowledgeMatchingService.insertRecord(record);       //特殊方法写入Record表，返回生成的cautionID
-                //Test
+        {
+            knowledgeMatchingService.insertRecord(record);       //特殊方法写入Record表，返回生成的cautionID
             if(record.getCautionid()==null){return AjaxResult.error("主键返回失败");}
             query.setcautionID(Long.valueOf(record.getCautionid()));//传递给query
         }
@@ -227,11 +207,14 @@ public class KnowledgeMatchingController  extends BaseController
          * 开始信息推送
          */
         Set<String> excludeSet=new HashSet<String>() ;//统计前端已勾选的部分
-        for(Kinfo k:query.getinform())//排除前端已勾选部分
+        if(query.getinform()!=null)//排除前端已勾选部分
         {
-            if(k.getinformID()!=null&&k.getlibraryType()!=null)
+            for(Kinfo k:query.getinform())
             {
-                excludeSet.add(k.getlibraryType().toString()+":"+k.getinformID().toString());
+                if(k.getinformID()!=null&&k.getlibraryType()!=null)
+                {
+                    excludeSet.add(k.getlibraryType().toString()+":"+k.getinformID().toString());
+                }
             }
         }
         if(rule.getGeneralnum()>0)//添加通用提示信息至候选列表krlist
@@ -241,22 +224,25 @@ public class KnowledgeMatchingController  extends BaseController
             knowledge.setDisposeobj(query.getdisposeObj());
             knowledge.setDetailtype(query.getgeneralType());
             knowledge.setInform(query.getkeyWords());
-            List<Knowledge> klist = knowledgeService.selectKnowledgeList(knowledge);          
-            for(Knowledge k:klist)
-            {
-                if(!excludeSet.contains("1:"+k.getInformid().toString()))//关键词筛选与已勾选信息的去除
+            List<Knowledge> klist = knowledgeService.selectKnowledgeList(knowledge);
+            if(klist!=null)//匹配结果非空
+            {         
+                for(Knowledge k:klist)
                 {
-                    kinfo=new Kinfo();
-                    kinfo.setinformID(k.getInformid());
-                    kinfo.setinform(k.getInform());
-                    kinfo.setlibraryType(Long.valueOf("1"));
-                    krlist.add(kinfo);
+                    if(!excludeSet.contains("1:"+k.getInformid().toString()))//已勾选信息的去除
+                    {
+                        kinfo=new Kinfo();
+                        kinfo.setinformID(k.getInformid());
+                        kinfo.setinform(k.getInform());
+                        kinfo.setlibraryType(Long.valueOf("1"));
+                        krlist.add(kinfo);
+                    }
                 }
-            }
-            if(krlist.size()<=rule.getGeneralnum())//候选数量小于等于需发送数量则全部添加至待发送列表
-            {
-                clist.addAll(krlist);
-                krlist.clear();
+                if(krlist.size()<=rule.getGeneralnum())//候选数量小于等于需发送数量则全部添加至待发送列表
+                {
+                    clist.addAll(krlist);
+                    krlist.clear();
+                }
             }
         }
         if(rule.getSpecialnum()>0)//添加专项提示信息至候选列表srlist
@@ -264,22 +250,25 @@ public class KnowledgeMatchingController  extends BaseController
             Special special=new Special();
             special.setDetailtype(query.getspecialType());
             special.setInform(query.getkeyWords());
-            List<Special> slist = specialService.selectSpecialList(special);          
-            for(Special s:slist)
-            {
-                if(!excludeSet.contains("2:"+s.getInformid().toString()))//关键词筛选与已勾选信息的去除
+            List<Special> slist = specialService.selectSpecialList(special);
+            if(slist!=null)//匹配结果非空   
+            {       
+                for(Special s:slist)
                 {
-                    kinfo=new Kinfo();
-                    kinfo.setinformID(Long.valueOf(s.getInformid().toString()));//专项ID数据类型是Integer
-                    kinfo.setinform(s.getInform());
-                    kinfo.setlibraryType(Long.valueOf("2"));
-                    srlist.add(kinfo);
+                    if(!excludeSet.contains("2:"+s.getInformid().toString()))//已勾选信息的去除
+                    {
+                        kinfo=new Kinfo();
+                        kinfo.setinformID(Long.valueOf(s.getInformid().toString()));//专项ID数据类型是Integer
+                        kinfo.setinform(s.getInform());
+                        kinfo.setlibraryType(Long.valueOf("2"));
+                        srlist.add(kinfo);
+                    }
                 }
-            }
-            if(srlist.size()<=rule.getSpecialnum())//候选数量小于等于需发送数量则全部添加至待发送列表
-            {
-                clist.addAll(srlist);
-                srlist.clear();
+                if(srlist.size()<=rule.getSpecialnum())//候选数量小于等于需发送数量则全部添加至待发送列表
+                {
+                    clist.addAll(srlist);
+                    srlist.clear();
+                }
             }
         }
         if(rule.getSecuritynum()>0)//添加安全提示信息至候选列表sfrlist
@@ -287,34 +276,48 @@ public class KnowledgeMatchingController  extends BaseController
             Security security=new Security();
             security.setSecuritypeid(query.getsecurityType());
             security.setInform(query.getkeyWords());
-            List<Security> sflist = securityService.selectSecurityList(security);          
-            for(Security sf:sflist)
-            {
-                if(!excludeSet.contains("3:"+sf.getInformid().toString()))//关键词筛选与已勾选信息的去除
+            List<Security> sflist = securityService.selectSecurityList(security);         
+            if(sflist!=null)//匹配结果非空
+            { 
+                for(Security sf:sflist)
                 {
-                    kinfo=new Kinfo();
-                    kinfo.setinformID(Long.valueOf(sf.getInformid().toString()));//安全提示信息ID数据类型为Integer
-                    kinfo.setinform(sf.getInform());
-                    kinfo.setlibraryType(Long.valueOf("3"));
-                    sfrlist.add(kinfo);
+                    if(!excludeSet.contains("3:"+sf.getInformid().toString()))//已勾选信息的去除
+                    {
+                        kinfo=new Kinfo();
+                        kinfo.setinformID(Long.valueOf(sf.getInformid().toString()));//安全提示信息ID数据类型为Integer
+                        kinfo.setinform(sf.getInform());
+                        kinfo.setlibraryType(Long.valueOf("3"));
+                        sfrlist.add(kinfo);
+                    }
+                }
+                if(sfrlist.size()<=rule.getSecuritynum())//候选数量小于等于需发送数量则全部添加至待发送列表
+                {
+                    clist.addAll(sfrlist);
+                    sfrlist.clear();
                 }
             }
-            if(sfrlist.size()<=rule.getSecuritynum())//候选数量小于等于需发送数量则全部添加至待发送列表
-            {
-                clist.addAll(sfrlist);
-                sfrlist.clear();
-            }
         }
-        for(Kinfo k:query.getinform())//添加前端选择的提示信息至待发送列表
+        if(query.getinform()!=null)//添加前端选择的提示信息至待发送列表
         {
-            clist.add(k);
+            for(Kinfo k:query.getinform())
+            {
+                clist.add(k);
+            }
         }
         /**
          * 用户表查询替代
          */
         Userbackup user;
-        List<String> olist=knowledgeMatchingService.selectUserOpenIDbySiteID(query.getsiteID1());//
-        List<Userbackup> ulist=new ArrayList<Userbackup>();//
+        List<String> olist=knowledgeMatchingService.selectUserOpenIDbySiteID(query.getsiteID1());
+        if(query.getsiteID2()!=null)
+        {
+            for(Long site:query.getsiteID2())
+            {
+                olist.addAll(knowledgeMatchingService.selectUserOpenIDbySiteID(site));
+            }
+        }
+        if(olist==null||olist.isEmpty()){return AjaxResult.error("未能获取待推送用户列表");}
+        List<Userbackup> ulist=new ArrayList<Userbackup>();
         for(String o:olist)
         {
             user=new Userbackup();
@@ -326,8 +329,11 @@ public class KnowledgeMatchingController  extends BaseController
          * 推送提示信息并生成推送记录
          */
         Date time=new Date();//记录发送时间
+        //Test
         List<TestTemplate> results=new ArrayList<TestTemplate>();//推送信息测试结果
         List<History> historyresult=new ArrayList<History>();//History表生成测试结果
+        List<String> wxresult=new ArrayList<String>();//微信小程序推送测试结果
+        //Test
         for(Userbackup u:ulist)
         {
             List<Kinfo> randomlist=new ArrayList<Kinfo>();//用户独特推送信息列表
@@ -337,62 +343,87 @@ public class KnowledgeMatchingController  extends BaseController
             for(Integer i:kindex){randomlist.add(krlist.get(i));}
             for(Integer i:sindex){randomlist.add(srlist.get(i));}
             for(Integer i:sfindex){randomlist.add(sfrlist.get(i));}
-
             /**
              * 推送信息
              */
-
-
             //Test,Add openid
             TestTemplate result=new TestTemplate();
+            String informtext=new String();
             result.openid=u.openID;
             //Test,Add record data
             if(record.getCautionid()!=null){result.record.put("cautionID",record.getCautionid());}else{result.record.put("cautionID","");}
             if(record.getLocation()!=null){result.record.put("address",record.getLocation());}else{result.record.put("address","");}
             if(record.getDistypeid()!=null){result.record.put("distype",record.getDistypeid().toString());}else{result.record.put("distype","");}
             if(record.getCautiontime()!=null){result.record.put("date",record.getCautiontime().toString());}else{result.record.put("date","");}
-            //Test
-
-            
-
+            //Test          
             /**
              * 生成推送记录
              */
-            for(Kinfo info:clist)//公共推送信息列表推送
+            if(clist!=null)//公共推送信息列表推送
             {
-                History history=new History();
-                history.setCautionid(query.getcautionID().toString());
-                history.setSendtime(time);
-                history.setTele(u.tele);
-                if(info.getinformID()!=null){history.setInformid(info.getinformID().toString());}else{history.setInformid(null);}
-                history.setLibrarytype(info.libraryType);
-                //historyService.insertHistory(history);//生成推送记录
-                //Test
-                historyresult.add(history);
-                //Test
-                result.inform.add(info);
-                //Test
+                for(Kinfo info:clist)
+                {
+                    History history=new History();
+                    history.setCautionid(query.getcautionID().toString());
+                    history.setSendtime(time);
+                    history.setTele(u.tele);
+                    if(info.getinformID()!=null){history.setInformid(info.getinformID().toString());}else{history.setInformid(null);}
+                    history.setLibrarytype(info.libraryType);
+                    //historyService.insertHistory(history);//生成推送记录
+                    if(informtext!=null&&!informtext.isEmpty())
+                    {
+                        informtext=informtext+"+"+info.getinform();
+                    }
+                    else
+                    {
+                        informtext=info.getinform();
+                    }
+                    //Test
+                    historyresult.add(history);
+                    result.inform.add(info);
+                    //Test
+                }
             }
-            for(Kinfo info:randomlist)//用户独特推送信息列表推送
+            if(randomlist!=null)//用户独特推送信息列表推送
             {
-                History history=new History();
-                history.setCautionid(query.getcautionID().toString());
-                history.setSendtime(time);
-                history.setTele(u.tele);
-                if(info.getinformID()!=null){history.setInformid(info.getinformID().toString());}else{history.setInformid(null);}
-                history.setLibrarytype(info.libraryType);
-                //historyService.insertHistory(history);//生成推送记录
-                //Test
-                historyresult.add(history);
-                //Test
-                result.inform.add(info);
-                //Test
+                for(Kinfo info:randomlist)
+                {
+                    History history=new History();
+                    history.setCautionid(query.getcautionID().toString());
+                    history.setSendtime(time);
+                    history.setTele(u.tele);
+                    if(info.getinformID()!=null){history.setInformid(info.getinformID().toString());}else{history.setInformid(null);}
+                    history.setLibrarytype(info.libraryType);
+                    //historyService.insertHistory(history);//生成推送记录
+                    if(informtext!=null&&!informtext.isEmpty())
+                    {
+                        informtext=informtext+"+"+info.getinform();
+                    }
+                    else
+                    {
+                        informtext=info.getinform();
+                    }
+                    //Test
+                    historyresult.add(history);
+                    result.inform.add(info);
+                    //Test
+                }
             }
+            /**
+             * 推送至小程序
+             */
+            Map<String, TemplateData> m = new HashMap<>(3);
+            if(record.getLocation().length()>19){m.put("thing1", new TemplateData(record.getLocation().substring(0,19)));}else{m.put("thing1", new TemplateData(record.getLocation()));}
+            if(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename().length()>19){m.put("thing2", new TemplateData(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename().substring(0,19)));}else{m.put("thing2", new TemplateData(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename()));}
+            if(informtext.length()>19){m.put("thing3", new TemplateData(informtext.substring(0,19)));}else{m.put("thing3", new TemplateData(informtext));}
+            String page="../message/push_message?type="+disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename()+"&time="+record.getCautiontime()+"&address="+record.getLocation()+"&message="+informtext;
+            //sendMessage.push(u.openID,m,page);
             //Test
+            wxresult.add(sendMessage.push(u.openID,m,page));
             results.add(result);
             //Test
         }
-        return AjaxResult.success(results);   
+        return AjaxResult.success(wxresult);//返回结果：historyresult-历史表生成记录;results-用户推送记录;wxresult-实际用户推送反馈;
     }
     
 }
