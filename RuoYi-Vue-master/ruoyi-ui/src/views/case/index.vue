@@ -217,6 +217,7 @@ export default {
     handleSendInfo(caution) {
       console.log(caution)
       console.log(this.$router)
+      caution.cautiontime = Date.parse(caution.cautiontime)
       this.$router.push({path: '/index', query: caution})
     },
     listHisInfo() {

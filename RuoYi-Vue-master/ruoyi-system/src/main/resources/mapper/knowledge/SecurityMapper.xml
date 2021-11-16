@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSecurityList" parameterType="Security" resultMap="SecurityResult">
         <include refid="selectSecurityVo"/>
         <where>  
-            <if test="inform != null  and inform != ''"> and inform = #{inform}</if>
+            <if test="inform != null  and inform != ''"> and inform like concat('%', #{inform}, '%')</if>
             <if test="securitypeid != null "> and securitypeID = #{securitypeid}</if>
         </where>
     </select>

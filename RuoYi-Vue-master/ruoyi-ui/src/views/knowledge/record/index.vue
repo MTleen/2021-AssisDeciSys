@@ -195,7 +195,7 @@
         <el-form-item label="地址" prop="location">
           <el-input v-model="form.location" placeholder="请输入地址" />
         </el-form-item>
-        <el-form-item label="险情类型" prop="distypeid">
+        <el-form-item label="灾情类型" prop="distypeid">
           <el-select v-model="form.distypeid" placeholder="请选择险情类型">
             <el-option label="请选择字典生成" value="" />
           </el-select>
@@ -205,9 +205,11 @@
             <el-option label="请选择字典生成" value="" />
           </el-select>
         </el-form-item>
-        <el-form-item label="主管单位" prop="siteid">
+        <el-form-item label="主管队站" prop="siteid">
           <el-select v-model="form.siteid" placeholder="请选择主管单位">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalSites"
+                       :label="value"
+                       :value="key" />
           </el-select>
         </el-form-item>
         <el-form-item label="出警车辆" prop="truckid">

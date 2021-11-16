@@ -1,7 +1,12 @@
 package com.ruoyi.knowledge.mapper;
 
+import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.knowledge.domain.History;
 import com.ruoyi.knowledge.domain.Knowledge;
+import com.ruoyi.knowledge.domain.Record;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 通用知识库Mapper接口
@@ -58,4 +63,21 @@ public interface KnowledgeMapper
      * @return 结果
      */
     public int deleteKnowledgeByInformids(Long[] informids);
+
+    /**
+     * 小程序查询
+     *
+     *
+     * @return 结果
+     */
+    public String selecttelebyOpenID(@Param("openid") String openid);
+    public Boolean selectStatusbyCaution(@Param("cautionid") String cautionid);
+    public List<History> selectCautionbytele(@Param("tele") String tele);
+    public String selectDisaster(@Param("disastertype") String disastertype);
+    public List<History> selectInformIDbytele(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime );
+    public List<History> selectInformIDbycau(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime );
+    public List<History> selectInformIDbytele1(@Param("tele") String tele, @Param("sendtime") Date sendtime);
+    public List<Knowledge> selectKnow1(@Param("informid") Long informid);
+    public List<Record> selectRecord1(@Param("tele") String tele, @Param("sendtime1") Date sendtime1);
+    public List<Record> selectRecord2(@Param("cautionid") String cautionid);
 }

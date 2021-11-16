@@ -23,7 +23,8 @@ import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
-
+import com.ruoyi.information.service.IUserInfoService;
+import com.ruoyi.information.domain.UserInfo;
 /**
  * 登录校验方法
  * 
@@ -34,6 +35,9 @@ public class SysLoginService
 {
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private IUserInfoService userInfoService;
 
     @Resource
     private AuthenticationManager authenticationManager;
@@ -90,6 +94,15 @@ public class SysLoginService
         recordLoginInfo(loginUser.getUser());
         // 生成token
         return tokenService.createToken(loginUser);
+    }
+
+    // 微信登录
+    public void wechatLogin(String tele, String openid){
+        UserInfo user = userInfoService.selectUserInfoByTele(tele);
+        if(user.getTele() != null){
+            user.setOpenid(openid);
+            userInfoService.updateUserInfo(user);
+        }
     }
 
     /**

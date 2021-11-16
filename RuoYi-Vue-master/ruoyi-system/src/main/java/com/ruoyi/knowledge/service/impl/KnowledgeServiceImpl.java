@@ -1,6 +1,10 @@
 package com.ruoyi.knowledge.service.impl;
 
+import java.util.Date;
 import java.util.List;
+
+import com.ruoyi.knowledge.domain.History;
+import com.ruoyi.knowledge.domain.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.KnowledgeMapper;
@@ -89,5 +93,64 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     public int deleteKnowledgeByInformid(Long informid)
     {
         return knowledgeMapper.deleteKnowledgeByInformid(informid);
+    }
+
+    /**
+     * 小程序信息查询
+     *
+     *
+     * @return 结果
+     */
+    @Override
+    public String selecttelebyOpenID(String openid)
+    {
+        return knowledgeMapper.selecttelebyOpenID(openid);
+    }
+    @Override
+    public Boolean selectStatusbyCaution(String cautionid)
+    {
+        return knowledgeMapper.selectStatusbyCaution(cautionid);
+    }
+    @Override
+    public List<History> selectCautionbytele(String tele)
+    {
+        return knowledgeMapper.selectCautionbytele(tele);
+    }
+    @Override
+    public String selectDisaster(String disastertype)
+    {
+        return knowledgeMapper.selectDisaster(disastertype);
+    }
+
+    @Override
+    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime)
+    {
+        return knowledgeMapper.selectInformIDbytele(tele,cautionid,sendtime);
+    }
+    @Override
+    public List<History> selectInformIDbycau(String tele, String cautionid,Date sendtime)
+    {
+        return knowledgeMapper.selectInformIDbycau(tele,cautionid,sendtime);
+    }
+
+    @Override
+    public List<History> selectInformIDbytele1(String tele, Date sendtime)
+    {
+        return knowledgeMapper.selectInformIDbytele1(tele,sendtime);
+    }
+    @Override
+    public List<Knowledge> selectKnow1(Long informid)
+    {
+        return knowledgeMapper.selectKnow1(informid);
+    }
+    @Override
+    public List<Record> selectRecord1(String tele, Date sendtime1)
+    {
+        return knowledgeMapper.selectRecord1(tele,sendtime1);
+    }
+    @Override
+    public List<Record> selectRecord2(String cautionid)
+    {
+        return knowledgeMapper.selectRecord2(cautionid);
     }
 }
