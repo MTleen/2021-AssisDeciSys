@@ -89,6 +89,7 @@ public class KnowledgeMatchingController  extends BaseController
 
     @Autowired
     private IHistoryService historyService;
+
     @Autowired
     private IDisasterTypeService disasterTypeService;
 
@@ -369,7 +370,7 @@ public class KnowledgeMatchingController  extends BaseController
                     history.setTele(u.tele);
                     if(info.getinformID()!=null){history.setInformid(info.getinformID().toString());}else{history.setInformid(null);}
                     history.setLibrarytype(info.libraryType);
-                    //historyService.insertHistory(history);//生成推送记录
+                    historyService.insertHistory(history);//生成推送记录
                     if(informtext!=null&&!informtext.isEmpty())
                     {
                         informtext=informtext+"+"+info.getinform();
