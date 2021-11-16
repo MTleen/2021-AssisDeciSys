@@ -52,6 +52,7 @@ import {getToken} from '@/utils/auth'
 import {listDisastertype} from "@/api/knowledge/disastertype";
 import {listDetailtype} from "@/api/knowledge/detailtype";
 import {listDisposeobj} from "@/api/knowledge/disposeobj";
+import {listSite} from "@/api/information/site";
 
 import axios from 'axios'
 
@@ -75,33 +76,6 @@ Vue.prototype.totalDetailType = {}
 Vue.prototype.totalDisposeObj = {}
 Vue.prototype.totalDisType = {}
 Vue.prototype.totalSites = {}
-Vue.prototype. pickerOptions = {
-  shortcuts: [{
-    text: '最近一周',
-    onClick(picker) {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-      picker.$emit('pick', [start, end]);
-    }
-  }, {
-    text: '最近一个月',
-    onClick(picker) {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      picker.$emit('pick', [start, end]);
-    }
-  }, {
-    text: '最近三个月',
-    onClick(picker) {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-      picker.$emit('pick', [start, end]);
-    }
-  }]
-},
 
 // 判断是否登录，如果已登录加载全局对象
 Vue.prototype.loadGlobalData = function () {
@@ -139,7 +113,14 @@ Vue.prototype.loadGlobalData = function () {
       Vue.prototype.totalDisposeObj = totalDisposeObj;
     })
     // load all sites
-    Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
+    listSite(commonQueryParams).then(response => {
+      let totalSite = {}
+      for(let row of response.rows){
+        totalSite[row.siteid]  =row.sitename
+      }
+      Vue.prototype.totalSites = totalSite;
+    })
+    // Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
     // load all library types
     Vue.prototype.totalLibType = { 1: '通用', 3: '专项', 2: '安全'}
   }

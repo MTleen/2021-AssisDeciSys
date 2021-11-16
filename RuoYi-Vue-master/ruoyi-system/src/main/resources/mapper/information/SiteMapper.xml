@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.information.mapper.SiteMapper">
+    
+    <resultMap type="Site" id="SiteResult">
+        <result property="siteid"    column="siteID"    />
+        <result property="sitename"    column="sitename"    />
+        <result property="siteposition"    column="siteposition"    />
+        <result property="tele"    column="tele"    />
+    </resultMap>
+
+    <sql id="selectSiteVo">
+        select siteID, sitename, siteposition, tele from Site
+    </sql>
+
+    <select id="selectSiteList" parameterType="Site" resultMap="SiteResult">
+        <include refid="selectSiteVo"/>
+        <where>  
+            <if test="sitename != null  and sitename != ''"> and sitename like concat('%', #{sitename}, '%')</if>
+            <if test="siteposition != null  and siteposition != ''"> and siteposition = #{siteposition}</if>
+            <if test="tele != null  and tele != ''"> and tele = #{tele}</if>
+        </where>
+    </select>
+    
+    <select id="selectSiteBySiteid" parameterType="Long" resultMap="SiteResult">
+        <include refid="selectSiteVo"/>
+        where siteID = #{siteid}
+    </select>
+        
+    <insert id="insertSite" parameterType="Site" useGeneratedKeys="true" keyProperty="siteid">
+        insert into Site
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sitename != null and sitename != ''">sitename,</if>
+            <if test="siteposition != null">siteposition,</if>
+            <if test="tele != null">tele,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sitename != null and sitename != ''">#{sitename},</if>
+            <if test="siteposition != null">#{siteposition},</if>
+            <if test="tele != null">#{tele},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSite" parameterType="Site">
+        update Site
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sitename != null and sitename != ''">sitename = #{sitename},</if>
+            <if test="siteposition != null">siteposition = #{siteposition},</if>
+            <if test="tele != null">tele = #{tele},</if>
+        </trim>
+        where siteID = #{siteid}
+    </update>
+
+    <delete id="deleteSiteBySiteid" parameterType="Long">
+        delete from Site where siteID = #{siteid}
+    </delete>
+
+    <delete id="deleteSiteBySiteids" parameterType="String">
+        delete from Site where siteID in 
+        <foreach item="siteid" collection="array" open="(" separator="," close=")">
+            #{siteid}
+        </foreach>
+    </delete>
+</mapper>

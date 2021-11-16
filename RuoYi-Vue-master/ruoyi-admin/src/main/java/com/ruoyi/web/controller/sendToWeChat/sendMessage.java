@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.ruoyi.sendToWeChat.domain.AccessToken;
 import com.ruoyi.sendToWeChat.domain.TemplateData;
 import com.ruoyi.sendToWeChat.domain.WxMssVo;
+//import lombok.extern.slf4j.Slf4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,7 +75,7 @@ public class sendMessage {
                 "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}", String.class, params);
         String body = responseEntity.getBody();
         AccessToken object = new Gson().fromJson(body, AccessToken.class);
-        log.info("返回的AccessToken={}",object);
+//        log.info("返回的AccessToken={}",object);
         String Access_Token = object.getAccess_token();
         Integer expires_in = object.getExpires_in();
         Integer errcode = object.getErrcode();

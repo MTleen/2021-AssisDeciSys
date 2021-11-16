@@ -18,6 +18,7 @@ public class Special extends BaseEntity
     /** $column.columnComment */
     private Integer informid;
 
+    private Integer librarytype;
     /** 提示信息 */
     @Excel(name = "提示信息")
     private String inform;
@@ -52,6 +53,9 @@ public class Special extends BaseEntity
     public Long getDetailtype() 
     {
         return detailtype;
+    }
+    public Integer getLibrarytype(){
+        return librarytype;
     }
 
     @Override

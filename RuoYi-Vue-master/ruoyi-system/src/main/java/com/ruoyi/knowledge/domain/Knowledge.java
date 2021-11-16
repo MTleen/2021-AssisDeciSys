@@ -18,6 +18,8 @@ public class Knowledge extends BaseEntity
     /** $column.columnComment */
     private Long informid;
 
+    private int librarytype = 1;
+
     /** 信息内容 */
     @Excel(name = "信息内容")
     private String inform;
@@ -52,6 +54,8 @@ public class Knowledge extends BaseEntity
     {
         return informid;
     }
+
+    public int getLibrarytype(){return librarytype;}
     public void setInform(String inform)
     {
         this.inform = inform;

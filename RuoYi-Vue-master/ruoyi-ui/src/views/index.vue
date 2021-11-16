@@ -134,7 +134,11 @@
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 
               <el-table-column label="提示信息" align="center" prop="inform" :show-overflow-tooltip="false"/>
-              <el
+              <el-table-column label="信息类型" align="center" prop="librarytype">
+                <template slot-scope="scope" v-if="$root.totalDetailType[scope.row.detailtype][1] === scope.row.librarytype">
+                  {{$root.totalDetailType[scope.row.detailtype][0]}}
+                </template>
+              </el-table-column>
 <!--                            <el-table-column-->
 <!--                              width="60"-->
 <!--                              label="信息类型"-->
@@ -417,6 +421,7 @@ export default {
     getInfo() {
       this.loading = true
       // this.form.pageSize = 10
+      // 若存在专项类型，则匹配专项库
       if (this.form.specialType) {
         let queryParams = {
           pageNum: this.form.pageNum,
@@ -439,6 +444,7 @@ export default {
           inform: this.form.keyWords
         }
         listKnowledge(queryParams).then(response => {
+          console.log(response.rows)
           this.informList = response.rows
           this.total = response.total
           this.loading = false

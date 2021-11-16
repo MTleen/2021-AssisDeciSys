@@ -18,6 +18,8 @@ public class Security extends BaseEntity
     /** $column.columnComment */
     private Integer informid;
 
+    private Integer librarytype = 2;
+
     /** 提示信息 */
     @Excel(name = "提示信息")
     private String inform;
@@ -53,6 +55,8 @@ public class Security extends BaseEntity
     {
         return securitypeid;
     }
+
+    public Integer getLibrarytype(){return librarytype;}
 
     @Override
     public String toString() {

@@ -34,6 +34,7 @@ public class GetHistoryController
     public AjaxResult getHistory()
     {
         List informList = new ArrayList<>();
+        List informs = new ArrayList();
         HashMap inform = new HashMap();
         inform.put("sendtime", "2011-10-21T00:00:00.000+0800");
         inform.put("location", "SHU");
