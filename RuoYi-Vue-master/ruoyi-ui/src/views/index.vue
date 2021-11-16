@@ -15,6 +15,7 @@
                             v-model="form.date"
                             type="datetime"
                             style="width: 214px;"
+                            value-format="timestamp"
                             placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>

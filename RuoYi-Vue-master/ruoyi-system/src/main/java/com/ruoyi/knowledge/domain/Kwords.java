@@ -1,5 +1,7 @@
 package com.ruoyi.knowledge.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -15,7 +17,10 @@ public class Kwords
     {
         public Long cautionID; // 案件 ID，若为 null 表示该案件为新案件，需要存入 record 表，若不为空，说明是二次推送，不需要存入 record 表
 		public String address; // 地址
+
+//        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 		public Date date; // 时间
+
 		public Long distype; // 灾情类型（一级标签）
 		public Long disposeObj; // 处置对象（二级标签）
 		public Long generalType; // 通用类型（通用知识库，三级标签），专项类型和通用类型互斥，只能有一个不为空

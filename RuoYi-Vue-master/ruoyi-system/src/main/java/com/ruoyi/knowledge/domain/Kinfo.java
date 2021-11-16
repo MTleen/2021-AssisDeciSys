@@ -8,17 +8,17 @@ package com.ruoyi.knowledge.domain;
  */
 public class Kinfo
 {
-    public Long informID; // 提示信息ID
+    public Long informid; // 提示信息ID
     public String inform; // 提示信息内容
-    public Long libraryType;
+    public Long librarytype;
 
     public Long getinformID()
     {
-        return this.informID;
+        return this.informid;
     }
     public void setinformID(Long informID)
     {
-        this.informID=informID;
+        this.informid=informID;
     }
     public String getinform()
     {
@@ -30,10 +30,10 @@ public class Kinfo
     }
     public Long getlibraryType()
     {
-        return this.libraryType;
+        return this.librarytype;
     }
-    public void setlibraryType(Long libraryType)
+    public void setlibraryType(Long librarytype)
     {
-        this.libraryType=libraryType;
+        this.librarytype=librarytype;
     }
 }
