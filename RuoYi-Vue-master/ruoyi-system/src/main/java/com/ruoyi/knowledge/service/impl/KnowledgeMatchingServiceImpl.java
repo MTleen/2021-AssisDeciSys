@@ -44,6 +44,18 @@ public class KnowledgeMatchingServiceImpl implements IKnowledgeMatchingService
     }
 
     /**
+     * 用户表查询替代
+     *
+     * @param openid openid
+     * @return 岗位ID
+     */
+    @Override
+    public Long selectUserPositionIDbyOpenID(String openid)
+    {
+        return knowledgeMatchingMapper.selectUserPositionIDbyOpenID(openid);
+    }
+
+    /**
      * 新增出警记录表
      *
      * @param record 出警记录表

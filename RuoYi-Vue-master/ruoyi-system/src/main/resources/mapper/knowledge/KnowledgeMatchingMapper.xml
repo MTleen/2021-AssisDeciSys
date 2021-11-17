@@ -16,6 +16,10 @@
         select tele from UserInfo where openid = #{openid} limit 1
     </select>
 
+    <select id="selectUserPositionIDbyOpenID" parameterType="String" resultType="Long">
+        select positionID from UserInfo where openid = #{openid} limit 1
+    </select>
+
     <!--特殊Record插入方式-->
     <insert id="insertRecord" parameterType="Record">
         <selectKey resultType="String" order="AFTER" keyProperty="cautionID">

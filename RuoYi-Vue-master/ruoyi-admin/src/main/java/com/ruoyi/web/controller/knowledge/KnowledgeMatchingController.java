@@ -93,9 +93,6 @@ public class KnowledgeMatchingController extends BaseController {
     private IRuleService ruleService;
 
     @Autowired
-    private IRecordService recordService;
-
-    @Autowired
     private IHistoryService historyService;
 
     @Autowired
@@ -112,7 +109,7 @@ public class KnowledgeMatchingController extends BaseController {
      * @return 推送信息index列表
      */
     public List<Integer> randomindex(Integer listsize, Long num) {
-        if (listsize < num) {
+        if (listsize == 0 || listsize < num) {
             return new ArrayList<Integer>();
         }
         List<Integer> result = new ArrayList<Integer>();
@@ -126,7 +123,23 @@ public class KnowledgeMatchingController extends BaseController {
         }
         return result;
     }
-
+    // @ApiOperation("test")
+    // @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
+    // @PostMapping("/test")
+    // public AjaxResult test(Long cid,Long l1,Long l2,Long l3,Boolean isGen,Long site) {
+    //     Kwords query=new Kwords();
+    //     query.setcautionID(cid);
+    //     query.setaddress("address");
+    //     query.setdistype(l1);
+    //     query.setdisposeObj(l2);
+    //     if(isGen){
+    //         query.setgeneralType(l3);
+    //     }else{
+    //         query.setspecialType(l3);
+    //     }
+    //     query.setsiteID1(site);
+    //     return distribution(query);
+    // }
     /**
      * 提示信息推送接口
      */
@@ -149,11 +162,15 @@ public class KnowledgeMatchingController extends BaseController {
     public AjaxResult distribution(@RequestBody Kwords query) {
         List<Kinfo> krlist = new ArrayList<Kinfo>();//通用提示信息候选列表
         List<Kinfo> srlist = new ArrayList<Kinfo>();//专项提示信息候选列表
-        List<Kinfo> sfrlist = new ArrayList<Kinfo>();//安全提示信息候选列表
-        List<Kinfo> clist = new ArrayList<Kinfo>();//待发送的提示信息列表
+        List<Kinfo> sfrlist = new ArrayList<Kinfo>();//安全提示信息候选列表(非司通员)
+        List<Kinfo> sfrlist2 = new ArrayList<Kinfo>();//安全提示信息候选列表(司通员)
+        List<Kinfo> clist = new ArrayList<Kinfo>();//待发送的提示信息列表(非司通员)
+        List<Kinfo> clist2 = new ArrayList<Kinfo>();//待发送的提示信息列表(司通员)
         Kinfo kinfo;
         Long ruleID;
-
+        final Long safetynum = Long.valueOf("5");//推送的安全提示信息数量(司通员)
+        final Long safetytypeid = Long.valueOf("29");//推送的安全提示信息详细类型(司通员)
+        final Long safetypositionid = Long.valueOf("3");//司通员岗位ID
         /**
          * 分离query中案件记录部分
          */
@@ -268,8 +285,16 @@ public class KnowledgeMatchingController extends BaseController {
                 }
             }
         }
-        if (rule.getSecuritynum() > 0)//添加安全提示信息至候选列表sfrlist
+        if (safetynum > 0 || rule.getSecuritynum() > 0)//添加安全提示信息至候选列表sfrlist与sfrlist2
         {
+            Long securitytype = Long.valueOf("-1");//推送的安全提示信息详细类型(非司通员) 社会救助无推送
+            if (query.getdistype() == Long.valueOf("1")){//火灾推送
+                securitytype = Long.valueOf("27");
+            } else {
+                if (query.getdistype() == Long.valueOf("2")){//抢险救援推送
+                    securitytype = Long.valueOf("28");
+                }
+            }
             Security security = new Security();
             security.setSecuritypeid(query.getsecurityType());
             security.setInform(query.getkeyWords());
@@ -283,13 +308,24 @@ public class KnowledgeMatchingController extends BaseController {
                         kinfo.setinformID(Long.valueOf(sf.getInformid().toString()));//安全提示信息ID数据类型为Integer
                         kinfo.setinform(sf.getInform());
                         kinfo.setlibraryType(Long.valueOf("3"));
-                        sfrlist.add(kinfo);
+                        if (sf.getSecuritypeid() == safetytypeid){
+                            sfrlist2.add(kinfo);
+                        } else {
+                            if (sf.getSecuritypeid() == securitytype){
+                                sfrlist.add(kinfo);
+                            }
+                        }
                     }
                 }
                 if (sfrlist.size() <= rule.getSecuritynum())//候选数量小于等于需发送数量则全部添加至待发送列表
                 {
                     clist.addAll(sfrlist);
                     sfrlist.clear();
+                }
+                if (sfrlist2.size() <= safetynum)//候选数量小于等于需发送数量则全部添加至待发送列表
+                {
+                    clist2.addAll(sfrlist2);
+                    sfrlist2.clear();
                 }
             }
         }
@@ -313,11 +349,15 @@ public class KnowledgeMatchingController extends BaseController {
             return AjaxResult.error("未能获取待推送用户列表");
         }
         List<Userbackup> ulist = new ArrayList<Userbackup>();
+        Set<String> excludeOpenidSet = new HashSet<String>();
         for (String o : olist) {
             user = new Userbackup();
             user.openID = o;
             user.tele = knowledgeMatchingService.selectUserTelebyOpenID(o);
             ulist.add(user);
+            if (knowledgeMatchingService.selectUserPositionIDbyOpenID(o) == safetypositionid){
+                excludeOpenidSet.add(o);
+            }
         }
         /**
          * 推送提示信息并生成推送记录
@@ -329,22 +369,6 @@ public class KnowledgeMatchingController extends BaseController {
         List<String> wxresult = new ArrayList<String>();//微信小程序推送测试结果
         //Test
         for (Userbackup u : ulist) {
-            List<Kinfo> randomlist = new ArrayList<Kinfo>();//用户独特推送信息列表
-            List<Integer> kindex = randomindex(krlist.size(), rule.getGeneralnum());
-            List<Integer> sindex = randomindex(srlist.size(), rule.getSpecialnum());
-            List<Integer> sfindex = randomindex(sfrlist.size(), rule.getSecuritynum());
-            for (Integer i : kindex) {
-                randomlist.add(krlist.get(i));
-            }
-            for (Integer i : sindex) {
-                randomlist.add(srlist.get(i));
-            }
-            for (Integer i : sfindex) {
-                randomlist.add(sfrlist.get(i));
-            }
-            /**
-             * 推送信息
-             */
             //Test,Add openid
             TestTemplate result = new TestTemplate();
             String informtext = new String();
@@ -370,56 +394,117 @@ public class KnowledgeMatchingController extends BaseController {
             } else {
                 result.record.put("date", "");
             }
-            //Test          
+            //Test      
+            /**
+             * 推送信息选取
+             */
+            List<Kinfo> randomlist = new ArrayList<Kinfo>();//用户独特推送信息列表
+            if (excludeOpenidSet.contains(u.openID))
+            {
+                List<Integer> sfindex = randomindex(sfrlist2.size(), safetynum);
+                for (Integer i : sfindex) {
+                    randomlist.add(sfrlist2.get(i));
+                }
+            } 
+            else 
+            {
+                List<Integer> kindex = randomindex(krlist.size(), rule.getGeneralnum());
+                List<Integer> sindex = randomindex(srlist.size(), rule.getSpecialnum());
+                List<Integer> sfindex = randomindex(sfrlist.size(), rule.getSecuritynum());
+                for (Integer i : kindex) {
+                    randomlist.add(krlist.get(i));
+                }
+                for (Integer i : sindex) {
+                    randomlist.add(srlist.get(i));
+                }
+                for (Integer i : sfindex) {
+                    randomlist.add(sfrlist.get(i));
+                }
+            }
             /**
              * 生成推送记录
              */
-            if (clist != null)//公共推送信息列表推送
+            if (excludeOpenidSet.contains(u.openID))//公共推送信息列表推送
             {
-                for (Kinfo info : clist) {
-                    History history = new History();
-                    history.setCautionid(query.getcautionID().toString());
-                    history.setSendtime(time);
-                    history.setTele(u.tele);
-                    if (info.getinformID() != null) {
-                        history.setInformid(info.getinformID().toString());
-                    } else {
-                        history.setInformid(null);
+                if (clist2 != null)
+                {
+                    for (Kinfo info : clist2) {
+                        if (info.getinformID() != null)//生成推送记录
+                        {
+                            History history = new History();
+                            history.setCautionid(query.getcautionID().toString());
+                            history.setSendtime(time);
+                            history.setTele(u.tele);
+                            history.setInformid(info.getinformID().toString());
+                            history.setLibrarytype(info.librarytype);
+                            historyService.insertHistory(history);//插入推送记录表
+                            //Test
+                            historyresult.add(history);
+                            //Test
+                        }
+                        if (informtext != null && !informtext.isEmpty()) {
+                            informtext = informtext + "+" + info.getinform();
+                        } else {
+                            informtext = info.getinform();
+                        }
+                        //Test
+                        result.inform.add(info);
+                        //Test
                     }
-                    history.setLibrarytype(info.librarytype);
-                    historyService.insertHistory(history);//生成推送记录
-                    if (informtext != null && !informtext.isEmpty()) {
-                        informtext = informtext + "+" + info.getinform();
-                    } else {
-                        informtext = info.getinform();
+                }
+            }
+            else
+            {
+                if (clist != null)
+                {
+                    for (Kinfo info : clist) {
+                        if (info.getinformID() != null) //生成推送记录
+                        {
+                            History history = new History();
+                            history.setCautionid(query.getcautionID().toString());
+                            history.setSendtime(time);
+                            history.setTele(u.tele);
+                            history.setInformid(info.getinformID().toString());
+                            history.setLibrarytype(info.librarytype);
+                            historyService.insertHistory(history);//插入推送记录表
+                            //Test
+                            historyresult.add(history);
+                            //Test
+                        }
+                        if (informtext != null && !informtext.isEmpty()) {
+                            informtext = informtext + "+" + info.getinform();
+                        } else {
+                            informtext = info.getinform();
+                        }
+                        //Test
+                        result.inform.add(info);
+                        //Test
                     }
-                    //Test
-                    historyresult.add(history);
-                    result.inform.add(info);
-                    //Test
                 }
             }
             if (randomlist != null)//用户独特推送信息列表推送
             {
-                for (Kinfo info : randomlist) {
-                    History history = new History();
-                    history.setCautionid(query.getcautionID().toString());
-                    history.setSendtime(time);
-                    history.setTele(u.tele);
-                    if (info.getinformID() != null) {
+                for (Kinfo info : randomlist) 
+                {
+                    if (info.getinformID() != null)//生成推送记录
+                    {
+                        History history = new History();
+                        history.setCautionid(query.getcautionID().toString());
+                        history.setSendtime(time);
+                        history.setTele(u.tele);
                         history.setInformid(info.getinformID().toString());
-                    } else {
-                        history.setInformid(null);
+                        history.setLibrarytype(info.librarytype);
+                        historyService.insertHistory(history);//插入推送记录表
+                        //Test
+                        historyresult.add(history);
+                        //Test
                     }
-                    history.setLibrarytype(info.librarytype);
-                    //historyService.insertHistory(history);//生成推送记录
                     if (informtext != null && !informtext.isEmpty()) {
                         informtext = informtext + "+" + info.getinform();
                     } else {
                         informtext = info.getinform();
                     }
                     //Test
-                    historyresult.add(history);
                     result.inform.add(info);
                     //Test
                 }
@@ -446,7 +531,7 @@ public class KnowledgeMatchingController extends BaseController {
             String page = "../message/push_message?type=" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "&time=" + record.getCautiontime() + "&address=" + record.getLocation() + "&message=" + informtext;
             //sendMessage.push(u.openID,m,page);
             //Test
-            wxresult.add(sendMessage.push(u.openID, m, page));
+            wxresult.add(sendMessage.push(u.openID, m, page));//微信小程序推送
             results.add(result);
             //Test
         }

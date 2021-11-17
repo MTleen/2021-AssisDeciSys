@@ -28,6 +28,14 @@ public interface IKnowledgeMatchingService
     public String selectUserTelebyOpenID(String openid);
 
     /**
+     * 用户表查询替代
+     *
+     * @param openid openid
+     * @return 岗位ID
+     */
+    public Long selectUserPositionIDbyOpenID(String openid);
+
+    /**
      * 新增出警记录表
      *
      * @param record 出警记录表
