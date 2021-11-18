@@ -63,7 +63,7 @@
       <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />
     </el-row>
 <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
-    <el-table v-loading="loading" :data="informtypeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="informtypeList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center" />
       <el-table-column label="名称" align="center" prop="typename" />

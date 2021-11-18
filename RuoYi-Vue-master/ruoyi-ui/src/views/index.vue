@@ -124,7 +124,7 @@
       <el-row :gutter="30">
         <el-col :span="24">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe
+            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" border stripe
                       @selection-change="handleSelectChange" height="600px">
               <el-table-column type="selection" align="center" width="50"/>
 
@@ -133,8 +133,8 @@
               <!--              </el-table-column>-->
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 
-              <el-table-column label="提示信息" align="center" prop="inform" :show-overflow-tooltip="false"/>
-              <el-table-column label="信息类型" align="center" prop="librarytype">
+              <el-table-column label="提示信息" align="left" prop="inform" :show-overflow-tooltip="false"/>
+              <el-table-column label="信息类型" align="center" width="200" prop="librarytype">
                 <template slot-scope="scope">
                   {{ scope.row.librarytype === 1 ? $root.totalGeneralType[scope.row.detailtype] : $root.totalSpecialType[scope.row.detailtype] }}
                 </template>

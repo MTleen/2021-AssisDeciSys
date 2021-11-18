@@ -62,7 +62,7 @@
       <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />
     </el-row>
 <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
-    <el-table v-loading="loading" :data="disastertypeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="disastertypeList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center" />
       <el-table-column label="灾情类型" align="center" prop="typename" />

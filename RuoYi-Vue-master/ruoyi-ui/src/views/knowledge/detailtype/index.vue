@@ -82,7 +82,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="detailtypeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="detailtypeList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <!--      <el-table-column label="类型 ID" align="center" prop="typeid" />-->
       <el-table-column label="序号" align="center" type="index" width="50"/>

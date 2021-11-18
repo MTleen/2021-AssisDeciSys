@@ -78,7 +78,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="knowledgeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="knowledgeList" border stripe  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="详细类型" align="center" prop="informid" />-->
       <el-table-column label="序号" align="center" type="index" width="100" />
@@ -95,7 +95,7 @@
       </el-table-column>
       <el-table-column label="通用类型" align="center" prop="detailtype" width="200">
         <template slot-scope="scope">
-          <span>{{$root.totalDetailType[scope.row.detailtype][0]}}</span>
+          <span>{{$root.totalGeneralType[scope.row.detailtype]}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">

@@ -63,7 +63,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="trucktypeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="trucktypeList"border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="车类型" align="center" prop="typeid" />
       <el-table-column label="车类型" align="center" prop="typename" />
@@ -86,7 +86,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

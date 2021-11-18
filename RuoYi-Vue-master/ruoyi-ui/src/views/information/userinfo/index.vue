@@ -122,7 +122,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="userinfoList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="userinfoList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="手机号" align="center" prop="tele" />
       <el-table-column label="姓名" align="center" prop="username" />

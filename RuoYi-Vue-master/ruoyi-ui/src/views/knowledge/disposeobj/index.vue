@@ -72,7 +72,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="disposeobjList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="disposeobjList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="处置对象编号" align="center" prop="objid" />-->
       <el-table-column label="序号" type="index" align="center" width="50" />

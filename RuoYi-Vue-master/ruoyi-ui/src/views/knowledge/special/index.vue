@@ -62,14 +62,14 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="specialList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="specialList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="专项类型" align="center" prop="informid" />-->
       <el-table-column label="序号" type="index" align="center" width="100" />
       <el-table-column label="提示信息" align="left" prop="inform" />
       <el-table-column label="专项类型" align="center" prop="detailtype" width="200">
         <template slot-scope="scope">
-          <span>{{$root.totalDetailType[scope.row.detailtype][0]}}</span>
+          <span>{{$root.totalSpecialType[scope.row.detailtype]}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
