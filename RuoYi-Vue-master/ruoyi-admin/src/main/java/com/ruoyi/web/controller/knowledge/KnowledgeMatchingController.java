@@ -129,7 +129,8 @@ public class KnowledgeMatchingController extends BaseController {
     // public AjaxResult test(Long cid,Long l1,Long l2,Long l3,Boolean isGen,Long site) {
     //     Kwords query=new Kwords();
     //     query.setcautionID(cid);
-    //     query.setaddress("address");
+    //     query.setaddress("测试");
+    //     query.setdate(new Date());
     //     query.setdistype(l1);
     //     query.setdisposeObj(l2);
     //     if(isGen){
@@ -269,12 +270,12 @@ public class KnowledgeMatchingController extends BaseController {
             if (slist != null)//匹配结果非空
             {
                 for (Special s : slist) {
-                    if (!excludeSet.contains("2:" + s.getInformid().toString()))//已勾选信息的去除
+                    if (!excludeSet.contains("3:" + s.getInformid().toString()))//已勾选信息的去除
                     {
                         kinfo = new Kinfo();
                         kinfo.setinformID(Long.valueOf(s.getInformid().toString()));//专项ID数据类型是Integer
                         kinfo.setinform(s.getInform());
-                        kinfo.setlibraryType(Long.valueOf("2"));
+                        kinfo.setlibraryType(Long.valueOf("3"));
                         srlist.add(kinfo);
                     }
                 }
@@ -302,12 +303,12 @@ public class KnowledgeMatchingController extends BaseController {
             if (sflist != null)//匹配结果非空
             {
                 for (Security sf : sflist) {
-                    if (!excludeSet.contains("3:" + sf.getInformid().toString()))//已勾选信息的去除
+                    if (!excludeSet.contains("2:" + sf.getInformid().toString()))//已勾选信息的去除
                     {
                         kinfo = new Kinfo();
                         kinfo.setinformID(Long.valueOf(sf.getInformid().toString()));//安全提示信息ID数据类型为Integer
                         kinfo.setinform(sf.getInform());
-                        kinfo.setlibraryType(Long.valueOf("3"));
+                        kinfo.setlibraryType(Long.valueOf("2"));
                         if (sf.getSecuritypeid() == safetytypeid){
                             sfrlist2.add(kinfo);
                         } else {

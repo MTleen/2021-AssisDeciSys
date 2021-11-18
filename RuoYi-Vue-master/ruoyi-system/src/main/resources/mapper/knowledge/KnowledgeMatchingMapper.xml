@@ -22,11 +22,12 @@
 
     <!--特殊Record插入方式-->
     <insert id="insertRecord" parameterType="Record">
-        <selectKey resultType="String" order="AFTER" keyProperty="cautionID">
-            SELECT LAST_INSERT_ID()
+        <selectKey resultType="String" order="BEFORE" keyProperty="cautionid">
+            SELECT if(max(cautionID) is null, "1", cast(max(cautionID)+1 as char)) from Record
         </selectKey>
         insert into Record
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            cautionID,
             <if test="cautiontime != null">cautiontime,</if>
             <if test="location != null and location != ''">location,</if>
             <if test="distypeid != null">distypeID,</if>
@@ -41,6 +42,7 @@
             <if test="siteid2 != null">siteID2,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{cautionid},
             <if test="cautiontime != null">#{cautiontime},</if>
             <if test="location != null and location != ''">#{location},</if>
             <if test="distypeid != null">#{distypeid},</if>
