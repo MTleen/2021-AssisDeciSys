@@ -4,16 +4,6 @@
       <el-col :span="24">
         <div class="grid-content bg-purple-dark" align='center'>
           <div class="block">
-<!--            <el-date-picker-->
-<!--              v-model="value2"-->
-<!--              type="daterange"-->
-<!--              align="right"-->
-<!--              unlink-panels-->
-<!--              range-separator="至"-->
-<!--              start-placeholder="开始日期"-->
-<!--              end-placeholder="结束日期"-->
-<!--              :picker-options="pickerOptions">-->
-<!--            </el-date-picker>-->
             <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
             <el-radio-group v-model="AllOrPart" style="margin-left:15px;">
               <el-radio-button label="全部"></el-radio-button>
@@ -83,7 +73,7 @@
 
         <el-col :span="11">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="hisLoading" :data="historyList" stripe     
+            <el-table :v-loading="hisLoading" :data="historyList" stripe
                       :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"/>
               <el-table-column label="提示信息" align="center" prop="informid"/>
@@ -246,7 +236,7 @@ export default {
 };
 <style>
 .table-height{
-   height: calc(65vh);     
+   height: calc(65vh);
 }
 .btn-style {
   min-width: 50px;

@@ -3,10 +3,9 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="专项类型" prop="detailtype">
         <el-select v-model="queryParams.detailtype" placeholder="请选择专项类型" clearable size="small">
-          <el-option v-for="(value, key, index) in $root.totalDetailType"
-                     v-if="value[1] === 3"
+          <el-option v-for="(value, key, index) in $root.totalSpecialType"
                      :key="key"
-                     :label="value[0]"
+                     :label="value"
                      :value="key"/>
         </el-select>
       </el-form-item>
@@ -109,10 +108,9 @@
         </el-form-item>
         <el-form-item label="专项类型" prop="detailtype" >
           <el-select v-model="form.detailtype" placeholder="请选择专项类型">
-            <el-option v-for="(value, key, index) in $root.totalDetailType"
-                       v-if="value[1] === 1"
+            <el-option v-for="(value, key, index) in $root.totalSpecialType"
                        :key="key"
-                       :label="value[0]"
+                       :label="value"
                        :value="key"/>
           </el-select>
         </el-form-item>

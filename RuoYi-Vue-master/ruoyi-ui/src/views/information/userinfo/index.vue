@@ -126,9 +126,17 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="手机号" align="center" prop="tele" />
       <el-table-column label="姓名" align="center" prop="username" />
-      <el-table-column label="性别" align="center" prop="gender" />
+      <el-table-column label="性别" align="center" prop="gender">
+        <template slot-scope="scope">
+          {{$root.GENDER[scope.row.gender]}}
+        </template>
+      </el-table-column>
       <el-table-column label="年龄" align="center" prop="age" />
-      <el-table-column label="岗位" align="center" prop="positionid" />
+      <el-table-column label="岗位" align="center" prop="positionid">
+        <template slot-scope="scope">
+          {{$root.totalUserPositions[scope.row.positionid]}}
+        </template>
+      </el-table-column>
       <el-table-column label="队站" align="center" prop="siteid">
         <template slot-scope="scope">
           {{$root.totalSites[scope.row.siteid]}}
@@ -180,7 +188,12 @@
           <el-input v-model="form.age" placeholder="请输入年龄" />
         </el-form-item>
         <el-form-item label="岗位" prop="positionid">
-          <el-input v-model="form.positionid" placeholder="请输入岗位" />
+          <el-select v-model="form.positionid" filterable clearable size="small">
+            <el-option v-for="(value, key, index) in $root.totalUserPositions"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
         </el-form-item>
         <el-form-item label="队站" prop="siteid">
           <el-input v-model="form.siteid" placeholder="请输入队站" />

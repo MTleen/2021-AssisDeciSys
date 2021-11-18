@@ -55,6 +55,8 @@ import {listDisposeobj} from "@/api/knowledge/disposeobj";
 import {listSite} from "@/api/information/site";
 
 import axios from 'axios'
+import {listPost} from "@/api/system/post";
+import {listUserposition} from "@/api/information/userposition";
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -72,10 +74,18 @@ Vue.prototype.MAXCOUNT = 1024
 Vue.prototype.$axios = axios
 Vue.prototype.HOST = '/weather'
 
-Vue.prototype.totalDetailType = {}
+Vue.prototype.totalGeneralType = {}
+Vue.prototype.totalSpecialType = {}
+Vue.prototype.totalSecurityType = {}
 Vue.prototype.totalDisposeObj = {}
 Vue.prototype.totalDisType = {}
 Vue.prototype.totalSites = {}
+Vue.prototype.totalUserPositions = {}
+Vue.prototype.GENDER = {
+  0: '女',
+  1: '男',
+  2: '未知'
+}
 
 // 判断是否登录，如果已登录加载全局对象
 Vue.prototype.loadGlobalData = function () {
@@ -95,12 +105,15 @@ Vue.prototype.loadGlobalData = function () {
     })
     // load all detail type
     listDetailtype(commonQueryParams).then(response => {
-      let totalDetailType = {}
-      // console.log(response.rows)
       for (let row of response.rows) {
-        totalDetailType[row.typeid] = [row.typename, row.priority]
+        if(row.priority === 1){
+          Vue.prototype.totalGeneralType[row.typeid] = row.typename
+        }else if(row.priority === 2){
+          Vue.prototype.totalSecurityType[row.typeid] = row.typename
+        }else{
+          Vue.prototype.totalSpecialType[row.typeid] = row.typename
+        }
       }
-      Vue.prototype.totalDetailType = totalDetailType
     })
     // load all dispose objects
     listDisposeobj(commonQueryParams).then(response => {
@@ -111,6 +124,12 @@ Vue.prototype.loadGlobalData = function () {
         totalDisposeObj[row.objid] = row.objname
       }
       Vue.prototype.totalDisposeObj = totalDisposeObj;
+    })
+    // load all posotion
+    listUserposition(commonQueryParams).then(response => {
+      for (let row of response.rows){
+        Vue.prototype.totalUserPositions[row.positionid] = row.positionname
+      }
     })
     // load all sites
     listSite(commonQueryParams).then(response => {

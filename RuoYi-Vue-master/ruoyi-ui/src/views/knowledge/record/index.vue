@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-position="right" label-width="98px">
-     
+
 
 
       <el-form-item label="地址" prop="location">
@@ -197,12 +197,16 @@
         </el-form-item>
         <el-form-item label="灾情类型" prop="distypeid">
           <el-select v-model="form.distypeid" placeholder="请选择险情类型">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalDisType"
+                       :label="value"
+                       :value="key" />
           </el-select>
         </el-form-item>
         <el-form-item label="处置对象" prop="dillobject">
           <el-select v-model="form.dillobject" placeholder="请选择处置对象">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                       :label="value"
+                       :value="key" />
           </el-select>
         </el-form-item>
         <el-form-item label="主管队站" prop="siteid">

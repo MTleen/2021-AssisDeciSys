@@ -19,10 +19,9 @@
       </el-form-item>
       <el-form-item label="通用类型" prop="detailtype">
         <el-select v-model="queryParams.detailtype" placeholder="请选择通用类型" clearable size="small">
-          <el-option v-for="(value, key, index) in $root.totalDetailType"
-                     v-if="value[1] === 1"
+          <el-option v-for="(value, key, index) in $root.totalGeneralType"
                      :key="key"
-                     :label="value[0]"
+                     :label="value"
                      :value="key"/>
         </el-select>
       </el-form-item>
@@ -151,10 +150,9 @@
         </el-form-item>
         <el-form-item label="通用类型" prop="detailtype">
           <el-select v-model="form.detailtype" placeholder="请选择通用类型">
-            <el-option v-for="(value, key, index) in $root.totalDetailType"
-                       v-if="value[1] === 0"
+            <el-option v-for="(value, key, index) in $root.totalGeneralType"
                        :key="key"
-                       :label="value[0]"
+                       :label="value"
                        :value="key"/>
           </el-select>
         </el-form-item>

@@ -2,29 +2,31 @@
   <div class="app-container">
     <div class="top-style">
       <el-form label-position="left" ref="form" :model="form" :inline="true" label-width="80px">
-        <el-row style="margin-top: 15px; margin-left: 15px">
-          <el-form-item label="案发地址:" prop="address" style=" ">
-            <el-input v-model="form.address" size="small" clearable  placeholder="请输入内容"/>
+        <el-row style="margin-top: 15px">
+          <el-form-item label="案发地址:" prop="address" style="">
+            <el-input v-model="form.address" size="small" clearable/>
           </el-form-item>
 
-          <el-form-item label="立案时间:" prop="date"  >
-            <el-date-picker :clearable ="false"
-                            size="small"
+          <!--          <el-form-item label="立案时间:" prop="time" style="">-->
+          <!--            <el-input v-model="form.time" size="small" clearable/>-->
+          <!--          </el-form-item>-->
+          <el-form-item label="立案时间:" prop="date">
+            <el-date-picker clearable size="small"
                             v-model="form.date"
                             type="datetime"
-                            style=""
+                            style="width: 214px;"
+                            value-format="timestamp"
                             placeholder="选择立案时间">
             </el-date-picker>
           </el-form-item>
 
-          <el-form-item label="灾情类型:" prop="distype" style="" >
+          <el-form-item label="灾情类型:" prop="distype" style="">
             <el-select v-model="form.distype" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDisType"
                          :key="key"
                          :label="value"
                          :value="key"/>
             </el-select>
-
           </el-form-item>
 
           <el-form-item label="处置对象:" prop="disposeObj" style="">
@@ -38,10 +40,9 @@
 
           <el-form-item label="通用类型:" prop="generalType" style="">
             <el-select v-model="form.generalType" filterable clearable size="small">
-              <el-option v-for="(value, key, index) in $root.totalDetailType"
-                         v-if="value[1]===1"
+              <el-option v-for="(value, key, index) in $root.totalGeneralType"
                          :key="key"
-                         :label="value[0]"
+                         :label="value"
                          :value="key"/>
             </el-select>
           </el-form-item>
@@ -67,18 +68,17 @@
 
           <el-form-item label="专项类型:" prop="specialType" style="">
             <el-select v-model="form.specialType" clearable size="small">
-              <el-option v-for="(value, key, index) in $root.totalDetailType"
-                         v-if="value[1]===3"
+              <el-option v-for="(value, key, index) in $root.totalSpecialType"
                          :key="key"
-                         :label="value[0]"
+                         :label="value"
                          :value="key"/>
             </el-select>
           </el-form-item>
 
           <el-form-item label="关键词:" prop="keyWords" style="">
-            <el-input v-model="form.keyWords" clearable  size="small" placeholder="请输入关键词"/>
-                      
-            <!-- prefix-icon=" el-icon-search" -->
+            <el-input v-model="form.keyWords" clearable style="width: 214px;" size="small" prefix-icon=" el-icon-search"
+                      placeholder="请输入关键词"/>
+
           </el-form-item>
 
           <el-form-item>
@@ -97,35 +97,35 @@
 
 
     <div class="table-style">
-<!--      <el-row :gutter="30" style="margin-top: 20px;">-->
-<!--        <el-col :span="24">-->
-<!--          <el-card>-->
-<!--            <i class="el-icon-s-flag" style="text-align:center; padding: 4px 0px 4px 4px;"></i>-->
-<!--            <a style=" font-size:16px;text-align:center; padding-left: 5px;">指挥员</a>-->
-<!--          </el-card>-->
-<!--        </el-col>-->
+      <!--      <el-row :gutter="30" style="margin-top: 20px;">-->
+      <!--        <el-col :span="24">-->
+      <!--          <el-card>-->
+      <!--            <i class="el-icon-s-flag" style="text-align:center; padding: 4px 0px 4px 4px;"></i>-->
+      <!--            <a style=" font-size:16px;text-align:center; padding-left: 5px;">指挥员</a>-->
+      <!--          </el-card>-->
+      <!--        </el-col>-->
 
-<!--        &lt;!&ndash; <el-col :span="8">-->
-<!--          <el-card>-->
-<!--            <i class="el-icon-service" style="float:left; padding: 4px 0px 4px 4px;"></i>-->
-<!--            <span style="font-size:16px;float:left;padding-left: 5px;">战斗员</span>-->
-<!--          </el-card>-->
-<!--        </el-col> -->
-<!--        <el-col :span="8">-->
-<!--          <el-card>-->
-<!--            <i class="el-icon-phone-outline" style="float:left; padding: 4px 0px 4px 4px;"></i>-->
-<!--            <span style="font-size:16px;float:left; padding-left:5px; ">司通员</span>-->
-<!--          </el-card>-->
-<!--        </el-col> &ndash;&gt;-->
+      <!--        &lt;!&ndash; <el-col :span="8">-->
+      <!--          <el-card>-->
+      <!--            <i class="el-icon-service" style="float:left; padding: 4px 0px 4px 4px;"></i>-->
+      <!--            <span style="font-size:16px;float:left;padding-left: 5px;">战斗员</span>-->
+      <!--          </el-card>-->
+      <!--        </el-col> -->
+      <!--        <el-col :span="8">-->
+      <!--          <el-card>-->
+      <!--            <i class="el-icon-phone-outline" style="float:left; padding: 4px 0px 4px 4px;"></i>-->
+      <!--            <span style="font-size:16px;float:left; padding-left:5px; ">司通员</span>-->
+      <!--          </el-card>-->
+      <!--        </el-col> &ndash;&gt;-->
 
-<!--      </el-row>-->
+      <!--      </el-row>-->
 
 
       <el-row :gutter="30">
         <el-col :span="24">
           <div class="grid-content bg-purple">
-            <div class="height-style">
-            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe @selection-change="handleSelectChange" height=100%>
+            <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" stripe
+                      @selection-change="handleSelectChange" height="600px">
               <el-table-column type="selection" align="center" width="50"/>
 
               <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
@@ -134,14 +134,18 @@
               <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 
               <el-table-column label="提示信息" align="center" prop="inform" :show-overflow-tooltip="false"/>
-              <!-- <el -->
-<!--                            <el-table-column-->
-<!--                              width="60"-->
-<!--                              label="信息类型"-->
-<!--                              align="center"-->
-<!--                              prop="detailtype"-->
-<!--                              :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
-<!--                              :filter-method="filterTag">-->
+              <el-table-column label="信息类型" align="center" prop="librarytype">
+                <template slot-scope="scope">
+                  {{ scope.row.librarytype === 1 ? $root.totalGeneralType[scope.row.detailtype] : $root.totalSpecialType[scope.row.detailtype] }}
+                </template>
+              </el-table-column>
+              <!--                            <el-table-column-->
+              <!--                              width="60"-->
+              <!--                              label="信息类型"-->
+              <!--                              align="center"-->
+              <!--                              prop="detailtype"-->
+              <!--                              :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
+              <!--                              :filter-method="filterTag">-->
 
               <!--                <template slot-scope="scope">-->
               <!--                  <i class='el-icon-question' v-if="scope.row.ZHIcon === '1'">-->
@@ -153,7 +157,6 @@
               <!--                </template>-->
               <!--              </el-table-column>-->
             </el-table>
-            </div>
             <pagination
               v-show="total>0"
               :total="total"
@@ -182,20 +185,20 @@
               </el-form>
             </div> -->
 
-          <el-form ref="form" :model="customerInfo">
-            <el-form-item label="" prop="tip">
-              <div  class="fujian-style">
-                <div style="margin-right:10px; width:40%">
-                  <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:90%"/>
+            <el-form ref="form" :model="customerInfo">
+              <el-form-item label="" prop="tip">
+                <div class="fujian-style">
+                  <div style="margin-right:10px; width:40%">
+                    <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:100%" @focus="resetTimer"/>
+                  </div>
+                  <div>
+                    <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">
+                      附件上传
+                    </el-button>
+                  </div>
                 </div>
-                <div>
-                  <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">
-                          附件上传
-                  </el-button>
-                </div>
-              </div>
-            </el-form-item>
-          </el-form>
+              </el-form-item>
+            </el-form>
           </div>
         </el-col>
 
@@ -300,7 +303,9 @@
 
       <div align="center">
         <el-button style="margin-top: 40px" type="primary" v-if="seconds > 0">{{ seconds }} s</el-button>
-        <el-button style="margin-top: 40px" type="primary" size="middle" v-else @click="sendInfo" :disabled="informList.length === 0">发 送</el-button>
+        <el-button style="margin-top: 40px" type="primary" size="middle" v-else @click="sendInfo"
+                   :disabled="informList.length === 0">发 送
+        </el-button>
       </div>
     </div>
   </div>
@@ -309,6 +314,7 @@
 
 import {listKnowledge} from "@/api/knowledge/knowledge";
 import {listSpecial} from "@/api/knowledge/special";
+import {sendMessage} from "@/api/msg";
 
 export default {
   data() {
@@ -320,7 +326,7 @@ export default {
       pagerCount: 2,
       form: {
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 10,
         cautionID: null,
         keyWords: null,
         inform: [],
@@ -345,7 +351,7 @@ export default {
     this.$root.loadGlobalData()
     console.log(this.$route.query)
     let queryParameters = this.$route.query
-    if (queryParameters && queryParameters){
+    if (queryParameters && queryParameters) {
       this.form.cautionID = queryParameters.cautionid
       this.form.date = queryParameters.cautiontime
       this.form.distype = queryParameters.distypeid
@@ -361,19 +367,26 @@ export default {
       this.resetTimer()
       this.form.pageNum = 1
       this.getInfo()
-      // 延迟 0.5s，等待数据库结果返回
+      // 延迟 1s，等待数据库结果返回
       setTimeout(() => {
         this.autoSend()
-      }, 500)
+      }, 1000)
     },
     // 发送消息
-    sendInfo(){
+    sendInfo() {
       // 判断自定义消息是否为 null，若不为 null 则加入 inform 列表
-      if (this.customerInfo){
-        this.form.inform.push({informid: null, inform: this.customerInfo})
+      if (this.customerInfo) {
+        this.form.inform.push({informid: null, inform: this.customerInfo, librarytype: null})
       }
-      console.log('send info')
-      console.log(this.form)
+      console.log('this.form:', this.form)
+      sendMessage(this.form).then(response => {
+        if (response.code === 200) {
+          this.msgSuccess("消息推送成功");
+        } else (
+          this.msgError("消息推送失败\n" + response.data)
+        )
+      })
+      // console.log('send info')
     },
     // 倒计时结束自动发送
     autoSend() {
@@ -391,7 +404,7 @@ export default {
       }
     },
     // 多选消息
-    handleSelectChange(val){
+    handleSelectChange(val) {
       this.resetTimer()
       console.log(val)
       this.form.inform = val
@@ -418,6 +431,7 @@ export default {
     getInfo() {
       this.loading = true
       // this.form.pageSize = 10
+      // 若存在专项类型，则匹配专项库
       if (this.form.specialType) {
         let queryParams = {
           pageNum: this.form.pageNum,
@@ -447,8 +461,8 @@ export default {
       }
     },
     // 取消倒计时
-    resetTimer(){
-      if(this.timerId){
+    resetTimer() {
+      if (this.timerId) {
         clearInterval(this.timerId)
         this.seconds = 0
       }
@@ -482,7 +496,7 @@ export default {
   vertical-align: middle;
   float: left;
   display: flex;
-   justify-content:  flex-end;
+  justify-content: flex-end;
 }
 
 
@@ -498,10 +512,9 @@ export default {
 .table-style {
   background: white;
   padding: 5px 20px 30px 30px;
+  height: 100%;
 }
-.height-style{
-  height: calc(55vh);
-}
+
 .el-form-item {
   margin-bottom: 5px;
 }
