@@ -5,6 +5,9 @@ import com.ruoyi.sendToWeChat.domain.AccessToken;
 import com.ruoyi.sendToWeChat.domain.TemplateData;
 import com.ruoyi.sendToWeChat.domain.WxMssVo;
 //import lombok.extern.slf4j.Slf4j;
+import com.ruoyi.sendToWeChat.domain.urlData;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +23,13 @@ import java.util.Map;
 *
 *
 **/
-
+@Api("企业微信推送消息")
 @RestController
 @Slf4j
 public class sendMessage {
     /** 
      *发送订阅消息
      */
-
     @GetMapping("/push")
     public String push(String openid,Map<String, TemplateData> m,String s) { //,List<String> text
         RestTemplate restTemplate = new RestTemplate();
@@ -43,9 +45,10 @@ public class sendMessage {
         System.out.println("MSG：" + responseEntity.getBody());
         return responseEntity.getBody();
     }
-    /** 
+    /**
      *获取AccessToken
      */
+    @ApiOperation("小程序获取accesstoken")
     @GetMapping("/getAccessToken")
     public String getAccessToken() {
         RestTemplate restTemplate = new RestTemplate();
