@@ -9,13 +9,12 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Date;
 
+import com.ruoyi.information.service.IUserInfoMatchingService;
 import com.ruoyi.sendToWeChat.domain.TemplateData;
+import com.ruoyi.web.controller.sendToWeChat.sendToWeChat_Com;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.web.controller.sendToWeChat.sendMessage;
@@ -23,6 +22,12 @@ import com.ruoyi.knowledge.domain.*;
 import com.ruoyi.knowledge.domain.Record;
 import com.ruoyi.knowledge.service.*;
 import io.swagger.annotations.*;
+
+/**
+ * 获取时间
+ */
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * 信息推送Controller
@@ -102,6 +107,19 @@ public class KnowledgeMatchingController extends BaseController {
     private sendMessage sendMessage;
 
     /**
+     * xy
+     * 创建sendToWeChat_Com类型的对象，用对象调用该类中的方法
+     */
+    @Autowired
+    private sendToWeChat_Com sendtowechat_com;
+    /**
+     * xy
+     * 创建sendToWeChat_Com类型的对象，用对象调用该类中的方法
+     */
+    @Autowired
+    private IUserInfoMatchingService userInfoMatchingService;
+
+    /**
      * 随机生成推送列表
      *
      * @param listsize 待推送列表长度
@@ -123,24 +141,23 @@ public class KnowledgeMatchingController extends BaseController {
         }
         return result;
     }
-    // @ApiOperation("test")
-    // @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
-    // @PostMapping("/test")
-    // public AjaxResult test(Long cid,Long l1,Long l2,Long l3,Boolean isGen,Long site) {
-    //     Kwords query=new Kwords();
-    //     query.setcautionID(cid);
-    //     query.setaddress("测试");
-    //     query.setdate(new Date());
-    //     query.setdistype(l1);
-    //     query.setdisposeObj(l2);
-    //     if(isGen){
-    //         query.setgeneralType(l3);
-    //     }else{
-    //         query.setspecialType(l3);
-    //     }
-    //     query.setsiteID1(site);
-    //     return distribution(query);
-    // }
+     @ApiOperation("test")
+     @PreAuthorize("@ss.hasPermi('knowledge:knowledge:list')")
+     @PostMapping("/test")
+     public AjaxResult test(Long cid,Long l1,Long l2,Long l3,Boolean isGen,Long site) {
+         Kwords query=new Kwords();
+         query.setcautionID(cid);
+         query.setaddress("address");
+         query.setdistype(l1);
+         query.setdisposeObj(l2);
+         if(isGen){
+             query.setgeneralType(l3);
+         }else{
+             query.setspecialType(l3);
+         }
+         query.setsiteID1(site);
+         return distribution(query);
+     }
     /**
      * 提示信息推送接口
      */
@@ -535,6 +552,15 @@ public class KnowledgeMatchingController extends BaseController {
             wxresult.add(sendMessage.push(u.openID, m, page));//微信小程序推送
             results.add(result);
             //Test
+
+            /*
+             * 推送至企业微信
+             * */
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            String message = "事件地点：" + record.getLocation() + "\n" + "事件时间：" + df.format(new Date()) + "\n"
+                            +"事件类型：" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "\n" + "事件内容：" + informtext.replaceAll("\\+"," ");
+            sendtowechat_com.send(userInfoMatchingService.selectUserIDbyOpenID(u.openID),message);
+//            sendtowechat_com.send(userInfoMatchingService.selectUserIDbyOpenID(u.openID),"ceshi1109");
         }
         return AjaxResult.success(wxresult);//返回结果：historyresult-历史表生成记录;results-用户推送记录;wxresult-实际用户推送反馈;
     }
