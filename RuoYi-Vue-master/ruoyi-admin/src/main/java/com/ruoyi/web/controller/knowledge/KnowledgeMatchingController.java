@@ -529,7 +529,7 @@ public class KnowledgeMatchingController extends BaseController {
             } else {
                 m.put("thing3", new TemplateData(informtext));
             }
-            String page = "../message/push_message?type=" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "&time=" + record.getCautiontime() + "&address=" + record.getLocation() + "&message=" + informtext;
+            String page = "pages/message/push_message?type=" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "&time=" + record.getCautiontime() + "&address=" + record.getLocation() + "&message=" + informtext;
             //sendMessage.push(u.openID,m,page);
             //Test
             wxresult.add(sendMessage.push(u.openID, m, page));//微信小程序推送
