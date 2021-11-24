@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="消防车 ID" prop="truckid">
         <el-input
           v-model="queryParams.truckid"
@@ -96,7 +96,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="truckinformList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="truckinformList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="消防车 ID" align="center" prop="truckid" />
       <el-table-column label="车牌号" align="center" prop="license" />
@@ -123,7 +123,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

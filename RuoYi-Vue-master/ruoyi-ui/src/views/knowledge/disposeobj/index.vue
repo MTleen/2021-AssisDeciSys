@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="98px">
       <el-form-item label="处置对象名称" prop="objname">
         <el-select v-model="queryParams.objname" filterable placeholder="请选择处置对象名称" clearable size="small">
           <el-option
@@ -72,7 +72,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="disposeobjList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="disposeobjList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="处置对象编号" align="center" prop="objid" />-->
       <el-table-column label="序号" type="index" align="center" width="50" />

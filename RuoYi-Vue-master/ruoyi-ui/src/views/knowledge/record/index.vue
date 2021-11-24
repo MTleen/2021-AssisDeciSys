@@ -1,16 +1,9 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="时间" prop="cautiontime">
-<!--        <el-date-picker clearable size="small"-->
-<!--                        v-model="queryParams.cautiontime"-->
-<!--                        type="date"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        placeholder="选择时间">-->
-<!--        </el-date-picker>-->
-       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-position="right" label-width="98px">
 
-      </el-form-item>
+
+
       <el-form-item label="地址" prop="location">
         <el-input
           v-model="queryParams.location"
@@ -34,6 +27,18 @@
                      :value="key" />
         </el-select>
       </el-form-item>
+
+      <el-form-item label="时间" prop="cautiontime">
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.cautiontime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择时间">-->
+<!--        </el-date-picker>-->
+       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
+      </el-form-item>
+
+
       <el-form-item label="主管队站" prop="siteid">
         <el-select v-model="queryParams.siteid" placeholder="请选择主管队站" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalSites"
@@ -115,7 +120,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="recordList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="报警编号" align="center" prop="cautionid" />
       <el-table-column label="时间" align="center" prop="cautiontime" width="180">
@@ -190,19 +195,25 @@
         <el-form-item label="地址" prop="location">
           <el-input v-model="form.location" placeholder="请输入地址" />
         </el-form-item>
-        <el-form-item label="险情类型" prop="distypeid">
+        <el-form-item label="灾情类型" prop="distypeid">
           <el-select v-model="form.distypeid" placeholder="请选择险情类型">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalDisType"
+                       :label="value"
+                       :value="key" />
           </el-select>
         </el-form-item>
         <el-form-item label="处置对象" prop="dillobject">
           <el-select v-model="form.dillobject" placeholder="请选择处置对象">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                       :label="value"
+                       :value="key" />
           </el-select>
         </el-form-item>
-        <el-form-item label="主管单位" prop="siteid">
+        <el-form-item label="主管队站" prop="siteid">
           <el-select v-model="form.siteid" placeholder="请选择主管单位">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalSites"
+                       :label="value"
+                       :value="key" />
           </el-select>
         </el-form-item>
         <el-form-item label="出警车辆" prop="truckid">
@@ -429,3 +440,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.el-date-editor .el-range-input{
+  width: 70%;
+}
+</style>

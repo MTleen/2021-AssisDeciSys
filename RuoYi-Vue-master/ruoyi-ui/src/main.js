@@ -52,8 +52,11 @@ import {getToken} from '@/utils/auth'
 import {listDisastertype} from "@/api/knowledge/disastertype";
 import {listDetailtype} from "@/api/knowledge/detailtype";
 import {listDisposeobj} from "@/api/knowledge/disposeobj";
+import {listSite} from "@/api/information/site";
 
 import axios from 'axios'
+import {listPost} from "@/api/system/post";
+import {listUserposition} from "@/api/information/userposition";
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -71,37 +74,18 @@ Vue.prototype.MAXCOUNT = 1024
 Vue.prototype.$axios = axios
 Vue.prototype.HOST = '/weather'
 
-Vue.prototype.totalDetailType = {}
+Vue.prototype.totalGeneralType = {}
+Vue.prototype.totalSpecialType = {}
+Vue.prototype.totalSecurityType = {}
 Vue.prototype.totalDisposeObj = {}
 Vue.prototype.totalDisType = {}
 Vue.prototype.totalSites = {}
-Vue.prototype. pickerOptions = {
-  shortcuts: [{
-    text: '最近一周',
-    onClick(picker) {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-      picker.$emit('pick', [start, end]);
-    }
-  }, {
-    text: '最近一个月',
-    onClick(picker) {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      picker.$emit('pick', [start, end]);
-    }
-  }, {
-    text: '最近三个月',
-    onClick(picker) {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-      picker.$emit('pick', [start, end]);
-    }
-  }]
-},
+Vue.prototype.totalUserPositions = {}
+Vue.prototype.GENDER = {
+  0: '女',
+  1: '男',
+  2: '未知'
+}
 
 // 判断是否登录，如果已登录加载全局对象
 Vue.prototype.loadGlobalData = function () {
@@ -121,12 +105,15 @@ Vue.prototype.loadGlobalData = function () {
     })
     // load all detail type
     listDetailtype(commonQueryParams).then(response => {
-      let totalDetailType = {}
-      // console.log(response.rows)
       for (let row of response.rows) {
-        totalDetailType[row.typeid] = [row.typename, row.priority]
+        if(row.priority === 1){
+          Vue.prototype.totalGeneralType[row.typeid] = row.typename
+        }else if(row.priority === 2){
+          Vue.prototype.totalSecurityType[row.typeid] = row.typename
+        }else{
+          Vue.prototype.totalSpecialType[row.typeid] = row.typename
+        }
       }
-      Vue.prototype.totalDetailType = totalDetailType
     })
     // load all dispose objects
     listDisposeobj(commonQueryParams).then(response => {
@@ -138,8 +125,21 @@ Vue.prototype.loadGlobalData = function () {
       }
       Vue.prototype.totalDisposeObj = totalDisposeObj;
     })
+    // load all posotion
+    listUserposition(commonQueryParams).then(response => {
+      for (let row of response.rows){
+        Vue.prototype.totalUserPositions[row.positionid] = row.positionname
+      }
+    })
     // load all sites
-    Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
+    listSite(commonQueryParams).then(response => {
+      let totalSite = {}
+      for(let row of response.rows){
+        totalSite[row.siteid]  =row.sitename
+      }
+      Vue.prototype.totalSites = totalSite;
+    })
+    // Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
     // load all library types
     Vue.prototype.totalLibType = { 1: '通用', 3: '专项', 2: '安全'}
   }

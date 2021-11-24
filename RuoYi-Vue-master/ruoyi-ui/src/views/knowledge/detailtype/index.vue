@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="详细类型" prop="typename">
         <el-select v-model="queryParams.typename" filterable placeholder="请选择详细类型" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalDetailType"
@@ -82,7 +82,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="detailtypeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="detailtypeList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <!--      <el-table-column label="类型 ID" align="center" prop="typeid" />-->
       <el-table-column label="序号" align="center" type="index" width="50"/>

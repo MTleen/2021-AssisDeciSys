@@ -63,7 +63,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="adminList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="adminList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="权限名称" align="center" prop="adminname" />
@@ -86,7 +86,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

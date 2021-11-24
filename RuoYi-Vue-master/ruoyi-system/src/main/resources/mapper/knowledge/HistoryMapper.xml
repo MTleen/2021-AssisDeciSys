@@ -33,7 +33,7 @@
         from History a
         left join Knowledge K on K.informID = a.informID
         left join Special S on S.informID = a.informID
-        left join Security SE on SE.inform
+        left join Security SE on SE.informID = a.informID
         left join UserInfo U on U.tele = a.tele
     </sql>
 

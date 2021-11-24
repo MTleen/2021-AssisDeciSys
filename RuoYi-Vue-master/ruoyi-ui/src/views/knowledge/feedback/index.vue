@@ -63,7 +63,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
-    <el-table v-loading="loading" :data="feedbackList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="feedbackList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
       <el-table-column label="人员编号" align="center" prop="tele" />
@@ -87,7 +87,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

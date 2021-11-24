@@ -1,7 +1,15 @@
 package com.ruoyi.framework.web.service;
 
 import javax.annotation.Resource;
+
+import com.google.gson.Gson;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.framework.web.domain.server.Sys;
+import com.ruoyi.sendToWeChat.domain.AccessToken;
+import com.ruoyi.sendToWeChat.service.WechatService;
+import org.omg.CORBA.WCharSeqHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +31,13 @@ import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.information.service.IUserInfoService;
+import com.ruoyi.information.domain.UserInfo;
+import com.ruoyi.common.core.domain.model.O2UBody;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登录校验方法
@@ -34,6 +49,9 @@ public class SysLoginService
 {
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private IUserInfoService userInfoService;
 
     @Resource
     private AuthenticationManager authenticationManager;
@@ -90,6 +108,34 @@ public class SysLoginService
         recordLoginInfo(loginUser.getUser());
         // 生成token
         return tokenService.createToken(loginUser);
+    }
+
+    // 微信登录
+    public AjaxResult wechatLogin(String tele, String openid){
+        WechatService wechatService = new WechatService();
+        UserInfo user = userInfoService.selectUserInfoByTele(tele);
+        if(user != null){
+            user.setOpenid(openid);
+            // 获取企业微信 accessToken
+            String baseurl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={ID}&corpsecret={SECRET}";
+            Map<String, String> params = new HashMap<>();
+            params.put("ID", "ww458c265dc1041b22");
+            params.put("SECRET", "ALp8SU_MFveuWUjicU4BQxKKsf7q0wO7812f5jnmHxg");
+            String accessToken = wechatService.getAccessToken(baseurl, params);
+            // openid 转换成 userid
+            String o2uUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_userid?access_token=" + accessToken;
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(o2uUrl, user, String.class);
+            String resBodyString = responseEntity.getBody();
+            O2UBody o2uBody = new Gson().fromJson(resBodyString, O2UBody.class);
+            System.out.println(resBodyString);
+            // 存储 userid
+            user.setUserid(o2uBody.getUserid());
+            userInfoService.updateUserInfo(user);
+            return AjaxResult.success("登录成功。");
+        }else{
+            return AjaxResult.error("登录失败，用户不存在。");
+        }
     }
 
     /**

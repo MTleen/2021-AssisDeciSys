@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.information.mapper.UserInfoMapper">
+    
+    <resultMap type="UserInfo" id="UserInfoResult">
+        <result property="tele"    column="tele"    />
+        <result property="username"    column="username"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="positionid"    column="positionID"    />
+        <result property="truckid"    column="truckID"    />
+        <result property="siteid"    column="siteID"    />
+        <result property="account"    column="account"    />
+        <result property="password"    column="password"    />
+        <result property="adminid"    column="adminID"    />
+        <result property="status"    column="status"    />
+        <result property="openid"    column="openid"    />
+        <result property="userid"    column="userid"    />
+    </resultMap>
+
+    <sql id="selectUserInfoVo">
+        select tele, username, gender, age, positionID, truckID, siteID, account, password, adminID, status, openid, userid from UserInfo
+    </sql>
+
+    <select id="selectUserInfoList" parameterType="UserInfo" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        <where>  
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="positionid != null "> and positionID = #{positionid}</if>
+            <if test="truckid != null "> and truckID = #{truckid}</if>
+            <if test="siteid != null "> and siteID = #{siteid}</if>
+            <if test="account != null  and account != ''"> and account = #{account}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="adminid != null "> and adminID = #{adminid}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserInfoByTele" parameterType="String" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        where tele = #{tele}
+    </select>
+        
+    <insert id="insertUserInfo" parameterType="UserInfo">
+        insert into UserInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tele != null">tele,</if>
+            <if test="username != null and username != ''">username,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="positionid != null">positionID,</if>
+            <if test="truckid != null">truckID,</if>
+            <if test="siteid != null">siteID,</if>
+            <if test="account != null">account,</if>
+            <if test="password != null">password,</if>
+            <if test="adminid != null">adminID,</if>
+            <if test="status != null">status,</if>
+            <if test="openid != null">openid,</if>
+            <if test="userid != null">userid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tele != null">#{tele},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="positionid != null">#{positionid},</if>
+            <if test="truckid != null">#{truckid},</if>
+            <if test="siteid != null">#{siteid},</if>
+            <if test="account != null">#{account},</if>
+            <if test="password != null">#{password},</if>
+            <if test="adminid != null">#{adminid},</if>
+            <if test="status != null">#{status},</if>
+            <if test="openid != null">#{openid},</if>
+            <if test="userid != null">#{userid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserInfo" parameterType="UserInfo">
+        update UserInfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="positionid != null">positionID = #{positionid},</if>
+            <if test="truckid != null">truckID = #{truckid},</if>
+            <if test="siteid != null">siteID = #{siteid},</if>
+            <if test="account != null">account = #{account},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="adminid != null">adminID = #{adminid},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="openid != null">openid = #{openid},</if>
+            <if test="userid != null">userid = #{userid},</if>
+        </trim>
+        where tele = #{tele}
+    </update>
+
+    <delete id="deleteUserInfoByTele" parameterType="String">
+        delete from UserInfo where tele = #{tele}
+    </delete>
+
+    <delete id="deleteUserInfoByTeles" parameterType="String">
+        delete from UserInfo where tele in 
+        <foreach item="tele" collection="array" open="(" separator="," close=")">
+            #{tele}
+        </foreach>
+    </delete>
+</mapper>

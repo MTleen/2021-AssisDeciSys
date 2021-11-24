@@ -4,16 +4,6 @@
       <el-col :span="24">
         <div class="grid-content bg-purple-dark" align='center'>
           <div class="block">
-<!--            <el-date-picker-->
-<!--              v-model="value2"-->
-<!--              type="daterange"-->
-<!--              align="right"-->
-<!--              unlink-panels-->
-<!--              range-separator="至"-->
-<!--              start-placeholder="开始日期"-->
-<!--              end-placeholder="结束日期"-->
-<!--              :picker-options="pickerOptions">-->
-<!--            </el-date-picker>-->
             <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
             <el-radio-group v-model="AllOrPart" style="margin-left:15px;">
               <el-radio-button label="全部"></el-radio-button>
@@ -30,7 +20,8 @@
       <el-row :gutter="40">
         <el-col :span="13">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="loading" :data="recordList" stripe height="900" :header-cell-style="tableHeaderColor">
+            <div class="table-height">
+            <el-table :v-loading="loading" :data="recordList" stripe max-height="100%" :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"></el-table-column>
               <el-table-column label="案件编号" align="center" prop="cautionid" width='80'>
               </el-table-column>
@@ -66,6 +57,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </div>
           <div class="block" style="margin-top: 30px;float:right">
             <el-pagination
@@ -81,11 +73,11 @@
 
         <el-col :span="11">
           <div class="grid-content bg-purple">
-            <el-table :v-loading="hisLoading" :data="historyList" stripe height="900"
-                      :header-cell-style="tableHeaderColor">
+            <el-table :v-loading="hisLoading" :data="historyList" stripe
+                      :header-cell-style="tableHeaderColor" max-height="600" >
               <el-table-column label="序号" align="center" type="index"/>
-              <el-table-column label="提示信息" align="center" prop="informid"/>
-              <el-table-column label="推送对象" align="center" prop="positionid" >
+              <el-table-column label="提示信息" align="left" prop="informid"/>
+              <el-table-column label="推送对象" align="center" prop="positionid" width="150">
                 <template slot-scope="scope">
                   <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
                 </template>
@@ -215,6 +207,7 @@ export default {
     handleSendInfo(caution) {
       console.log(caution)
       console.log(this.$router)
+      caution.cautiontime = Date.parse(caution.cautiontime)
       this.$router.push({path: '/index', query: caution})
     },
     listHisInfo() {
@@ -242,7 +235,9 @@ export default {
 }
 };
 <style>
-
+.table-height{
+   max-height: calc(65vh);
+}
 .btn-style {
   min-width: 50px;
   min-height: 25px;
