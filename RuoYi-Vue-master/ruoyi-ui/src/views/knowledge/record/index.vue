@@ -28,15 +28,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="时间" prop="cautiontime">
-<!--        <el-date-picker clearable size="small"-->
-<!--                        v-model="queryParams.cautiontime"-->
-<!--                        type="date"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        placeholder="选择时间">-->
-<!--        </el-date-picker>-->
-       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
-      </el-form-item>
+      
 
 
       <el-form-item label="主管队站" prop="siteid">
@@ -66,6 +58,16 @@
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+
+      <el-form-item label="时间" prop="cautiontime">
+<!--        <el-date-picker clearable size="small"-->
+<!--                        v-model="queryParams.cautiontime"-->
+<!--                        type="date"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        placeholder="选择时间">-->
+<!--        </el-date-picker>-->
+       <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -122,7 +124,7 @@
 
     <el-table v-loading="loading" :data="recordList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="报警编号" align="center" prop="cautionid" />
+      <el-table-column label="报警编号" align="center" prop="cautionid" width="80"/>
       <el-table-column label="时间" align="center" prop="cautiontime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.cautiontime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>

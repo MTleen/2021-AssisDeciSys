@@ -261,7 +261,7 @@ export default {
 
   .right-menu {
     float: right;
-    height: 100%;
+    height: 80%;
     // line-height: 50px;
 
     &:focus {
@@ -369,12 +369,22 @@ export default {
   }
 }
 .new-banner{
-  height: 60%;
+  height: 55%;
   width: 100%;
   background: rgb(3, 92, 185);
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
 }
-
+.app-breadcrumb.el-breadcrumb {
+    margin-top: 5px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 40px;
+    margin-left: 8px;
+}
+.navbar .hamburger-container {
+    margin-top: 3px;
+    line-height: 40px;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="灾情类型" prop="disastertype">
         <el-select v-model="queryParams.disastertype" placeholder="请选择灾情类型" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalDisType"

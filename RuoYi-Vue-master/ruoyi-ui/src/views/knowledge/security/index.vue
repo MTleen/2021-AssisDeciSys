@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
 <!--      <el-form-item label="提示信息" prop="inform">-->
 <!--        <el-select v-model="queryParams.inform" placeholder="请选择提示信息" clearable size="small">-->
 <!--          <el-option label="请选择字典生成" value="" />-->

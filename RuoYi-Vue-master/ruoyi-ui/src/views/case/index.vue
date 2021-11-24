@@ -16,14 +16,14 @@
       </el-col>
     </el-row>
 
-    <div style="margin-top: 20px; background: white; padding: 20px 20px 30px 30px;">
-      <el-row :gutter="40">
-        <el-col :span="13">
+    <div style="margin-top: 5px; background: white; padding: 10px 20px 30px 30px;">
+      <el-row :gutter="30">
+        <el-col :span="24">
           <div class="grid-content bg-purple">
             <div class="table-height">
-            <el-table :v-loading="loading" :data="recordList" stripe max-height="100%" :header-cell-style="tableHeaderColor">
+            <el-table :v-loading="loading" :data="recordList" stripe border max-height="100%" :header-cell-style="tableHeaderColor">
               <el-table-column label="序号" align="center" type="index"></el-table-column>
-              <el-table-column label="案件编号" align="center" prop="cautionid" width='80'>
+              <el-table-column label="案件编号" align="center" prop="cautionid" width='100'>
               </el-table-column>
               <el-table-column label="灾情类型" align="center" prop="distypeid" width='120'>
                 <template slot-scope="scope">
@@ -45,20 +45,83 @@
               <el-table-column fixed="right" label="操作" align="center" width='150'
                                class-name="small-padding fixed-width">
                 <template slot-scope="scope">
+
                   <el-button
                     size="mini"
                     type="primary"
                     class="btn-style"
                     @click="handleSendInfo(scope.row)">推送
                   </el-button>
+
                   <el-button size="mini" type="success" class="btn-style" @click="handleHisQuery(scope.row.cautionid)">
                     查看
                   </el-button>
+
+
+                  <!-- 使用弹出框 -->
+                   <!-- <el-popover
+                      placement="left-start"
+                      align="center"
+                      width="1000"
+                      trigger="click">
+                      <div class="grid-content bg-purple">
+                        <el-table :v-loading="hisLoading" :data="historyList" stripe
+                                  :header-cell-style="tableHeaderColor" max-height="600" >
+                          <el-table-column label="序号" align="center" type="index"/>
+                          <el-table-column label="提示信息" align="left" prop="informid"/>
+                          <el-table-column label="推送对象" align="center" prop="positionid" width="130">
+                            <template slot-scope="scope">
+                              <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
+                            </template>
+                          </el-table-column>
+                          <el-table-column label="发送时间" align="center" prop="sendtime" width="150">
+                            <template slot-scope="scope">
+                              <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+                            </template>
+                          </el-table-column>
+                          <el-table-column label="知识类型" align="center" prop="librarytype" width="100">
+                            <template slot-scope="scope">
+                              <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
+                            </template>
+                          </el-table-column>
+                        </el-table>
+                      </div>
+                      <el-button size="mini" type="success" class="btn-style" slot="reference" @click="handleHisQuery(scope.row.cautionid)">查看</el-button>
+                    </el-popover> -->
+  
+
+
                 </template>
               </el-table-column>
             </el-table>
             </div>
           </div>
+
+           <el-dialog :visible.sync="dialogTableVisible"   width="70%" top:40vh center>
+              <div class="grid-content bg-purple">
+                <el-table :v-loading="hisLoading" :data="historyList" stripe border
+                          :header-cell-style="tableHeaderColor"  max-height="600" >
+                  <el-table-column label="序号" align="center" type="index"/>
+                  <el-table-column label="提示信息" align="left" prop="informid" />
+                  <el-table-column label="推送对象" align="center" prop="positionid" width="130">
+                    <template slot-scope="scope">
+                      <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="发送时间" align="center" prop="sendtime" width="160">
+                    <template slot-scope="scope">
+                      <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="知识类型" align="center" prop="librarytype" width="80">
+                    <template slot-scope="scope">
+                      <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+          </el-dialog>
+
           <div class="block" style="margin-top: 30px;float:right">
             <el-pagination
               v-show="total>0"
@@ -71,13 +134,13 @@
           </div>
         </el-col>
 
-        <el-col :span="11">
+        <!-- <el-col :span="11">
           <div class="grid-content bg-purple">
             <el-table :v-loading="hisLoading" :data="historyList" stripe
                       :header-cell-style="tableHeaderColor" max-height="600" >
               <el-table-column label="序号" align="center" type="index"/>
               <el-table-column label="提示信息" align="left" prop="informid"/>
-              <el-table-column label="推送对象" align="center" prop="positionid" width="150">
+              <el-table-column label="推送对象" align="center" prop="positionid" width="130">
                 <template slot-scope="scope">
                   <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
                 </template>
@@ -92,6 +155,10 @@
                   <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
                 </template>
               </el-table-column>
+            </el-table>
+          </div>
+        </el-col> -->
+
               <!--              <el-table-column label="序号" align="center" prop="caseNumber" width="60">-->
               <!--              </el-table-column>-->
               <!--              <el-table-column label="人员" align="center" prop="casePerson" width='100'>-->
@@ -111,9 +178,9 @@
               <!--              </el-table-column>-->
               <!--              <el-table-column label="内容详情" align="center" prop="caseContent">-->
               <!--              </el-table-column>-->
-            </el-table>
-          </div>
-        </el-col>
+
+            
+
       </el-row>
 
     </div>
@@ -132,6 +199,8 @@ export default {
     return {
       AllOrPart: '全部',
       sendtimes: [],
+      // dialog显示
+      dialogTableVisible: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -200,6 +269,7 @@ export default {
       this.listRecordInfo()
     },
     handleHisQuery(cautionID) {
+      this.dialogTableVisible = true
       this.queryParams.cautionid = cautionID
       this.queryParams.pageNum = 1
       this.listHisInfo()
@@ -241,5 +311,12 @@ export default {
 .btn-style {
   min-width: 50px;
   min-height: 25px;
+}
+.el-dialog:not(.is-fullscreen) {
+    margin-top: 25vh !important;
+}
+.el-dialog__header {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 </style>

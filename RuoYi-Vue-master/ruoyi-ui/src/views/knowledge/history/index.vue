@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
       <!--      <el-form-item label="队站" prop="positionid">-->
       <!--        <el-select-->
       <!--          v-model="queryParams.positionid"-->
