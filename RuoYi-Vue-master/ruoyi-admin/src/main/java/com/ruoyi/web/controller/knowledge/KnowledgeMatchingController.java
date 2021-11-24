@@ -267,7 +267,7 @@ public class KnowledgeMatchingController extends BaseController {
                         kinfo = new Kinfo();
                         kinfo.setinformID(k.getInformid());
                         kinfo.setinform(k.getInform());
-                        kinfo.setlibraryType(Long.valueOf("1"));
+                        kinfo.setlibraryType(Integer.valueOf("1"));
                         krlist.add(kinfo);
                     }
                 }
@@ -292,7 +292,7 @@ public class KnowledgeMatchingController extends BaseController {
                         kinfo = new Kinfo();
                         kinfo.setinformID(Long.valueOf(s.getInformid().toString()));//专项ID数据类型是Integer
                         kinfo.setinform(s.getInform());
-                        kinfo.setlibraryType(Long.valueOf("3"));
+                        kinfo.setlibraryType(Integer.valueOf("3"));
                         srlist.add(kinfo);
                     }
                 }
@@ -325,7 +325,7 @@ public class KnowledgeMatchingController extends BaseController {
                         kinfo = new Kinfo();
                         kinfo.setinformID(Long.valueOf(sf.getInformid().toString()));//安全提示信息ID数据类型为Integer
                         kinfo.setinform(sf.getInform());
-                        kinfo.setlibraryType(Long.valueOf("2"));
+                        kinfo.setlibraryType(Integer.valueOf("2"));
                         if (sf.getSecuritypeid() == safetytypeid){
                             sfrlist2.add(kinfo);
                         } else {

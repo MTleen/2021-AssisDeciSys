@@ -10,7 +10,7 @@ public class Kinfo
 {
     public Long informid; // 提示信息ID
     public String inform; // 提示信息内容
-    public Long librarytype;
+    public Integer librarytype;
 
     public Long getinformID()
     {
@@ -28,11 +28,11 @@ public class Kinfo
     {
         this.inform=inform;
     }
-    public Long getlibraryType()
+    public Integer getlibraryType()
     {
         return this.librarytype;
     }
-    public void setlibraryType(Long librarytype)
+    public void setlibraryType(Integer librarytype)
     {
         this.librarytype=librarytype;
     }
