@@ -74,6 +74,10 @@ public class Record extends BaseEntity
     @Excel(name = "参战力量")
     private String siteid2;
 
+    /** 类型 */
+    @Excel(name = "类型")
+    private Integer librarytype;
+
     public void setCautionid(String cautionid)
     {
         this.cautionid = cautionid;
@@ -209,6 +213,15 @@ public class Record extends BaseEntity
         return siteid2;
     }
 
+    public void setLibrarytype(Integer librarytype)
+    {
+        this.librarytype = librarytype;
+    }
+    public Integer getLibrarytype()
+    {
+        return librarytype;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -225,6 +238,7 @@ public class Record extends BaseEntity
                 .append("status", getStatus())
                 .append("keywords", getKeywords())
                 .append("siteid2", getSiteid2())
+                .append("librarytype", getLibrarytype())
                 .toString();
     }
 }

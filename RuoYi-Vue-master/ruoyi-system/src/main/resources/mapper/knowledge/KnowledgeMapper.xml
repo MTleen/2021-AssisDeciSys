@@ -4,6 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.KnowledgeMapper">
 
+
+    <resultMap type="Security" id="SecurityResult">
+        <result property="informid"    column="informID"    />
+        <result property="inform"    column="inform"    />
+        <result property="securitypeid"    column="securitypeID"    />
+    </resultMap>
     <resultMap type="Knowledge" id="KnowledgeResult">
         <result property="informid"    column="informID"    />
         <result property="inform"    column="inform"    />
@@ -102,29 +108,50 @@
     <select id="selectStatusbyCaution" parameterType="String" resultType="Boolean">
         select status from Record where cautionID=#{cautionid}
     </select>
-    <select id="selectInformIDbytele" resultType="History">
+    <select id="selectLibrarybyCaution" resultType="History">
         <if test="sendtime != null">
-            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} order by sendtime
+        select librarytype from History where cautionID=#{cautionid} and tele=#{tele} and sendtime >= #{sendtime}
         </if>
         <if test="sendtime == null">
-            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} order by sendtime
+            select librarytype from History where cautionID=#{cautionid} and tele=#{tele}
+        </if>
+    </select>
+    <select id="selectInformIDbytele" resultType="History">
+        <if test="sendtime != null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} and librarytype=#{library} order by sendtime
+        </if>
+        <if test="sendtime == null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and librarytype=#{library} order by sendtime
+        </if>
+    </select>
+    <select id="selectInformIDbytele2" resultType="Security">
+        <if test="sendtime != null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} and librarytype=#{library} order by sendtime
+        </if>
+        <if test="sendtime == null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and librarytype=#{library} order by sendtime
         </if>
     </select>
     <select id="selectInformIDbytele1" resultType="History">
-        select informID,sendtime from History where tele=#{tele} and sendtime = #{sendtime}
+        select informID,sendtime from History where tele=#{tele} and sendtime = #{sendtime} and cautionID=#{cautionid} and librarytype=#{library}
     </select>
     <select id="selectInformIDbycau" resultType="History">
         <if test="sendtime != null">
-            select informID from History where tele=#{tele} and cautionID= #{cautionid} and sendtime >= #{sendtime}
+            select informID from History where tele=#{tele} and cautionID= #{cautionid} and sendtime >= #{sendtime} and librarytype=#{library}
         </if>
         <if test="sendtime == null">
-            select informID from History where tele=#{tele} and cautionID= #{cautionid}
+            select informID from History where tele=#{tele} and cautionID= #{cautionid} and librarytype=#{library}
         </if>
     </select>
     <select id="selectKnow1" parameterType="Long" resultMap="KnowledgeResult">
         select *
         from Knowledge k
         where k.informID=#{informid}
+    </select>
+    <select id="selectKnow2" parameterType="Long" resultMap="SecurityResult">
+        select *
+        from Security s
+        where s.informID=#{informid}
     </select>
     <select id="selectRecord1" resultMap="RecordResult">
         select *

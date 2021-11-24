@@ -49,7 +49,7 @@ public class History extends BaseEntity
 
     /** 知识类型 */
     @Excel(name = "知识类型")
-    private Long librarytype;
+    private Integer librarytype;
 
     public void setIndex(Long index)
     {
@@ -116,12 +116,12 @@ public class History extends BaseEntity
     {
         return sendtimeEnd;
     }
-    public void setLibrarytype(Long librarytype)
+    public void setLibrarytype(Integer librarytype)
     {
         this.librarytype = librarytype;
     }
 
-    public Long getLibrarytype()
+    public Integer getLibrarytype()
     {
         return librarytype;
     }
