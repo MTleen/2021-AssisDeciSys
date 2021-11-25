@@ -160,6 +160,8 @@ public class KnowledgeController extends BaseController {
 
         List<Knowledge> listK = new ArrayList<Knowledge>();//提示信息列表
         List<Security> listS = new ArrayList<Security>();//提示信息列表
+        List<Special> listP = new ArrayList<Special>();//提示信息列表
+
         List<String> text1 = new ArrayList<>();//提示信息列表
         List<String> text = new ArrayList<>();//提示信息列表
         List<Kappinfo> result = new ArrayList<Kappinfo>();
@@ -171,6 +173,8 @@ public class KnowledgeController extends BaseController {
         List<String> cautionID = new ArrayList<>();
         List<History> library1 = new ArrayList<>();
         List<Integer> libraryID = new ArrayList<>();
+//        List<History> library1 = new ArrayList<>();
+//        List<Integer> libraryID = new ArrayList<>();
         String op = null;
         Integer ol = null;
 
@@ -203,7 +207,7 @@ public class KnowledgeController extends BaseController {
 //           如果已经完成，根据cautionid和tele查询即可
             if (status) {
                 for (Integer lib : libraryID) {
-                    if (lib != 3) {
+                    if (lib == 1) {
                         //查询信息编号
                         listInform = knowledgeService.selectInformIDbycau(tele, h, sendtime, lib);
                         //查询每个informid对应的信息
@@ -222,7 +226,7 @@ public class KnowledgeController extends BaseController {
                         //根据手机号和发送时间查询记录表,得到报警编号
                         //根据电话和时间查询记录表中的位置、类型、时间
                     }
-                    if (lib == 3) {
+                    if (lib == 2) {
                         //查询信息编号
                         listInform = knowledgeService.selectInformIDbycau(tele, h, sendtime, lib);
                         //查询每个informid对应的信息
@@ -238,17 +242,26 @@ public class KnowledgeController extends BaseController {
                         System.out.print("\n~~~~~~~~\n");
                         System.out.print(text1);
                         System.out.print("\n~~~~~~~~\n");
+
+                    }
+                    if (lib == 3) {
+                        //查询信息编号
+                        listInform = knowledgeService.selectInformIDbycau(tele, h, sendtime, lib);
+                        //查询每个informid对应的信息
+                        for (History r : listInform) {
+                            long b = Long.valueOf(r.getInformid()).longValue();
+                            //根据informid查询提示信息
+                            listP = knowledgeService.selectKnow3(b);
+                            for (Special p : listP) {
+                                metw = p.getInform();
+                            }
+                            text1.add(metw);
+                        }
+                        System.out.print("\n~~~~~~~~\n");
+                        System.out.print(text1);
+                        System.out.print("\n~~~~~~~~\n");
                         //根据手机号和发送时间查询记录表,得到报警编号
                         //根据电话和时间查询记录表中的位置、类型、时间
-//                        in = knowledgeService.selectRecord2(h);
-//                        for (Record i : in) {
-//                            location = i.getLocation();
-//                            disastertype = i.getCautionid();
-//                            cautiontime = i.getCautiontime();
-//                        }
-//                        //查询类型名称
-//                        disastertype1 = knowledgeService.selectDisaster(disastertype);
-//                        info.addInfo(location, text1, disastertype1, cautiontime);
                     }
                 }
                 in = knowledgeService.selectRecord2(h);
@@ -264,24 +277,26 @@ public class KnowledgeController extends BaseController {
 
 //未完成
             if (!status) {
-                for (Integer lib : libraryID) {
-                    if (lib != 3) {
-                        listInform = knowledgeService.selectInformIDbytele(tele, h, sendtime, lib);
-                        //              根据编号查信息
-                        List<Date> date = new ArrayList<>();
-                        for (History r : listInform) {
-                            date.add(r.getSendtime());
-                        }
-                        HashSet hs1 = new HashSet();
-                        hs1.addAll(date);
-                        date.clear();
-                        date.addAll(hs1);
-                        Collections.sort(date, Collections.reverseOrder());
-                        System.out.print(date);
-                        //        以发送时间为分类
-                        for (Date d : date) {
-                            //          清除text之前存储的内容
-                            text = new ArrayList<>();//提示信息列表
+
+                listInform = knowledgeService.selectInformIDbytele(tele, h, sendtime);
+//                listInform = knowledgeService.selectInformIDbytele(tele, h, sendtime, lib);
+                //              根据编号查信息
+                List<Date> date = new ArrayList<>();
+                for (History r : listInform) {
+                    date.add(r.getSendtime());
+                }
+                HashSet hs1 = new HashSet();
+                hs1.addAll(date);
+                date.clear();
+                date.addAll(hs1);
+                Collections.sort(date, Collections.reverseOrder());
+                System.out.print(date);
+                //        以发送时间为分类
+                for (Date d : date) {
+                    //          清除text之前存储的内容
+                    text = new ArrayList<>();//提示信息列表
+                    for (Integer lib : libraryID) {
+                        if (lib == 1) {
                             //           以电话和时间查询informid
                             listInform1 = knowledgeService.selectInformIDbytele1(tele, h, d, lib);
                             //            查询每个informid对应的信息
@@ -295,43 +310,8 @@ public class KnowledgeController extends BaseController {
                                 text.add(metw);
                                 System.out.print(text);
                             }
-                            //            根据手机号和发送时间查询记录表,得到报警编号
-                            //                根据电话和时间查询记录表中的位置、类型、时间
-                            in = knowledgeService.selectRecord2(h);
-                            System.out.print(in);
-                            System.out.print("-------\n");
-                            for (Record i : in) {
-                                location = i.getLocation();
-                                disastertype = i.getCautionid();
-                                cautiontime = i.getCautiontime();
-                            }
-                            //                查询类型名称
-                            disastertype1 = knowledgeService.selectDisaster(disastertype);
-                            info1.addInfo(location, text, disastertype1, cautiontime);
-                            System.out.print("\n~~~~~~~~\n");
-                            System.out.print(info1);
-                            System.out.print("\n~~~~~~~~\n");
                         }
-//                        result.add(info1);
-                    }
-                    if (lib == 3) {
-                        listInform = knowledgeService.selectInformIDbytele(tele, h, sendtime, lib);
-                        //              根据编号查信息
-                        List<Date> date = new ArrayList<>();
-                        for (History r : listInform) {
-                            date.add(r.getSendtime());
-                        }
-                        HashSet hs1 = new HashSet();
-                        hs1.addAll(date);
-                        date.clear();
-                        date.addAll(hs1);
-                        Collections.sort(date, Collections.reverseOrder());
-                        System.out.print(date);
-                        //        以发送时间为分类
-                        for (Date d : date) {
-                            //          清除text之前存储的内容
-                            text = new ArrayList<>();//提示信息列表
-                            //           以电话和时间查询informid
+                        if (lib == 2) {
                             listInform1 = knowledgeService.selectInformIDbytele1(tele, h, d, lib);
                             //            查询每个informid对应的信息
                             for (History r : listInform1) {
@@ -344,30 +324,39 @@ public class KnowledgeController extends BaseController {
                                 text.add(metw);
                                 System.out.print(text);
                             }
-                            //            根据手机号和发送时间查询记录表,得到报警编号
-                            //                根据电话和时间查询记录表中的位置、类型、时间
-                            in = knowledgeService.selectRecord2(h);
-                            System.out.print(in);
-                            System.out.print("-------\n");
-                            for (Record i : in) {
-                                location = i.getLocation();
-                                disastertype = i.getCautionid();
-                                cautiontime = i.getCautiontime();
-                            }
-                            //                查询类型名称
-                            disastertype1 = knowledgeService.selectDisaster(disastertype);
-                            info1.addInfo(location, text, disastertype1, cautiontime);
-                            System.out.print("\n~~~~~~~~\n");
-                            System.out.print(info1);
-                            System.out.print("\n~~~~~~~~\n");
                         }
-
+                        if (lib == 3) {
+                            //           以电话和时间查询informid
+                            listInform1 = knowledgeService.selectInformIDbytele1(tele, h, d, lib);
+                            //            查询每个informid对应的信息
+                            for (History r : listInform1) {
+                                long b = Long.valueOf(r.getInformid()).longValue();
+                                //            根据informid查询提示信息
+                                listP = knowledgeService.selectKnow3(b);
+                                for (Special k : listP) {
+                                    metw = k.getInform();
+                                }
+                                text.add(metw);
+                                System.out.print(text);
+                            }
+                        }
                     }
-
+                    in = knowledgeService.selectRecord2(h);
+                    System.out.print(in);
+                    System.out.print("-------\n");
+                    for (Record i : in) {
+                        location = i.getLocation();
+                        disastertype = i.getCautionid();
+                        cautiontime = i.getCautiontime();
+                    }
+                    //                查询类型名称
+                    disastertype1 = knowledgeService.selectDisaster(disastertype);
+                    info1.addInfo(location, text, disastertype1, cautiontime);
+                    System.out.print("\n~~~~~~~~\n");
+                    System.out.print(info1);
+                    System.out.print("\n~~~~~~~~\n");
                 }
             }
-
-
         }
         result.add(info1);
         result.add(info);

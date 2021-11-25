@@ -10,6 +10,11 @@
         <result property="inform"    column="inform"    />
         <result property="securitypeid"    column="securitypeID"    />
     </resultMap>
+    <resultMap type="Special" id="SpecialResult">
+        <result property="informid"    column="informID"    />
+        <result property="inform"    column="inform"    />
+        <result property="detailtype"    column="detailtype"    />
+    </resultMap>
     <resultMap type="Knowledge" id="KnowledgeResult">
         <result property="informid"    column="informID"    />
         <result property="inform"    column="inform"    />
@@ -118,10 +123,10 @@
     </select>
     <select id="selectInformIDbytele" resultType="History">
         <if test="sendtime != null">
-            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} and librarytype=#{library} order by sendtime
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >= #{sendtime} order by sendtime
         </if>
         <if test="sendtime == null">
-            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and librarytype=#{library} order by sendtime
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} order by sendtime
         </if>
     </select>
     <select id="selectInformIDbytele2" resultType="Security">
@@ -151,6 +156,11 @@
     <select id="selectKnow2" parameterType="Long" resultMap="SecurityResult">
         select *
         from Security s
+        where s.informID=#{informid}
+    </select>
+    <select id="selectKnow3" parameterType="Long" resultMap="SpecialResult">
+        select *
+        from Special s
         where s.informID=#{informid}
     </select>
     <select id="selectRecord1" resultMap="RecordResult">

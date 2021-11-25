@@ -126,10 +126,15 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     }
 
     @Override
-    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime,Integer library)
+    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime)
     {
-        return knowledgeMapper.selectInformIDbytele(tele,cautionid,sendtime,library);
+        return knowledgeMapper.selectInformIDbytele(tele,cautionid,sendtime);
     }
+//    @Override
+//    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime,Integer library)
+//    {
+//        return knowledgeMapper.selectInformIDbytele(tele,cautionid,sendtime,library);
+//    }
 
     @Override
     public List<History> selectInformIDbycau(String tele, String cautionid,Date sendtime,Integer library)
@@ -151,6 +156,11 @@ public class KnowledgeServiceImpl implements IKnowledgeService
     public List<Security> selectKnow2(Long informid)
     {
         return knowledgeMapper.selectKnow2(informid);
+    }
+    @Override
+    public List<Special> selectKnow3(Long informid)
+    {
+        return knowledgeMapper.selectKnow3(informid);
     }
     @Override
     public List<Record> selectRecord1(String tele, Date sendtime1)

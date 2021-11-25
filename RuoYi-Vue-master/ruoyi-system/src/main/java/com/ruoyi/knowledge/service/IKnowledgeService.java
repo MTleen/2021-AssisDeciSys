@@ -72,11 +72,13 @@ public interface IKnowledgeService
     public List<History> selectLibrarybyCaution(String cautionid,String tele,Date sendtime);
     public List<History> selectCautionbytele(String tele);
     public String selectDisaster(String disastertype);
-    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime,Integer library);
+//    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime,Integer library);
+    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime);
     public List<History> selectInformIDbycau(String tele, String cautionid,Date sendtime,Integer library);
     public List<History> selectInformIDbytele1(String tele, String cautionid,Date sendtime,Integer library);
     public List<Knowledge> selectKnow1(Long informid);
     public List<Security> selectKnow2(Long informid);
+    public List<Special> selectKnow3(Long informid);
     public List<Record> selectRecord1(String tele, Date sendtime1);
     public List<Record> selectRecord2(String cautionid);
 }

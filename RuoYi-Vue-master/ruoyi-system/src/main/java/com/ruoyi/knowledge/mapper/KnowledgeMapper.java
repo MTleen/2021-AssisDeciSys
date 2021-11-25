@@ -73,11 +73,13 @@ public interface KnowledgeMapper
     public List<History> selectLibrarybyCaution(@Param("cautionid") String cautionid,@Param("tele") String tele,@Param("sendtime") Date sendtime);
     public List<History> selectCautionbytele(@Param("tele") String tele);
     public String selectDisaster(@Param("disastertype") String disastertype);
-    public List<History> selectInformIDbytele(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime,@Param("library") Integer library);
+//    public List<History> selectInformIDbytele(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime,@Param("library") Integer library);
+    public List<History> selectInformIDbytele(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime);
     public List<History> selectInformIDbycau(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime,@Param("library") Integer library);
     public List<History> selectInformIDbytele1(@Param("tele") String tele, @Param("cautionid") String cautionid, @Param("sendtime") Date sendtime,@Param("library") Integer library);
     public List<Knowledge> selectKnow1(@Param("informid") Long informid);
     public List<Security> selectKnow2(@Param("informid") Long informid);
+    public List<Special> selectKnow3(@Param("informid") Long informid);
     public List<Record> selectRecord1(@Param("tele") String tele, @Param("sendtime1") Date sendtime1);
     public List<Record> selectRecord2(@Param("cautionid") String cautionid);
 }
