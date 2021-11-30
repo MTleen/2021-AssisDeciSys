@@ -79,7 +79,7 @@ import { getCodeImg } from '@/api/login'
 import Cookies from 'js-cookie'
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 import logoImg from '@/assets/logo/logo1.png'
-import ErweimaImg from '@/assets/logo/ewm.jpg'
+import ErweimaImg from '@/assets/logo/ewm.png'
 export default {
   name: 'Login',
   data() {
