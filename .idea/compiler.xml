@@ -7,9 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ruoyi-generator" />
-        <module name="ruoyi-framework" />
         <module name="ruoyi-common" />
+        <module name="ruoyi-framework" />
+        <module name="ruoyi-generator" />
         <module name="ruoyi-system" />
         <module name="ruoyi-quartz" />
         <module name="ruoyi-admin" />

@@ -532,19 +532,19 @@ public class KnowledgeMatchingController extends BaseController {
              */
             Map<String, TemplateData> m = new HashMap<>(3);
             if (record.getLocation().length() > 19) {
-                m.put("thing1", new TemplateData(record.getLocation().substring(0, 19)));
+                m.put("thing4", new TemplateData(record.getLocation().substring(0, 19)));
             } else {
-                m.put("thing1", new TemplateData(record.getLocation()));
+                m.put("thing4", new TemplateData(record.getLocation()));
             }
             if (disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename().length() > 19) {
-                m.put("thing2", new TemplateData(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename().substring(0, 19)));
+                m.put("thing3", new TemplateData(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename().substring(0, 19)));
             } else {
-                m.put("thing2", new TemplateData(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename()));
+                m.put("thing3", new TemplateData(disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename()));
             }
             if (informtext.length() > 19) {
-                m.put("thing3", new TemplateData(informtext.substring(0, 19)));
+                m.put("thing6", new TemplateData(informtext.substring(0, 19)));
             } else {
-                m.put("thing3", new TemplateData(informtext));
+                m.put("thing6", new TemplateData(informtext));
             }
             String page = "pages/message/push_message?type=" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "&time=" + record.getCautiontime() + "&address=" + record.getLocation() + "&message=" + informtext;
             //sendMessage.push(u.openID,m,page);
@@ -557,8 +557,13 @@ public class KnowledgeMatchingController extends BaseController {
              * 推送至企业微信
              * */
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            String[] text = informtext.split("\\+");
+            String text_send = "";
+            for(int i = 1;i < text.length + 1;i++){
+                text_send = text_send + "+" + i + "、" + text[i-1];
+            }
             String message = "事件地点：" + record.getLocation() + "\n" + "事件时间：" + df.format(new Date()) + "\n"
-                            +"事件类型：" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "\n" + "事件内容：" + informtext.replaceAll("\\+"," ");
+                            +"事件类型：" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "\n" + "事件内容：" + text_send.replaceAll("\\+","\n");
             sendtowechat_com.send(userInfoMatchingService.selectUserIDbyOpenID(u.openID),message);
 //            sendtowechat_com.send(userInfoMatchingService.selectUserIDbyOpenID(u.openID),"ceshi1109");
         }

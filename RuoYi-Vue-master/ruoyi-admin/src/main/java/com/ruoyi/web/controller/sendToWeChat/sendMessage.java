@@ -38,7 +38,7 @@ public class sendMessage {
         //拼接推送的模版
         WxMssVo wxMssVo = new WxMssVo();
         wxMssVo.setTouser(openid);//用户的openid（要发送给那个用户，通常这里应该动态传进来的）
-        wxMssVo.setTemplate_id("IZ2f3IdGTHd-G0gS6nMWqdpMkXl5hA5SRL3wxHJ1xbE");//订阅消息模板id
+        wxMssVo.setTemplate_id("obNDIwg8IoXHxdSGPdUff99LaP3G6XT3re9vaVsr8_E");//订阅消息模板id
         wxMssVo.setData(m);
         wxMssVo.setPage(s);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, wxMssVo, String.class);
@@ -53,8 +53,8 @@ public class sendMessage {
     public String getAccessToken() {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> params = new HashMap<>();
-        params.put("APPID", "wxa6d7ea2aee741840");
-        params.put("APPSECRET", "7d466b43bbb24dfa1d496628a28aaeef");
+        params.put("APPID", "wxfc0abba565370f26");
+        params.put("APPSECRET", "e7ce187ffef62af53830c1bfc4f3fae1");
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}", String.class, params);
         String body = responseEntity.getBody();
