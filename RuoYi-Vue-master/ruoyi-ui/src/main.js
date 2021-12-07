@@ -110,7 +110,7 @@ Vue.prototype.loadGlobalData = function () {
           Vue.prototype.totalGeneralType[row.typeid] = row.typename
         }else if(row.priority === 2){
           Vue.prototype.totalSecurityType[row.typeid] = row.typename
-        }else{
+        }else if(row.priority === 3){
           Vue.prototype.totalSpecialType[row.typeid] = row.typename
         }
       }
@@ -158,6 +158,17 @@ Vue.prototype.msgError = function (msg) {
 Vue.prototype.msgInfo = function (msg) {
   this.$message.info(msg);
 }
+
+Vue.prototype.parseString = function (str, dict) {
+  let resStr = ''
+  let strList = str ? str.split(',') : []
+  for (let idx in strList) {
+    resStr += dict[strList[idx]]
+    resStr += idx == (strList.length - 1) ? '' : ', '
+  }
+  return resStr
+}
+
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)

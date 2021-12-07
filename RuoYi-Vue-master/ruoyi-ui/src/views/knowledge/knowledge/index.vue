@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="灾情类型" prop="disastertype">
-        <el-select v-model="queryParams.disastertype" placeholder="请选择灾情类型" clearable size="small">
+        <el-select v-model="queryParams.disastertypeList" placeholder="请选择灾情类型" clearable filterable multiple size="small">
           <el-option v-for="(value, key, index) in $root.totalDisType"
                      :key="key"
                      :label="value"
@@ -10,7 +10,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="处置对象" prop="disposeobj">
-        <el-select v-model="queryParams.disposeobj" placeholder="请选择处置对象" clearable size="small">
+        <el-select v-model="queryParams.disposeobjList" placeholder="请选择处置对象" clearable filterable multiple size="small">
           <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                      :key="key"
                      :label="value"
@@ -18,7 +18,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="通用类型" prop="detailtype">
-        <el-select v-model="queryParams.detailtype" placeholder="请选择通用类型" clearable size="small">
+        <el-select v-model="queryParams.detailtype" placeholder="请选择通用类型" clearable filterable size="small">
           <el-option v-for="(value, key, index) in $root.totalGeneralType"
                      :key="key"
                      :label="value"
@@ -40,7 +40,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['knowledge:knowledge:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -51,7 +52,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['knowledge:knowledge:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +64,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['knowledge:knowledge:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -73,29 +76,30 @@
           :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['knowledge:knowledge:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="knowledgeList" border stripe  @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-<!--      <el-table-column label="详细类型" align="center" prop="informid" />-->
-      <el-table-column label="序号" align="center" type="index" width="100" />
-      <el-table-column label="信息内容" align="left" prop="inform" />
-      <el-table-column label="灾情类型" align="center" prop="disastertype"  width="150">
+    <el-table v-loading="loading" :data="knowledgeList" border stripe @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center"/>
+      <!--      <el-table-column label="详细类型" align="center" prop="informid" />-->
+      <el-table-column label="序号" align="center" type="index" width="100"/>
+      <el-table-column label="信息内容" align="left" prop="inform"/>
+      <el-table-column label="灾情类型" align="center" prop="disastertype" width="150">
         <template slot-scope="scope">
-          <span>{{$root.totalDisType[scope.row.disastertype]}}</span>
+          <span>{{ $root.parseString(scope.row.disastertype, $root.totalDisType) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="处置对象" align="center" prop="disposeobj" width="150" >
+      <el-table-column label="处置对象" align="center" prop="disposeobj" width="150">
         <template slot-scope="scope">
-          <span>{{$root.totalDisposeObj[scope.row.disposeobj]}}</span>
+          <span>{{ $root.parseString(scope.row.disposeobj, $root.totalDisposeObj) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="通用类型" align="center" prop="detailtype" width="200">
         <template slot-scope="scope">
-          <span>{{$root.totalGeneralType[scope.row.detailtype]}}</span>
+          <span>{{ $root.totalGeneralType[scope.row.detailtype] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
@@ -106,14 +110,16 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['knowledge:knowledge:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['knowledge:knowledge:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,7 +136,7 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="信息内容" prop="inform">
-          <el-input v-model="form.inform" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.inform" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
         <el-form-item label="灾情类型" prop="disastertype">
           <el-select v-model="form.disastertype" placeholder="请选择灾情类型">
@@ -166,7 +172,14 @@
 </template>
 
 <script>
-import { listKnowledge, getKnowledge, delKnowledge, addKnowledge, updateKnowledge, exportKnowledge } from "@/api/knowledge/knowledge";
+import {
+  listKnowledge,
+  getKnowledge,
+  delKnowledge,
+  addKnowledge,
+  updateKnowledge,
+  exportKnowledge
+} from "@/api/knowledge/knowledge";
 
 export default {
   name: "Knowledge",
@@ -202,7 +215,9 @@ export default {
         pageSize: 10,
         inform: null,
         disastertype: null,
+        disastertypeList: [],
         disposeobj: null,
+        disposeobjList: [],
         detailtype: null,
       },
       // 表单参数
@@ -210,7 +225,7 @@ export default {
       // 表单校验
       rules: {
         inform: [
-          { required: true, message: "信息内容不能为空", trigger: "blur" }
+          {required: true, message: "信息内容不能为空", trigger: "blur"}
         ],
       }
     };
@@ -228,8 +243,11 @@ export default {
     /** 查询通用知识库列表 */
     getList() {
       this.loading = true;
+      this.queryParams.disastertype = this.queryParams.disastertypeList.join(',')
+      this.queryParams.disposeobj = this.queryParams.disposeobjList.join(',')
       listKnowledge(this.queryParams).then(response => {
         this.knowledgeList = response.rows;
+        console.log(this.knowledgeList[0])
         this.total = response.total;
         this.loading = false;
       });
@@ -259,13 +277,15 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.queryParams.disposeobjList = []
+      this.queryParams.disastertypeList = []
       this.resetForm("queryForm");
       this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.informid)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -284,6 +304,15 @@ export default {
         this.title = "修改通用知识库";
       });
     },
+    // parseString(str, dict) {
+    //   let resStr = ''
+    //   let strList = str ? str.split(',') : []
+    //   for (let idx in strList) {
+    //     resStr += dict[strList[idx]]
+    //     resStr += idx == (strList.length - 1) ? '' : ', '
+    //   }
+    //   return resStr
+    // },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -311,12 +340,13 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function() {
+      }).then(function () {
         return delKnowledge(informids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -331,7 +361,8 @@ export default {
       }).then(response => {
         this.download(response.msg);
         this.exportLoading = false;
-      }).catch(() => {});
+      }).catch(() => {
+      });
     }
   }
 };

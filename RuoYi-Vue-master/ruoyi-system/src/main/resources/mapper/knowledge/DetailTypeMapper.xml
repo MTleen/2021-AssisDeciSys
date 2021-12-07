@@ -12,16 +12,29 @@
     </resultMap>
 
     <sql id="selectDetailTypeVo">
-        select typeID, typename, disposeobj, priority from DetailType
+        SELECT
+            D.typeID,
+            D.typename,
+            GROUP_CONCAT( DISTINCT TR.disposeobj ) as disposeobj,
+            D.priority
+        FROM
+            DetailType D
+                LEFT JOIN TypeRelation TR ON D.typeID = TR.detailtype
+                LEFT JOIN TypeRelation TR2 ON D.typeID = TR2.detailtype
+    </sql>
+
+    <sql id="selectDetailTypeVoSuffix">
+        GROUP BY D.typeID
     </sql>
 
     <select id="selectDetailTypeList" parameterType="DetailType" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
         <where>
-            <if test="typename != null  and typename != ''"> and typename like concat('%', #{typename}, '%')</if>
-            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
-            <if test="priority != null "> and priority = #{priority}</if>
+            <if test="typename != null  and typename != ''"> and D.typename like concat('%', #{typename}, '%')</if>
+            <if test="disposeobj != null and disposeobj != '' "> and FIND_IN_SET(TR2.disposeobj, #{disposeobj})</if>
+            <if test="priority != null "> and D.priority = #{priority}</if>
         </where>
+        <include refid="selectDetailTypeVoSuffix"></include>
     </select>
 
     <select id="selectDetailTypeByTypeid" parameterType="Long" resultMap="DetailTypeResult">

@@ -7,7 +7,10 @@
 <!--        </el-select>-->
 <!--      </el-form-item>-->
       <el-form-item label="安全类型" prop="securitypeid">
-        <el-select v-model="queryParams.securitypeid" placeholder="请选择安全类型" clearable size="small">
+        <el-select v-model="queryParams.securitypeid" placeholder="请选择安全类型" clearable filterable size="small">
+          <el-option v-for="(value, key, index) in $root.totalSecurityType"
+                     :label="value"
+                     :value="key"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -67,7 +70,11 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" type="index" width="100" />
       <el-table-column label="提示信息" align="left" prop="inform" />
-      <el-table-column label="安全类型" align="center" prop="securitypeid"  width="200"/>
+      <el-table-column label="安全类型" align="center" prop="securitypeid"  width="200">
+        <template slot-scope="scope">
+          <span>{{$root.totalSecurityType[scope.row.securitypeid]}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
         <template slot-scope="scope">
           <el-button

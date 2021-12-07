@@ -11,13 +11,12 @@
         />
       </el-form-item>
       <el-form-item label="性别" prop="gender">
-        <el-input
-          v-model="queryParams.gender"
-          placeholder="请输入性别"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.gender" placeholder="请选择性别" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.GENDER"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="年龄" prop="age">
         <el-input
@@ -29,44 +28,42 @@
         />
       </el-form-item>
       <el-form-item label="岗位" prop="positionid">
-        <el-input
-          v-model="queryParams.positionid"
-          placeholder="请输入岗位"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.positionid" placeholder="请选择岗位" clearable filterable size="small">
+          <el-option v-for="(value, key, index) in $root.totalUserPositions"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="队站" prop="siteid">
-        <el-input
-          v-model="queryParams.siteid"
-          placeholder="请输入队站"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.siteid" placeholder="请选择队站" clearable filterable size="small">
+          <el-option v-for="(value, key, index) in $root.totalSites"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
       </el-form-item>
-      <el-form-item label="账号" prop="account">
-        <el-input
-          v-model="queryParams.account"
-          placeholder="请输入账号"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input
-          v-model="queryParams.password"
-          placeholder="请输入密码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="账号" prop="account">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.account"-->
+<!--          placeholder="请输入账号"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="密码" prop="password">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.password"-->
+<!--          placeholder="请输入密码"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option label="请选择字典生成" value=""/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -84,7 +81,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['information:userinfo:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -95,7 +93,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['information:userinfo:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -106,7 +105,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['information:userinfo:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -117,36 +117,37 @@
           :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['information:userinfo:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="userinfoList" border stripe @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="手机号" align="center" prop="tele" />
-      <el-table-column label="姓名" align="center" prop="username" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="手机号" align="center" prop="tele"/>
+      <el-table-column label="姓名" align="center" prop="username"/>
       <el-table-column label="性别" align="center" prop="gender">
         <template slot-scope="scope">
-          {{$root.GENDER[scope.row.gender]}}
+          {{ $root.GENDER[scope.row.gender] }}
         </template>
       </el-table-column>
-      <el-table-column label="年龄" align="center" prop="age" />
+      <el-table-column label="年龄" align="center" prop="age"/>
       <el-table-column label="岗位" align="center" prop="positionid">
         <template slot-scope="scope">
-          {{$root.totalUserPositions[scope.row.positionid]}}
+          {{ $root.totalUserPositions[scope.row.positionid] }}
         </template>
       </el-table-column>
       <el-table-column label="队站" align="center" prop="siteid">
         <template slot-scope="scope">
-          {{$root.totalSites[scope.row.siteid]}}
+          {{ $root.totalSites[scope.row.siteid] }}
         </template>
       </el-table-column>
-      <el-table-column label="账号" align="center" prop="account" />
-      <el-table-column label="密码" align="center" prop="password" />
-      <el-table-column label="状态" align="center" prop="status" />
-      <el-table-column label="微信 openid" align="center" prop="openid" />
-      <el-table-column label="企业微信 id" align="center" prop="userid" />
+<!--      <el-table-column label="账号" align="center" prop="account"/>-->
+<!--      <el-table-column label="密码" align="center" prop="password"/>-->
+      <el-table-column label="状态" align="center" prop="status"/>
+      <el-table-column label="微信 openid" align="center" prop="openid"/>
+      <el-table-column label="企业微信 id" align="center" prop="userid"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -155,14 +156,16 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['information:userinfo:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['information:userinfo:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -179,13 +182,18 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="姓名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入姓名" />
+          <el-input v-model="form.username" placeholder="请输入姓名"/>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
-          <el-input v-model="form.gender" placeholder="请输入性别" />
+          <el-select v-model="form.gender" placeholder="请选择性别" clearable filterable size="small">
+            <el-option v-for="(value, key, index) in $root.GENDER"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
-          <el-input v-model="form.age" placeholder="请输入年龄" />
+          <el-input v-model="form.age" placeholder="请输入年龄"/>
         </el-form-item>
         <el-form-item label="岗位" prop="positionid">
           <el-select v-model="form.positionid" filterable clearable size="small">
@@ -196,24 +204,29 @@
           </el-select>
         </el-form-item>
         <el-form-item label="队站" prop="siteid">
-          <el-input v-model="form.siteid" placeholder="请输入队站" />
+          <el-select v-model="form.siteid" placeholder="请选择队站" clearable filterable size="small">
+            <el-option v-for="(value, key, index) in $root.totalSites"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
         </el-form-item>
-        <el-form-item label="账号" prop="account">
-          <el-input v-model="form.account" placeholder="请输入账号" />
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" />
-        </el-form-item>
+<!--        <el-form-item label="账号" prop="account">-->
+<!--          <el-input v-model="form.account" placeholder="请输入账号"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="密码" prop="password">-->
+<!--          <el-input v-model="form.password" placeholder="请输入密码"/>-->
+<!--        </el-form-item>-->
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
             <el-radio label="1">请选择字典生成</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="微信 openid" prop="openid">
-          <el-input v-model="form.openid" placeholder="请输入微信 openid" />
+          <el-input v-model="form.openid" placeholder="请输入微信 openid"/>
         </el-form-item>
         <el-form-item label="企业微信 id" prop="userid">
-          <el-input v-model="form.userid" placeholder="请输入企业微信 id" />
+          <el-input v-model="form.userid" placeholder="请输入企业微信 id"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -225,7 +238,14 @@
 </template>
 
 <script>
-import { listUserinfo, getUserinfo, delUserinfo, addUserinfo, updateUserinfo, exportUserinfo } from "@/api/information/userinfo";
+import {
+  listUserinfo,
+  getUserinfo,
+  delUserinfo,
+  addUserinfo,
+  updateUserinfo,
+  exportUserinfo
+} from "@/api/information/userinfo";
 
 export default {
   name: "Userinfo",
@@ -269,10 +289,10 @@ export default {
       // 表单校验
       rules: {
         username: [
-          { required: true, message: "姓名不能为空", trigger: "blur" }
+          {required: true, message: "姓名不能为空", trigger: "blur"}
         ],
         gender: [
-          { required: true, message: "性别不能为空", trigger: "blur" }
+          {required: true, message: "性别不能为空", trigger: "blur"}
         ],
       }
     };
@@ -327,7 +347,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tele)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -373,12 +393,13 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function() {
+      }).then(function () {
         return delUserinfo(teles);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -393,7 +414,8 @@ export default {
       }).then(response => {
         this.download(response.msg);
         this.exportLoading = false;
-      }).catch(() => {});
+      }).catch(() => {
+      });
     }
   }
 };

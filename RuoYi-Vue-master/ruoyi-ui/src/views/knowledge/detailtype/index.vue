@@ -10,7 +10,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="处置对象" prop="disposeobj">
-        <el-select v-model="queryParams.disposeobj" filterable placeholder="请选择处置对象" clearable size="small">
+        <el-select v-model="queryParams.disposeobjList" filterable multiple placeholder="请选择处置对象" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                      :key="key"
                      :label="value"
@@ -89,7 +89,7 @@
       <el-table-column label="详细类型" align="center" prop="typename"/>
       <el-table-column label="处置对象" align="center">
         <template slot-scope="scope">
-          <span>{{ $root.totalDisposeObj[scope.row.disposeobj] }}</span>
+          <span>{{ $root.parseString(scope.row.disposeobj, $root.totalDisposeObj) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="通用/专项" align="center">
@@ -198,6 +198,7 @@ export default {
         pageSize: 10,
         typename: null,
         disposeobj: null,
+        disposeobjList: [],
         priority: null
       },
       // 表单参数
@@ -217,8 +218,10 @@ export default {
     /** 查询详细类型表列表 */
     getList() {
       this.loading = true;
+      this.queryParams.disposeobj = this.queryParams.disposeobjList.join(',')
       listDetailtype(this.queryParams).then(response => {
         this.detailtypeList = response.rows;
+        console.log(this.detailtypeList[0])
         this.total = response.total;
         this.loading = false;
       });
@@ -245,6 +248,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.queryParams.disposeobjList = []
       this.resetForm("queryForm");
       this.handleQuery();
     },

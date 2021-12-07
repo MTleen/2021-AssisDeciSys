@@ -29,7 +29,7 @@
         then
         S.inform
         end
-        as informID, U.username as tele, U.positionID, a.sendtime, a.librarytype
+        as informID, U.username as tele, U.siteID as positionID, a.sendtime, a.librarytype
         from History a
         left join Knowledge K on K.informID = a.informID
         left join Special S on S.informID = a.informID

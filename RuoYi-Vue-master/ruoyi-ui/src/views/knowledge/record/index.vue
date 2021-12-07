@@ -28,7 +28,7 @@
         </el-select>
       </el-form-item>
 
-      
+
 
 
       <el-form-item label="主管队站" prop="siteid">
@@ -159,6 +159,20 @@
           <el-button
             size="mini"
             type="text"
+            icon="el-icon-s-promotion"
+            @click="handleSendInfo(scope.row)"
+            v-hasPermi="['knowledge:record:edit']"
+          >推送</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-message-solid"
+            @click="handleHisQuery(scope.row.cautionid)"
+            v-hasPermi="['knowledge:record:edit']"
+          >查看</el-button>
+          <el-button
+            size="mini"
+            type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['knowledge:record:edit']"
@@ -242,11 +256,37 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+<!--    查看案件对应的历史发送信息-->
+    <el-dialog :visible.sync="dialogTableVisible"   width="70%" top:40vh center>
+      <div class="grid-content bg-purple">
+        <el-table :v-loading="hisLoading" :data="historyList" stripe border
+                  :header-cell-style="tableHeaderColor"  max-height="600" >
+          <el-table-column label="序号" align="center" type="index"/>
+          <el-table-column label="提示信息" align="left" prop="informid" />
+          <el-table-column label="推送对象" align="center" prop="positionid" width="130">
+            <template slot-scope="scope">
+              <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="发送时间" align="center" prop="sendtime" width="160">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="知识类型" align="center" prop="librarytype" width="80">
+            <template slot-scope="scope">
+              <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { listRecord, getRecord, delRecord, addRecord, updateRecord, exportRecord } from "@/api/knowledge/record";
+import {listHistory} from "@/api/knowledge/history";
 
 export default {
   name: "Record",
@@ -298,7 +338,11 @@ export default {
         location: [
           { required: true, message: "地址不能为空", trigger: "blur" }
         ],
-      }
+      },
+      historyList: [],
+      hisLoading: false,
+      hisTotal: 0,
+      dialogTableVisible: false,
     };
   },
   created() {
@@ -308,7 +352,33 @@ export default {
     // 接收 CusDatePicker 的日期值
     handleChange(sendtimes){
       this.sendtimes = sendtimes
-
+    },
+    //设置表头行的样式
+    tableHeaderColor({row, column, rowIndex, columnIndex}) {
+      return 'background-color:rgb(167, 196, 237);color:black;font-wight:500;text-align:center'
+    },
+    // 二次发送信息
+    handleSendInfo(caution) {
+      console.log(caution)
+      console.log(this.$router)
+      caution.cautiontime = Date.parse(caution.cautiontime)
+      this.$router.push({path: '/index', query: caution})
+    },
+    // 展示案件历史信息
+    handleHisQuery(cautionID) {
+      this.dialogTableVisible = true
+      this.queryParams.cautionid = cautionID
+      this.queryParams.pageNum = 1
+      this.listHisInfo()
+    },
+    // 查询历史信息
+    listHisInfo() {
+      this.hisLoading = true;
+      listHistory(this.queryParams).then(response => {
+        this.historyList = response.rows;
+        this.hisTotal = response.total;
+        this.hisLoading = false;
+      });
     },
     /** 查询出警记录表列表 */
     getList() {

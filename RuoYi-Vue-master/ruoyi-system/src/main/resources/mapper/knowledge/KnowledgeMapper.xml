@@ -40,17 +40,34 @@
     </resultMap>
 
     <sql id="selectKnowledgeVo">
-        select informID, inform, weight, disastertype, disposeobj, detailtype, informtypeID from Knowledge
+        SELECT
+            K.informID,
+            K.inform,
+            K.weight,
+            GROUP_CONCAT(DISTINCT D.distype) AS disastertype,
+            GROUP_CONCAT(DISTINCT TR.disposeobj ) AS disposeobj,
+            K.detailtype,
+            K.informtypeID
+        FROM
+            Knowledge K
+                LEFT JOIN TypeRelation TR ON K.detailtype = TR.detailtype
+                LEFT JOIN DisposeObj D ON TR.disposeobj = D.objID
+                LEFT JOIN TypeRelation TR2 ON K.detailtype = TR2.detailtype
+                LEFT JOIN DisposeObj D2 ON TR2.disposeobj = D2.objID
+    </sql>
+    <sql id="selectKnowledgeVoSuffix">
+        GROUP BY K.informID
     </sql>
 
     <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
         <include refid="selectKnowledgeVo"/>
         <where>
-            <if test="inform != null  and inform != ''"> and inform like concat('%', #{inform}, '%')</if>
-            <if test="disastertype != null "> and disastertype = #{disastertype}</if>
-            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
-            <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+            <if test="inform != null  and inform != ''"> and K.inform like concat('%', #{inform}, '%')</if>
+            <if test="disastertype != null and disastertype != ''"> and  FIND_IN_SET(D2.distype, #{disastertype})</if>
+            <if test="disposeobj != null and disposeobj!= '' "> and FIND_IN_SET(TR2.disposeobj, #{disposeobj})</if>
+            <if test="detailtype != null and detailtype != ''"> and K.detailtype = #{detailtype}</if>
         </where>
+        <include refid="selectKnowledgeVoSuffix"/>
     </select>
 
     <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">

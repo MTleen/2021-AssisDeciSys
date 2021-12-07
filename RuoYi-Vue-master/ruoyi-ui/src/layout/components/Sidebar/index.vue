@@ -1,10 +1,10 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: Shengxiang Hu
  * @Date: 2021-10-14 19:50:08
  * @LastEditors: Shengxiang Hu
  * @LastEditTime: 2021-10-20 18:44:16
- * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-ui\src\layout\components\Sidebar\index.vue
+ * @FilePath: \2021-AssisDeciSys\RuoYi-Vue-master\ruoyi-ui\src\layout\components\Sidebar\index_backup.vue
 -->
 <template>
   <div :class="{'has-logo':showLogo}" :style="{ backgroundColor: settings.sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">

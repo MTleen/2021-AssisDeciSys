@@ -1,216 +1,326 @@
 <template>
   <div class="app-container">
-    <el-row>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark" align='center'>
-          <div class="block">
-            <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
-            <el-radio-group v-model="AllOrPart" style="margin-left:15px;">
-              <el-radio-button label="全部"></el-radio-button>
-              <el-radio-button label="已处理"></el-radio-button>
-              <el-radio-button label="未处理"></el-radio-button>
-            </el-radio-group>
-          </div>
-        </div>
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-position="right"
+             label-width="98px">
 
+
+      <el-form-item label="地址" prop="location">
+        <el-input
+          v-model="queryParams.location"
+          placeholder="请输入地址"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="灾情类型" prop="distypeid">
+        <el-select v-model="queryParams.distypeid" placeholder="请选择灾情类型" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisType"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="处置对象" prop="dillobject">
+        <el-select v-model="queryParams.dillobject" placeholder="请选择处置对象" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="主管队站" prop="siteid">
+        <el-select v-model="queryParams.siteid" placeholder="请选择主管队站" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalSites"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="参战力量" prop="siteid2">
+        <el-select v-model="queryParams.siteid2List" placeholder="请选择参战力量" clearable multiple size="small">
+          <el-option v-for="(value, key, index) in $root.totalSites"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="任务执行状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择任务执行状态" clearable size="small">
+          <el-option label="请选择字典生成" value=""/>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="关键词" prop="keywords">
+        <el-input
+          v-model="queryParams.keywords"
+          placeholder="请输入关键词"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="时间" prop="cautiontime">
+        <!--        <el-date-picker clearable size="small"-->
+        <!--                        v-model="queryParams.cautiontime"-->
+        <!--                        type="date"-->
+        <!--                        value-format="yyyy-MM-dd"-->
+        <!--                        placeholder="选择时间">-->
+        <!--        </el-date-picker>-->
+        <CusDatePicker :sendtimes="sendtimes" @change="handleChange"></CusDatePicker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['knowledge:record:add']"
+        >新增
+        </el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['knowledge:record:edit']"
+        >修改
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['knowledge:record:remove']"
+        >删除
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          :loading="exportLoading"
+          @click="handleExport"
+          v-hasPermi="['knowledge:record:export']"
+        >导出
+        </el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <div style="margin-top: 5px; background: white; padding: 10px 20px 30px 30px;">
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <div class="grid-content bg-purple">
-            <div class="table-height">
-            <el-table :v-loading="loading" :data="recordList" stripe border max-height="100%" :header-cell-style="tableHeaderColor">
-              <el-table-column label="序号" align="center" type="index"></el-table-column>
-              <el-table-column label="案件编号" align="center" prop="cautionid" width='100'>
-              </el-table-column>
-              <el-table-column label="灾情类型" align="center" prop="distypeid" width='120'>
-                <template slot-scope="scope">
-                  {{ $root.totalDisType[scope.row.distypeid] }}
-                </template>
-              </el-table-column>
-              <el-table-column label="案发地址" align="center" prop="location" :show-overflow-tooltip="false">
-              </el-table-column>
-              <el-table-column label="立案时间" align="center" prop="cautiontime" width="180">
-                <template slot-scope="scope">
-                  <span>{{ parseTime(scope.row.cautiontime) }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="状态" align="center" prop="status" width='120'>
-                <!-- <template slot-scope="scope">
-                  <dict-tag :options="statusOptions" :value="scope.row.status"/>
-                </template> -->
-              </el-table-column>
-              <el-table-column fixed="right" label="操作" align="center" width='150'
-                               class-name="small-padding fixed-width">
-                <template slot-scope="scope">
+    <el-table v-loading="loading" :data="recordList" border stripe @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="序号" align="center" type="index" width="50"></el-table-column>
+      <el-table-column label="报警编号" align="center" prop="cautionid" width="80"/>
+      <el-table-column label="时间" align="center" prop="cautiontime" width="180" sortable>
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.cautiontime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="地址" align="center" prop="location"/>
+      <el-table-column label="灾情类型" align="center" prop="distypeid">
+        <template slot-scope="scope">
+          <span>{{ $root.totalDisType[scope.row.distypeid] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="处置对象" align="center" prop="dillobject">
+        <template slot-scope="scope">
+          <span>{{ $root.totalDisposeObj[scope.row.dillobject] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="主管队站" align="center" prop="siteid">
+        <template slot-scope="scope">
+          <span>{{ $root.totalSites[scope.row.siteid] }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="参战力量" align="center" prop="siteid2">
+        <template slot-scope="scope">
+          <span v-for="(item, idx) in scope.row.siteid2 ? scope.row.siteid2.split(',') : null">{{ $root.totalSites[item] + (idx ===  (scope.row.siteid2.split(',').length - 1) ? '' : ', ')}}</span>
+        </template>
+      </el-table-column>
+      <!--      <el-table-column label="  出警车辆" align="center" prop="truckid" />-->
+      <el-table-column label="任务执行状态" align="center" prop="status"/>
+      <el-table-column label="关键词" align="center" prop="keywords"/>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-s-promotion"
+            @click="handleSendInfo(scope.row)"
+            v-hasPermi="['knowledge:record:edit']"
+          >推送
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-message-solid"
+            @click="handleHisQuery(scope.row.cautionid)"
+            v-hasPermi="['knowledge:record:edit']"
+          >查看
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['knowledge:record:edit']"
+          >修改
+          </el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['knowledge:record:remove']"
+          >删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-                  <el-button
-                    size="mini"
-                    type="primary"
-                    class="btn-style"
-                    @click="handleSendInfo(scope.row)">推送
-                  </el-button>
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
+    <!--    <Pagination :total="total"></Pagination>-->
 
-                  <el-button size="mini" type="success" class="btn-style" @click="handleHisQuery(scope.row.cautionid)">
-                    查看
-                  </el-button>
-
-
-                  <!-- 使用弹出框 -->
-                   <!-- <el-popover
-                      placement="left-start"
-                      align="center"
-                      width="1000"
-                      trigger="click">
-                      <div class="grid-content bg-purple">
-                        <el-table :v-loading="hisLoading" :data="historyList" stripe
-                                  :header-cell-style="tableHeaderColor" max-height="600" >
-                          <el-table-column label="序号" align="center" type="index"/>
-                          <el-table-column label="提示信息" align="left" prop="informid"/>
-                          <el-table-column label="推送对象" align="center" prop="positionid" width="130">
-                            <template slot-scope="scope">
-                              <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
-                            </template>
-                          </el-table-column>
-                          <el-table-column label="发送时间" align="center" prop="sendtime" width="150">
-                            <template slot-scope="scope">
-                              <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-                            </template>
-                          </el-table-column>
-                          <el-table-column label="知识类型" align="center" prop="librarytype" width="100">
-                            <template slot-scope="scope">
-                              <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
-                            </template>
-                          </el-table-column>
-                        </el-table>
-                      </div>
-                      <el-button size="mini" type="success" class="btn-style" slot="reference" @click="handleHisQuery(scope.row.cautionid)">查看</el-button>
-                    </el-popover> -->
-  
-
-
-                </template>
-              </el-table-column>
-            </el-table>
-            </div>
-          </div>
-
-           <el-dialog :visible.sync="dialogTableVisible"   width="70%" top:40vh center>
-              <div class="grid-content bg-purple">
-                <el-table :v-loading="hisLoading" :data="historyList" stripe border
-                          :header-cell-style="tableHeaderColor"  max-height="600" >
-                  <el-table-column label="序号" align="center" type="index"/>
-                  <el-table-column label="提示信息" align="left" prop="informid" />
-                  <el-table-column label="推送对象" align="center" prop="positionid" width="130">
-                    <template slot-scope="scope">
-                      <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="发送时间" align="center" prop="sendtime" width="160">
-                    <template slot-scope="scope">
-                      <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="知识类型" align="center" prop="librarytype" width="80">
-                    <template slot-scope="scope">
-                      <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-          </el-dialog>
-
-          <div class="block" style="margin-top: 30px;float:right">
-            <el-pagination
-              v-show="total>0"
-              :total="total"
-              :page.sync="recordQueryParams.pageNum"
-              :limit.sync="recordQueryParams.pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              @pagination="listRecordInfo">
-            </el-pagination>
-          </div>
-        </el-col>
-
-        <!-- <el-col :span="11">
-          <div class="grid-content bg-purple">
-            <el-table :v-loading="hisLoading" :data="historyList" stripe
-                      :header-cell-style="tableHeaderColor" max-height="600" >
-              <el-table-column label="序号" align="center" type="index"/>
-              <el-table-column label="提示信息" align="left" prop="informid"/>
-              <el-table-column label="推送对象" align="center" prop="positionid" width="130">
-                <template slot-scope="scope">
-                  <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="发送时间" align="center" prop="sendtime" width="150">
-                <template slot-scope="scope">
-                  <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="知识类型" align="center" prop="librarytype" width="100">
-                <template slot-scope="scope">
-                  <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-col> -->
-
-              <!--              <el-table-column label="序号" align="center" prop="caseNumber" width="60">-->
-              <!--              </el-table-column>-->
-              <!--              <el-table-column label="人员" align="center" prop="casePerson" width='100'>-->
-              <!--              </el-table-column>-->
-              <!--              <el-table-column label="全部" align="center" prop="caseIcon" width='80'-->
-              <!--                               :filters="[{text:'指挥员', value:'1'},{text:'司通员', value:'2'},{text:'战斗员', value:'3'}]"-->
-              <!--                               :filter-method="filterTag"-->
-              <!--              >-->
-              <!--                <template slot-scope="scope">-->
-              <!--                  <i class='el-icon-question' v-if="scope.row.caseIcon === '1'">-->
-              <!--                  </i>-->
-              <!--                  <i class='el-icon-message-solid' v-if="scope.row.caseIcon === '2'">-->
-              <!--                  </i>-->
-              <!--                  <i class='el-icon-s-management' v-if="scope.row.caseIcon === '3'">-->
-              <!--                  </i>-->
-              <!--                </template>-->
-              <!--              </el-table-column>-->
-              <!--              <el-table-column label="内容详情" align="center" prop="caseContent">-->
-              <!--              </el-table-column>-->
-
-            
-
-      </el-row>
-
-    </div>
-
-
+    <!-- 添加或修改出警记录表对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="时间" prop="cautiontime">
+          <el-date-picker clearable size="small"
+                          v-model="form.cautiontime"
+                          type="datetime"
+                          value-format="yyyy-MM-dd HH:mm:ss"
+                          placeholder="选择时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="地址" prop="location">
+          <el-input v-model="form.location" placeholder="请输入地址"/>
+        </el-form-item>
+        <el-form-item label="灾情类型" prop="distypeid">
+          <el-select v-model="form.distypeid" placeholder="请选择险情类型">
+            <el-option v-for="(value, key, index) in $root.totalDisType"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="处置对象" prop="dillobject">
+          <el-select v-model="form.dillobject" placeholder="请选择处置对象">
+            <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="主管队站" prop="siteid">
+          <el-select v-model="form.siteid" placeholder="请选择主管单位">
+            <el-option v-for="(value, key, index) in $root.totalSites"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="出警车辆" prop="truckid">
+          <el-select v-model="form.truckid" placeholder="请选择出警车辆">
+            <el-option label="请选择字典生成" value=""/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任务执行状态" prop="status">
+          <el-select v-model="form.status" placeholder="请选择任务执行状态">
+            <el-option label="请选择字典生成" value=""/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任务执行状态" prop="keywords">
+          <el-input v-model="form.keywords" placeholder="请输入任务执行状态"/>
+        </el-form-item>
+        <el-form-item label="参战力量">
+          <el-checkbox-group v-model="form.siteid2">
+            <el-checkbox>请选择字典生成</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+    <!--    查看案件对应的历史发送信息-->
+    <el-dialog :visible.sync="dialogTableVisible" width="70%" top:40vh center>
+      <div class="grid-content bg-purple">
+        <el-table :v-loading="hisLoading" :data="historyList" stripe border
+                  :header-cell-style="tableHeaderColor" max-height="600">
+          <el-table-column label="序号" align="center" type="index"/>
+          <el-table-column label="提示信息" align="left" prop="informid"/>
+          <el-table-column label="推送对象" align="center" prop="positionid" width="130">
+            <template slot-scope="scope">
+              <span>{{ $root.totalSites[scope.row.positionid] + "/" + scope.row.tele }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="发送时间" align="center" prop="sendtime" width="160">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.sendtime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="知识类型" align="center" prop="librarytype" width="80">
+            <template slot-scope="scope">
+              <span>{{ $root.totalLibType[scope.row.librarytype] }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-dialog>
   </div>
-
-
 </template>
+
 <script>
+import {listRecord, getRecord, delRecord, addRecord, updateRecord, exportRecord} from "@/api/knowledge/record";
 import {listHistory} from "@/api/knowledge/history";
-import {listRecord} from "@/api/knowledge/record";
 
 export default {
+  name: "Record",
   data() {
     return {
-      AllOrPart: '全部',
+      // 遮罩层
+      loading: true,
+      // 导出遮罩层
+      exportLoading: false,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 显示搜索条件
+      showSearch: true,
+      // 总条数
+      total: 0,
+      // 出警记录表表格数据
+      recordList: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
       sendtimes: [],
-      // dialog显示
-      dialogTableVisible: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        cautionid: null,
-        positionid: null,
-        sendtime: null,
-        librarytype: null
-      },
-      recordQueryParams: {
         pageNum: 1,
         pageSize: 10,
         cautiontimeStart: null,
@@ -222,64 +332,53 @@ export default {
         truckid: null,
         status: null,
         keywords: null,
-        siteid2: null
+        siteid2: null,
+        siteid2List: []
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+        cautiontime: [
+          {required: true, message: "时间不能为空", trigger: "blur"}
+        ],
+        location: [
+          {required: true, message: "地址不能为空", trigger: "blur"}
+        ],
       },
       historyList: [],
-      recordList: [],
-      loading: false,
       hisLoading: false,
-      typeList: [{
-        cautionID: '1',
-        caseType: '火灾',
-        caseAdress: '上海市普陀区',
-        createTime: '2021-10-9',
-        status: '待处理',
-      }],
-      total: 0,
       hisTotal: 0,
-      value1: '',
-      value2: ''
+      dialogTableVisible: false,
     };
   },
   created() {
-    this.handleRecordQuery()
+    this.getList();
   },
   methods: {
-    handleChange(val){
-      this.sendtimes = val
-      this.handleRecordQuery()
-    },
-    filterTag(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
+    // 接收 CusDatePicker 的日期值
+    handleChange(sendtimes) {
+      this.sendtimes = sendtimes
     },
     //设置表头行的样式
     tableHeaderColor({row, column, rowIndex, columnIndex}) {
       return 'background-color:rgb(167, 196, 237);color:black;font-wight:500;text-align:center'
     },
-    handleRecordQuery() {
-      this.recordQueryParams.pageNum = 1
-      if (this.sendtimes && this.sendtimes.length > 0){
-        this.recordQueryParams.cautiontimeStart = this.sendtimes[0]
-        this.recordQueryParams.cautiontimeEnd = this.sendtimes[1]
-      }else{
-        this.recordQueryParams.cautiontimeStart = null
-        this.recordQueryParams.cautiontimeEnd = null
-      }
-      this.listRecordInfo()
-    },
-    handleHisQuery(cautionID) {
-      this.dialogTableVisible = true
-      this.queryParams.cautionid = cautionID
-      this.queryParams.pageNum = 1
-      this.listHisInfo()
-    },
+    // 二次发送信息
     handleSendInfo(caution) {
       console.log(caution)
       console.log(this.$router)
       caution.cautiontime = Date.parse(caution.cautiontime)
       this.$router.push({path: '/index', query: caution})
     },
+    // 展示案件历史信息
+    handleHisQuery(cautionID) {
+      this.dialogTableVisible = true
+      this.queryParams.cautionid = cautionID
+      this.queryParams.pageNum = 1
+      this.listHisInfo()
+    },
+    // 查询历史信息
     listHisInfo() {
       this.hisLoading = true;
       listHistory(this.queryParams).then(response => {
@@ -288,35 +387,146 @@ export default {
         this.hisLoading = false;
       });
     },
-    listRecordInfo() {
-      this.loading = true
-      listRecord(this.recordQueryParams).then(response => {
-        this.recordList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+    /** 查询出警记录表列表 */
+    getList() {
+      this.loading = true;
+      if(this.queryParams.siteid2List){
+        this.queryParams.siteid2 = this.queryParams.siteid2List.join(',')
+      }
+      listRecord(this.queryParams).then(response => {
+        this.recordList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        cautionid: null,
+        cautiontime: null,
+        location: null,
+        distypeid: null,
+        dillobject: null,
+        siteid: null,
+        truckid: null,
+        detailtype: null,
+        picture: null,
+        label4: null,
+        status: null,
+        keywords: null,
+        siteid2: []
+      };
+      this.resetForm("form");
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      if (this.sendtimes.length > 0) {
+        this.queryParams.cautiontimeStart = this.sendtimes[0]
+        this.queryParams.cautiontimeEnd = this.sendtimes[1]
+      } else {
+        this.queryParams.cautiontimeStart = null
+        this.queryParams.cautiontimeEnd = null
+      }
+      console.log(this.queryParams)
+      this.getList()
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.sendtimes = []
+      this.queryParams.siteid2List = []
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.cautionid)
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
+    },
+    /** 新增按钮操作 */
+    handleAdd() {
+      this.reset();
+      this.open = true;
+      this.title = "添加出警记录表";
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      const cautionid = row.cautionid || this.ids
+      getRecord(cautionid).then(response => {
+        this.form = response.data;
+        if (this.form.siteid2) {
+          this.form.siteid2 = this.form.siteid2.split(",");
+        }
+        this.open = true;
+        this.title = "修改出警记录表";
+      });
+    },
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.siteid2) {
+            this.form.siteid2 = this.form.siteid2.join(",");
+          }
+          if (this.form.cautionid != null) {
+            updateRecord(this.form).then(response => {
+              this.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
+          } else {
+            addRecord(this.form).then(response => {
+              this.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
+          }
+        }
+      });
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const cautionids = row.cautionid || this.ids;
+      this.$confirm('是否确认删除出警记录表编号为"' + cautionids + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delRecord(cautionids);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {
+      });
+    },
+    /** 导出按钮操作 */
+    handleExport() {
+      const queryParams = this.queryParams;
+      this.$confirm('是否确认导出所有出警记录表数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportRecord(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {
+      });
     }
   }
-}
-</script>
-<style>
-</style>
-
-}
 };
-<style>
-.table-height{
-   max-height: calc(65vh);
-}
-.btn-style {
-  min-width: 50px;
-  min-height: 25px;
-}
-.el-dialog:not(.is-fullscreen) {
-    margin-top: 25vh !important;
-}
-.el-dialog__header {
-    padding-top: 10px;
-    padding-bottom: 10px;
+</script>
+<style scoped>
+.el-date-editor .el-range-input {
+  width: 70%;
 }
 </style>

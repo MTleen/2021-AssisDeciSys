@@ -254,8 +254,8 @@ public class KnowledgeMatchingController extends BaseController {
         if (rule.getGeneralnum() > 0)//添加通用提示信息至候选列表krlist
         {
             Knowledge knowledge = new Knowledge();
-            knowledge.setDisastertype(query.getdistype());
-            knowledge.setDisposeobj(query.getdisposeObj());
+            knowledge.setDisastertype("" + query.getdistype());
+            knowledge.setDisposeobj("" + query.getdisposeObj());
             knowledge.setDetailtype(query.getgeneralType());
             knowledge.setInform(query.getkeyWords());
             List<Knowledge> klist = knowledgeService.selectKnowledgeList(knowledge);
@@ -562,8 +562,8 @@ public class KnowledgeMatchingController extends BaseController {
             for(int i = 1;i < text.length + 1;i++){
                 text_send = text_send + "+" + i + "、" + text[i-1];
             }
-            String message = "事件地点：" + record.getLocation() + "\n" + "事件时间：" + df.format(new Date()) + "\n"
-                            +"事件类型：" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "\n" + "事件内容：" + text_send.replaceAll("\\+","\n");
+            String message = "案发地址：" + record.getLocation() + "\n" + "立案时间：" + df.format(new Date()) + "\n"
+                            +"灾情类型：" + disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename() + "\n" + "知识内容：" + text_send.replaceAll("\\+","\n");
             sendtowechat_com.send(userInfoMatchingService.selectUserIDbyOpenID(u.openID),message);
 //            sendtowechat_com.send(userInfoMatchingService.selectUserIDbyOpenID(u.openID),"ceshi1109");
         }

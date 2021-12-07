@@ -24,7 +24,7 @@ public class DetailType extends BaseEntity
 
     /** 处置对象 */
     @Excel(name = "处置对象")
-    private Long disposeobj;
+    private String disposeobj;
 
     /** 通用/专项 */
     @Excel(name = "通用/专项")
@@ -48,12 +48,12 @@ public class DetailType extends BaseEntity
     {
         return typename;
     }
-    public void setDisposeobj(Long disposeobj)
+    public void setDisposeobj(String  disposeobj)
     {
         this.disposeobj = disposeobj;
     }
 
-    public Long getDisposeobj()
+    public String  getDisposeobj()
     {
         return disposeobj;
     }

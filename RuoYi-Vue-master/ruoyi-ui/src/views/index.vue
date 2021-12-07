@@ -58,7 +58,7 @@
           </el-form-item>
 
           <el-form-item label="参战力量:" prop="siteID2" style="">
-            <el-select v-model="form.siteID2" filterable clearable size="small">
+            <el-select v-model="form.siteID2" filterable clearable multiple size="small">
               <el-option v-for="(value, key, index) in $root.totalSites"
                          :key="key"
                          :label="value"
@@ -120,7 +120,7 @@
 
       <!--      </el-row>-->
 
-   
+
         <el-row :gutter="30">
           <el-col :span="24">
             <div class="grid-content bg-purple">
@@ -352,7 +352,6 @@ export default {
   },
   created() {
     this.$root.loadGlobalData()
-    console.log(this.$route.query)
     let queryParameters = this.$route.query
     if (queryParameters && queryParameters) {
       this.form.cautionID = queryParameters.cautionid
@@ -361,7 +360,13 @@ export default {
       this.form.disposeObj = queryParameters.dillobject
       this.form.address = queryParameters.location
       this.form.siteID1 = queryParameters.siteid
-      this.form.siteID2 = queryParameters.siteid2
+      this.form.siteID2 = queryParameters.siteid2 ? queryParameters.siteid2.split(',') : []
+      if(queryParameters.detailtype in this.$root.totalGeneralType){
+        this.form.generalType = queryParameters.detailtype
+      }else{
+        this.form.specialType = queryParameters.detailtype
+      }
+      console.log(this.form)
     }
   },
   mounted () {

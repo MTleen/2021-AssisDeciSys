@@ -29,11 +29,11 @@ public class Knowledge extends BaseEntity
 
     /** 险情类型 */
     @Excel(name = "险情类型")
-    private Long disastertype;
+    private String disastertype;
 
     /** 处置对象 */
     @Excel(name = "处置对象")
-    private Long disposeobj;
+    private String disposeobj;
 
     /** 详细类型 */
     @Excel(name = "详细类型")
@@ -74,21 +74,21 @@ public class Knowledge extends BaseEntity
     {
         return weight;
     }
-    public void setDisastertype(Long disastertype)
+    public void setDisastertype(String disastertype)
     {
         this.disastertype = disastertype;
     }
 
-    public Long getDisastertype()
+    public String getDisastertype()
     {
         return disastertype;
     }
-    public void setDisposeobj(Long disposeobj)
+    public void setDisposeobj(String disposeobj)
     {
         this.disposeobj = disposeobj;
     }
 
-    public Long getDisposeobj()
+    public String getDisposeobj()
     {
         return disposeobj;
     }
