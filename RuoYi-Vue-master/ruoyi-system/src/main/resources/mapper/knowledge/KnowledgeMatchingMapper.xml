@@ -4,22 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.knowledge.mapper.KnowledgeMatchingMapper">
 
-    <select id="selectUserTelebySiteID" parameterType="Long" resultType="String">
-        select tele from UserInfo where siteID = #{siteid}
-    </select>
-
-    <select id="selectUserOpenIDbySiteID" parameterType="Long" resultType="String">
-        select openid from UserInfo where siteID = #{siteid}
-    </select>
-
-    <select id="selectUserTelebyOpenID" parameterType="String" resultType="String">
-        select tele from UserInfo where openid = #{openid} limit 1
-    </select>
-
-    <select id="selectUserPositionIDbyOpenID" parameterType="String" resultType="Long">
-        select positionID from UserInfo where openid = #{openid} limit 1
-    </select>
-
     <!--特殊Record插入方式-->
     <insert id="insertRecord" parameterType="Record">
         <selectKey resultType="String" order="BEFORE" keyProperty="cautionid">
