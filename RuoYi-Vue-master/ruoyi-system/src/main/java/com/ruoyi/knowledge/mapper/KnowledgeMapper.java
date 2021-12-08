@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.knowledge.domain.*;
+import com.ruoyi.knowledge.domain.Record;
 import org.apache.ibatis.annotations.Param;
 
 /**

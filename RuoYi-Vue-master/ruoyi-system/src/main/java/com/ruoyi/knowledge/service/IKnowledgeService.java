@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.knowledge.domain.*;
+import com.ruoyi.knowledge.domain.Record;
 
 /**
  * 通用知识库Service接口
