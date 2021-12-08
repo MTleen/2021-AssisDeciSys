@@ -82,7 +82,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="inform != null and inform != ''">inform,</if>
             <if test="weight != null">weight,</if>
-            <if test="disastertype != null">disastertype,</if>
             <if test="disposeobj != null">disposeobj,</if>
             <if test="detailtype != null">detailtype,</if>
             <if test="informtypeid != null">informtypeID,</if>
@@ -90,7 +89,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="inform != null and inform != ''">#{inform},</if>
             <if test="weight != null">#{weight},</if>
-            <if test="disastertype != null">#{disastertype},</if>
             <if test="disposeobj != null">#{disposeobj},</if>
             <if test="detailtype != null">#{detailtype},</if>
             <if test="informtypeid != null">#{informtypeid},</if>
@@ -102,7 +100,6 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="inform != null and inform != ''">inform = #{inform},</if>
             <if test="weight != null">weight = #{weight},</if>
-            <if test="disastertype != null">disastertype = #{disastertype},</if>
             <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
             <if test="detailtype != null">detailtype = #{detailtype},</if>
             <if test="informtypeid != null">informtypeID = #{informtypeid},</if>

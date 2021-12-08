@@ -172,6 +172,7 @@ export default {
       this.loading = true;
       listSpecial(this.queryParams).then(response => {
         this.specialList = response.rows;
+        // this.$root.num2str(this.specialList)
         this.total = response.total;
         this.loading = false;
       });
@@ -218,6 +219,7 @@ export default {
       const informid = row.informid || this.ids
       getSpecial(informid).then(response => {
         this.form = response.data;
+        this.$root.num2str(this.form)
         this.open = true;
         this.title = "修改专项知识库";
       });

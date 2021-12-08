@@ -52,6 +52,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from TypeRelation where id = #{id}
     </delete>
 
+    <delete id="deleteTypeRelationByDetailType" parameterType="Long">
+        delete from TypeRelation where detailtype = #{detailtype}
+    </delete>
+
     <delete id="deleteTypeRelationByIds" parameterType="String">
         delete from TypeRelation where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">

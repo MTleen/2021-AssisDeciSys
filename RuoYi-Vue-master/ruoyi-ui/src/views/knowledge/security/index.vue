@@ -107,13 +107,14 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="提示信息" prop="inform">
-          <el-select v-model="form.inform" placeholder="请选择提示信息">
-            <el-option label="请选择字典生成" value="" />
-          </el-select>
+          <el-input v-model="form.inform" placeholder="请输入内容" type="textarea" />
         </el-form-item>
         <el-form-item label="安全类型" prop="securitypeid">
           <el-select v-model="form.securitypeid" placeholder="请选择安全类型">
-            <el-option label="请选择字典生成" value="" />
+            <el-option v-for="(value, key, index) in $root.totalSecurityType"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -221,6 +222,7 @@ export default {
       const informid = row.informid || this.ids
       getSecurity(informid).then(response => {
         this.form = response.data;
+        this.$root.num2str(this.form)
         this.open = true;
         this.title = "修改安全知识库";
       });

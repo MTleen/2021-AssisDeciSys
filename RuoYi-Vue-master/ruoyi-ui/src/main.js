@@ -106,11 +106,11 @@ Vue.prototype.loadGlobalData = function () {
     // load all detail type
     listDetailtype(commonQueryParams).then(response => {
       for (let row of response.rows) {
-        if(row.priority === 1){
+        if (row.priority === 1) {
           Vue.prototype.totalGeneralType[row.typeid] = row.typename
-        }else if(row.priority === 2){
+        } else if (row.priority === 2) {
           Vue.prototype.totalSecurityType[row.typeid] = row.typename
-        }else if(row.priority === 3){
+        } else if (row.priority === 3) {
           Vue.prototype.totalSpecialType[row.typeid] = row.typename
         }
       }
@@ -127,21 +127,21 @@ Vue.prototype.loadGlobalData = function () {
     })
     // load all posotion
     listUserposition(commonQueryParams).then(response => {
-      for (let row of response.rows){
+      for (let row of response.rows) {
         Vue.prototype.totalUserPositions[row.positionid] = row.positionname
       }
     })
     // load all sites
     listSite(commonQueryParams).then(response => {
       let totalSite = {}
-      for(let row of response.rows){
-        totalSite[row.siteid]  =row.sitename
+      for (let row of response.rows) {
+        totalSite[row.siteid] = row.sitename
       }
       Vue.prototype.totalSites = totalSite;
     })
     // Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
     // load all library types
-    Vue.prototype.totalLibType = { '1': '通用', '3': '专项', '2': '安全'}
+    Vue.prototype.totalLibType = {'1': '通用', '3': '专项', '2': '安全'}
   }
 }
 
@@ -169,17 +169,12 @@ Vue.prototype.parseString = function (str, dict) {
   return resStr
 }
 
-Vue.prototype.num2str = function (rows){
-  for(let row of rows){
-    for(let item in row){
-      console.log(typeof row[item])
-      if(typeof row[item] == 'number'){
-        row[item] = row[item].toString()
-      }
+Vue.prototype.num2str = function (form) {
+  for (let item in form) {
+    if (typeof form[item] == 'number') {
+      form[item] = form[item].toString()
     }
   }
-  // console.log(rows)
-  // return rows
 }
 
 

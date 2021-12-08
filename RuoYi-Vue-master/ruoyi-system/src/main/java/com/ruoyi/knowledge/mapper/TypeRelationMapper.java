@@ -52,6 +52,13 @@ public interface TypeRelationMapper
     public int deleteTypeRelationById(Long id);
 
     /**
+     * 根据 detailtype 删除标签关系
+     *
+     * @param detailtype 标签关系主键
+     * @return 结果
+     */
+    public int deleteTypeRelationByDetailType(Long detailtype);
+    /**
      * 批量删除标签关系
      * 
      * @param ids 需要删除的数据主键集合

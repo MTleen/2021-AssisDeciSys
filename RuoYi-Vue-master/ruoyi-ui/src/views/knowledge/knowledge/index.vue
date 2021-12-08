@@ -138,22 +138,22 @@
         <el-form-item label="信息内容" prop="inform">
           <el-input v-model="form.inform" type="textarea" placeholder="请输入内容"/>
         </el-form-item>
-        <el-form-item label="灾情类型" prop="disastertype">
-          <el-select v-model="form.disastertype" placeholder="请选择灾情类型">
-            <el-option v-for="(value, key, index) in $root.totalDisType"
-                       :key="key"
-                       :label="value"
-                       :value="key"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="处置对象" prop="disposeobj">
-          <el-select v-model="form.disposeobj" placeholder="请选择处置对象">
-            <el-option v-for="(value, key, index) in $root.totalDisposeObj"
-                       :key="key"
-                       :label="value"
-                       :value="key"/>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="灾情类型" prop="disastertype">-->
+<!--          <el-select v-model="form.disastertypeList" placeholder="请选择灾情类型" multiple filterable clearable>-->
+<!--            <el-option v-for="(value, key, index) in $root.totalDisType"-->
+<!--                       :key="key"-->
+<!--                       :label="value"-->
+<!--                       :value="key"/>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="处置对象" prop="disposeobj">-->
+<!--          <el-select v-model="form.disposeobjList" placeholder="请选择处置对象" multiple filterable clearable>-->
+<!--            <el-option v-for="(value, key, index) in $root.totalDisposeObj"-->
+<!--                       :key="key"-->
+<!--                       :label="value"-->
+<!--                       :value="key"/>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="通用类型" prop="detailtype">
           <el-select v-model="form.detailtype" placeholder="请选择通用类型">
             <el-option v-for="(value, key, index) in $root.totalGeneralType"
@@ -247,7 +247,6 @@ export default {
       this.queryParams.disposeobj = this.queryParams.disposeobjList.join(',')
       listKnowledge(this.queryParams).then(response => {
         this.knowledgeList = response.rows;
-        console.log(this.knowledgeList[0])
         this.total = response.total;
         this.loading = false;
       });
@@ -259,15 +258,16 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
-        informid: null,
-        inform: null,
-        weight: null,
-        disastertype: null,
-        disposeobj: null,
-        detailtype: null,
-        informtypeid: null
-      };
+      // this.form = {
+      //   informid: null,
+      //   inform: null,
+      //   weight: null,
+      //   disastertype: null,
+      //   disposeobj: null,
+      //   detailtype: null,
+      //   informtypeid: null
+      // };
+      this.form = {}
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -300,6 +300,9 @@ export default {
       const informid = row.informid || this.ids
       getKnowledge(informid).then(response => {
         this.form = response.data;
+        this.$root.num2str(this.form)
+        // this.form.disposeobjList = this.form.disposeobj ? this.form.disposeobj.split(',') : null
+        // this.form.disastertypeList = this.form.disastertype ? this.form.disastertype.split(',') : null
         this.open = true;
         this.title = "修改通用知识库";
       });
@@ -317,6 +320,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.disastertype = this.form.disastertypeList ? this.form.disastertypeList.join(',') : null
           if (this.form.informid != null) {
             updateKnowledge(this.form).then(response => {
               this.msgSuccess("修改成功");

@@ -60,7 +60,6 @@
         update DetailType
         <trim prefix="SET" suffixOverrides=",">
             <if test="typename != null and typename != ''">typename = #{typename},</if>
-            <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
             <if test="priority != null">priority = #{priority},</if>
         </trim>
         where typeID = #{typeid}

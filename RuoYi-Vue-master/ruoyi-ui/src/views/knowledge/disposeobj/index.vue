@@ -230,6 +230,7 @@ export default {
       const objid = row.objid || this.ids
       getDisposeobj(objid).then(response => {
         this.form = response.data;
+        this.$root.num2str(this.form)
         this.open = true;
         this.title = "修改处置对象";
       });

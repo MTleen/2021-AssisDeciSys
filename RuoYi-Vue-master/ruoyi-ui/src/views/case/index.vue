@@ -467,21 +467,15 @@ export default {
     handleUpdate(row) {
       this.reset();
       const cautionid = row.cautionid || this.ids
-      this.form = deepClone(row)
-      console.log(this.form)
-      if (this.form.siteid2) {
-        this.form.siteid2 = this.form.siteid2.split(",");
-      }
-      this.open = true;
-      this.title = "修改出警记录";
-      // getRecord(cautionid).then(response => {
-      //   this.form = response.data;
-      //   if (this.form.siteid2) {
-      //     this.form.siteid2 = this.form.siteid2.split(",");
-      //   }
-      //   this.open = true;
-      //   this.title = "修改出警记录";
-      // });
+      getRecord(cautionid).then(response => {
+        this.form = response.data;
+        this.$root.num2str(this.form)
+        if (this.form.siteid2) {
+          this.form.siteid2 = this.form.siteid2.split(",");
+        }
+        this.open = true;
+        this.title = "修改出警记录";
+      });
     },
     /** 提交按钮 */
     submitForm() {

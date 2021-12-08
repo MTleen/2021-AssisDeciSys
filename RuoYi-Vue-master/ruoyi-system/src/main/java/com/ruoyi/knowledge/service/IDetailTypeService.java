@@ -1,6 +1,7 @@
 package com.ruoyi.knowledge.service;
 
 import java.util.List;
+
 import com.ruoyi.knowledge.domain.DetailType;
 
 /**
@@ -9,8 +10,7 @@ import com.ruoyi.knowledge.domain.DetailType;
  * @author Mathripper
  * @date 2021-11-05
  */
-public interface IDetailTypeService
-{
+public interface IDetailTypeService {
     /**
      * 查询详细类型表
      *
@@ -58,4 +58,11 @@ public interface IDetailTypeService
      * @return 结果
      */
     public int deleteDetailTypeByTypeid(Long typeid);
+
+    /**
+     * 循环插入 TypeRelation 表
+     *
+     * @param detailType 详细类型表
+     */
+    public void updateTypeRelation(DetailType detailType);
 }

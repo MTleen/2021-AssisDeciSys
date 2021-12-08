@@ -22,26 +22,25 @@
               <span>天 气</span>
             </div>
           </div>
-          <!--        <div class="weatherContent" >-->
-          <!--          <div class="watherContent-style">-->
-          <!--          <span >天气：{{weatherData.realtime.info}}</span>-->
-          <!--          </div>-->
-          <!--          <div class="watherContent-style">-->
-          <!--          <span >温度：{{weatherData.realtime.temperature}}℃</span>-->
-          <!--          </div>-->
-          <!--          <div class="watherContent-style">-->
-          <!--          <span >湿度：{{weatherData.realtime.humidity}}%</span>-->
-          <!--          </div>-->
-          <!--        </div>-->
-
-          <!--        <div class="weatherContent">-->
-          <!--          <div class="watherContent-style">-->
-          <!--          <span >风力：{{weatherData.realtime.power}}</span>-->
-          <!--          </div>-->
-          <!--          <div class="watherContent-style">-->
-          <!--          <span >风向：{{weatherData.realtime.direct}}</span>-->
-          <!--          </div>-->
-          <!--        </div>-->
+          <div class="weatherContent">
+            <div class="watherContent-style">
+              <span>天气：{{ weatherData.realtime.info }}</span>
+            </div>
+            <div class="watherContent-style">
+              <span>温度：{{ weatherData.realtime.temperature }}℃</span>
+            </div>
+            <div class="watherContent-style">
+              <span>湿度：{{ weatherData.realtime.humidity }}%</span>
+            </div>
+          </div>
+          <div class="weatherContent">
+            <div class="watherContent-style">
+              <span>风力：{{ weatherData.realtime.power }}</span>
+            </div>
+            <div class="watherContent-style">
+              <span>风向：{{ weatherData.realtime.direct }}</span>
+            </div>
+          </div>
 
         </div>
       </div>

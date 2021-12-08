@@ -362,6 +362,7 @@ export default {
       const tele = row.tele || this.ids
       getUserinfo(tele).then(response => {
         this.form = response.data;
+        this.$root.num2str(this.form)
         this.open = true;
         this.title = "修改用户信息";
       });

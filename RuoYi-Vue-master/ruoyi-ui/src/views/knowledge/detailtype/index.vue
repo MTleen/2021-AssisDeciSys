@@ -134,7 +134,7 @@
           <el-input v-model="form.typename" placeholder="请输入详细类型"/>
         </el-form-item>
         <el-form-item label="处置对象" prop="disposeobj">
-          <el-select filterable v-model="form.disposeobj" placeholder="请选择处置对象">
+          <el-select filterable v-model="form.disposeobjList" placeholder="请选择处置对象" clearable multiple>
             <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                        :key="key"
                        :label="value"
@@ -276,6 +276,7 @@ export default {
       const typeid = row.typeid || this.ids
       getDetailtype(typeid).then(response => {
         this.form = response.data;
+        this.$root.num2str(this.form)
         this.open = true;
         this.title = "修改详细类型表";
       });
