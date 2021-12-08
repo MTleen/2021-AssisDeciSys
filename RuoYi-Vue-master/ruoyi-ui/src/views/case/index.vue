@@ -150,7 +150,7 @@
       </el-table-column>
       <el-table-column label="参战力量" align="center" prop="siteid2">
         <template slot-scope="scope">
-          <span v-for="(item, idx) in scope.row.siteid2 ? scope.row.siteid2.split(',') : null">{{ $root.totalSites[item] + (idx ===  (scope.row.siteid2.split(',').length - 1) ? '' : ', ')}}</span>
+          <span>{{ $root.parseString(scope.row.siteid2, $root.totalSites) }}</span>
         </template>
       </el-table-column>
       <!--      <el-table-column label="  出警车辆" align="center" prop="truckid" />-->
@@ -218,7 +218,7 @@
           <el-input v-model="form.location" placeholder="请输入地址"/>
         </el-form-item>
         <el-form-item label="灾情类型" prop="distypeid">
-          <el-select v-model="form.distypeid" placeholder="请选择险情类型">
+          <el-select v-model="form.distypeid" placeholder="请选择灾情类型">
             <el-option v-for="(value, key, index) in $root.totalDisType"
                        :label="value"
                        :value="key"/>
@@ -238,23 +238,26 @@
                        :value="key"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="出警车辆" prop="truckid">
-          <el-select v-model="form.truckid" placeholder="请选择出警车辆">
-            <el-option label="请选择字典生成" value=""/>
+        <el-form-item label="参战力量">
+          <el-select v-model="form.siteid2List" placeholder="请选择参战力量" clearable multiple size="small">
+            <el-option v-for="(value, key, index) in $root.totalSites"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
           </el-select>
         </el-form-item>
+<!--        <el-form-item label="出警车辆" prop="truckid">-->
+<!--          <el-select v-model="form.truckid" placeholder="请选择出警车辆">-->
+<!--            <el-option label="请选择字典生成" value=""/>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="任务执行状态" prop="status">
           <el-select v-model="form.status" placeholder="请选择任务执行状态">
             <el-option label="请选择字典生成" value=""/>
           </el-select>
         </el-form-item>
-        <el-form-item label="任务执行状态" prop="keywords">
-          <el-input v-model="form.keywords" placeholder="请输入任务执行状态"/>
-        </el-form-item>
-        <el-form-item label="参战力量">
-          <el-checkbox-group v-model="form.siteid2">
-            <el-checkbox>请选择字典生成</el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label="关键词" prop="keywords">
+          <el-input v-model="form.keywords" placeholder="请输入关键词"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -293,6 +296,7 @@
 <script>
 import {listRecord, getRecord, delRecord, addRecord, updateRecord, exportRecord} from "@/api/knowledge/record";
 import {listHistory} from "@/api/knowledge/history";
+import {deepClone} from "@/utils";
 
 export default {
   name: "Record",
@@ -390,11 +394,14 @@ export default {
     /** 查询出警记录表列表 */
     getList() {
       this.loading = true;
-      if(this.queryParams.siteid2List){
+      if (this.queryParams.siteid2List) {
         this.queryParams.siteid2 = this.queryParams.siteid2List.join(',')
       }
       listRecord(this.queryParams).then(response => {
         this.recordList = response.rows;
+        // 把 int 类型的值转换成 str
+        this.$root.num2str(this.recordList)
+        console.log(this.recordList[0])
         this.total = response.total;
         this.loading = false;
       });
@@ -419,7 +426,8 @@ export default {
         label4: null,
         status: null,
         keywords: null,
-        siteid2: []
+        siteid2: null,
+        siteid2List: []
       };
       this.resetForm("form");
     },
@@ -459,21 +467,28 @@ export default {
     handleUpdate(row) {
       this.reset();
       const cautionid = row.cautionid || this.ids
-      getRecord(cautionid).then(response => {
-        this.form = response.data;
-        if (this.form.siteid2) {
-          this.form.siteid2 = this.form.siteid2.split(",");
-        }
-        this.open = true;
-        this.title = "修改出警记录表";
-      });
+      this.form = deepClone(row)
+      console.log(this.form)
+      if (this.form.siteid2) {
+        this.form.siteid2 = this.form.siteid2.split(",");
+      }
+      this.open = true;
+      this.title = "修改出警记录";
+      // getRecord(cautionid).then(response => {
+      //   this.form = response.data;
+      //   if (this.form.siteid2) {
+      //     this.form.siteid2 = this.form.siteid2.split(",");
+      //   }
+      //   this.open = true;
+      //   this.title = "修改出警记录";
+      // });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.siteid2) {
-            this.form.siteid2 = this.form.siteid2.join(",");
+            this.form.siteid2 = this.form.siteid2List.join(",");
           }
           if (this.form.cautionid != null) {
             updateRecord(this.form).then(response => {

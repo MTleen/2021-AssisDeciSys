@@ -92,12 +92,12 @@
           <span>{{ $root.parseString(scope.row.disastertype, $root.totalDisType) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="处置对象" align="center" prop="disposeobj" width="150">
+      <el-table-column label="处置对象" align="center" prop="disposeobj" width="250">
         <template slot-scope="scope">
           <span>{{ $root.parseString(scope.row.disposeobj, $root.totalDisposeObj) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="通用类型" align="center" prop="detailtype" width="200">
+      <el-table-column label="通用类型" align="center" prop="detailtype" width="150">
         <template slot-scope="scope">
           <span>{{ $root.totalGeneralType[scope.row.detailtype] }}</span>
         </template>

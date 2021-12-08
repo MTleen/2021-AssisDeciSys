@@ -49,7 +49,7 @@ public class RecordController extends BaseController
      * 导出出警记录表列表
      */
     @PreAuthorize("@ss.hasPermi('knowledge:record:export')")
-    @Log(title = "出警记录表", businessType = BusinessType.EXPORT)
+    @Log(title = "出警记录", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(Record record)
     {
@@ -72,7 +72,7 @@ public class RecordController extends BaseController
      * 新增出警记录表
      */
     @PreAuthorize("@ss.hasPermi('knowledge:record:add')")
-    @Log(title = "出警记录表", businessType = BusinessType.INSERT)
+    @Log(title = "出警记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Record record)
     {

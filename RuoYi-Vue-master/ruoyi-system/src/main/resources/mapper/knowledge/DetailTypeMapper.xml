@@ -5,41 +5,39 @@
 <mapper namespace="com.ruoyi.knowledge.mapper.DetailTypeMapper">
 
     <resultMap type="DetailType" id="DetailTypeResult">
-        <result property="typeid"    column="typeID"    />
-        <result property="typename"    column="typename"    />
-        <result property="disposeobj"    column="disposeobj"    />
-        <result property="priority"    column="priority"    />
+        <result property="typeid" column="typeID"/>
+        <result property="typename" column="typename"/>
+        <result property="disposeobj" column="disposeobj"/>
+        <result property="priority" column="priority"/>
     </resultMap>
 
     <sql id="selectDetailTypeVo">
-        SELECT
-            D.typeID,
-            D.typename,
-            GROUP_CONCAT( DISTINCT TR.disposeobj ) as disposeobj,
-            D.priority
-        FROM
-            DetailType D
-                LEFT JOIN TypeRelation TR ON D.typeID = TR.detailtype
-                LEFT JOIN TypeRelation TR2 ON D.typeID = TR2.detailtype
-    </sql>
-
-    <sql id="selectDetailTypeVoSuffix">
-        GROUP BY D.typeID
+        select *
+        from (SELECT D.typeID,
+                     D.typename,
+                     GROUP_CONCAT(DISTINCT TR.disposeobj) as disposeobj,
+                     D.priority
+              FROM DetailType D
+                       LEFT JOIN TypeRelation TR ON D.typeID = TR.detailtype
+              GROUP BY D.typeID) DV
     </sql>
 
     <select id="selectDetailTypeList" parameterType="DetailType" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
         <where>
-            <if test="typename != null  and typename != ''"> and D.typename like concat('%', #{typename}, '%')</if>
-            <if test="disposeobj != null and disposeobj != '' "> and FIND_IN_SET(TR2.disposeobj, #{disposeobj})</if>
-            <if test="priority != null "> and D.priority = #{priority}</if>
+            <if test="typename != null  and typename != ''">and DV.typename like concat('%', #{typename}, '%')</if>
+            <if test="priority != null ">and DV.priority = #{priority}</if>
+            <if test="disposeobj != null and disposeobj != ''">
+                <foreach collection="disposeobjList" index="" item="item">
+                    and FIND_IN_SET(#{item}, DV.disposeobj)
+                </foreach>
+            </if>
         </where>
-        <include refid="selectDetailTypeVoSuffix"></include>
     </select>
 
     <select id="selectDetailTypeByTypeid" parameterType="Long" resultMap="DetailTypeResult">
         <include refid="selectDetailTypeVo"/>
-        where typeID = #{typeid}
+        where DV.typeID = #{typeid}
     </select>
 
     <insert id="insertDetailType" parameterType="DetailType">
@@ -69,7 +67,9 @@
     </update>
 
     <delete id="deleteDetailTypeByTypeid" parameterType="Long">
-        delete from DetailType where typeID = #{typeid}
+        delete
+        from DetailType
+        where typeID = #{typeid}
     </delete>
 
     <delete id="deleteDetailTypeByTypeids" parameterType="String">

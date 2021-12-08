@@ -82,9 +82,9 @@ Vue.prototype.totalDisType = {}
 Vue.prototype.totalSites = {}
 Vue.prototype.totalUserPositions = {}
 Vue.prototype.GENDER = {
-  0: '女',
-  1: '男',
-  2: '未知'
+  '0': '女',
+  '1': '男',
+  '2': '未知'
 }
 
 // 判断是否登录，如果已登录加载全局对象
@@ -141,7 +141,7 @@ Vue.prototype.loadGlobalData = function () {
     })
     // Vue.prototype.totalSites = {1: '大场支队', 2: '杨行支队', 3: '顾村支队'}
     // load all library types
-    Vue.prototype.totalLibType = { 1: '通用', 3: '专项', 2: '安全'}
+    Vue.prototype.totalLibType = { '1': '通用', '3': '专项', '2': '安全'}
   }
 }
 
@@ -167,6 +167,19 @@ Vue.prototype.parseString = function (str, dict) {
     resStr += idx == (strList.length - 1) ? '' : ', '
   }
   return resStr
+}
+
+Vue.prototype.num2str = function (rows){
+  for(let row of rows){
+    for(let item in row){
+      console.log(typeof row[item])
+      if(typeof row[item] == 'number'){
+        row[item] = row[item].toString()
+      }
+    }
+  }
+  // console.log(rows)
+  // return rows
 }
 
 

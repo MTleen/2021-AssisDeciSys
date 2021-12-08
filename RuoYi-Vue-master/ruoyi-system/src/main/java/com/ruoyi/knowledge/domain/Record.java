@@ -1,6 +1,8 @@
 package com.ruoyi.knowledge.domain;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -103,6 +105,8 @@ public class Record extends BaseEntity {
      */
     @Excel(name = "参战力量")
     private String siteid2;
+
+    private List<String> siteid2List;
 
     /**
      * 类型
@@ -223,11 +227,23 @@ public class Record extends BaseEntity {
     }
 
     public void setSiteid2(String siteid2) {
+
         this.siteid2 = siteid2;
+        if (siteid2 != null) {
+            this.siteid2List = Arrays.asList(siteid2.split(","));
+        }
     }
 
     public String getSiteid2() {
         return siteid2;
+    }
+
+    public void setSiteid2List(List<String> siteid2List) {
+        this.siteid2List = siteid2List;
+    }
+
+    public List<String> getSiteid2List() {
+        return siteid2List;
     }
 
     public void setLibrarytype(Integer librarytype) {

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.TypeRelationMapper">
+    
+    <resultMap type="TypeRelation" id="TypeRelationResult">
+        <result property="id"    column="id"    />
+        <result property="disposeobj"    column="disposeobj"    />
+        <result property="detailtype"    column="detailtype"    />
+    </resultMap>
+
+    <sql id="selectTypeRelationVo">
+        select id, disposeobj, detailtype from TypeRelation
+    </sql>
+
+    <select id="selectTypeRelationList" parameterType="TypeRelation" resultMap="TypeRelationResult">
+        <include refid="selectTypeRelationVo"/>
+        <where>  
+            <if test="disposeobj != null "> and disposeobj = #{disposeobj}</if>
+            <if test="detailtype != null "> and detailtype = #{detailtype}</if>
+        </where>
+    </select>
+    
+    <select id="selectTypeRelationById" parameterType="Long" resultMap="TypeRelationResult">
+        <include refid="selectTypeRelationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTypeRelation" parameterType="TypeRelation" useGeneratedKeys="true" keyProperty="id">
+        insert into TypeRelation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="disposeobj != null">disposeobj,</if>
+            <if test="detailtype != null">detailtype,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="disposeobj != null">#{disposeobj},</if>
+            <if test="detailtype != null">#{detailtype},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTypeRelation" parameterType="TypeRelation">
+        update TypeRelation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
+            <if test="detailtype != null">detailtype = #{detailtype},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTypeRelationById" parameterType="Long">
+        delete from TypeRelation where id = #{id}
+    </delete>
+
+    <delete id="deleteTypeRelationByIds" parameterType="String">
+        delete from TypeRelation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

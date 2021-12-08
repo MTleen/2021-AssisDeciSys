@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.ForceInvolveMapper">
+    
+    <resultMap type="ForceInvolve" id="ForceInvolveResult">
+        <result property="id"    column="id"    />
+        <result property="cautionid"    column="cautionID"    />
+        <result property="siteid"    column="siteID"    />
+    </resultMap>
+
+    <sql id="selectForceInvolveVo">
+        select id, cautionID, siteID from ForceInvolve
+    </sql>
+
+    <select id="selectForceInvolveList" parameterType="ForceInvolve" resultMap="ForceInvolveResult">
+        <include refid="selectForceInvolveVo"/>
+        <where>  
+            <if test="cautionid != null "> and cautionID = #{cautionid}</if>
+            <if test="siteid != null "> and siteID = #{siteid}</if>
+        </where>
+    </select>
+    
+    <select id="selectForceInvolveById" parameterType="Long" resultMap="ForceInvolveResult">
+        <include refid="selectForceInvolveVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertForceInvolve" parameterType="ForceInvolve" useGeneratedKeys="true" keyProperty="id">
+        insert into ForceInvolve
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cautionid != null">cautionID,</if>
+            <if test="siteid != null">siteID,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cautionid != null">#{cautionid},</if>
+            <if test="siteid != null">#{siteid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateForceInvolve" parameterType="ForceInvolve">
+        update ForceInvolve
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cautionid != null">cautionID = #{cautionid},</if>
+            <if test="siteid != null">siteID = #{siteid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteForceInvolveById" parameterType="Long">
+        delete from ForceInvolve where id = #{id}
+    </delete>
+
+    <delete id="deleteForceInvolveByIds" parameterType="String">
+        delete from ForceInvolve where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

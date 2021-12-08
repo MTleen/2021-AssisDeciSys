@@ -21,50 +21,50 @@
     </resultMap>
 
     <sql id="selectRecordVo">
-        SELECT
-            R.cautionID,
-            R.cautiontime,
-            R.location,
-            R.distypeID,
-            R.dillobject,
-            R.siteID,
-            R.truckID,
-            R.detailtype,
-            R.picture,
-            R.label4,
-            R.STATUS,
-            R.keywords,
-            GROUP_CONCAT(F.siteID) AS siteID2
-        FROM
-            Record R
-                left JOIN ForceInvolve F ON R.cautionID = F.cautionID
-    </sql>
-    <sql id="selectRecordVoSuffix">
-        GROUP BY R.cautionID
+        SELECT *
+        from (SELECT R.cautionID,
+                     R.cautiontime,
+                     R.location,
+                     R.distypeID,
+                     R.dillobject,
+                     R.siteID,
+                     R.truckID,
+                     R.detailtype,
+                     R.picture,
+                     R.label4,
+                     R.STATUS,
+                     R.keywords,
+                     GROUP_CONCAT(F.siteID) AS siteID2
+              FROM Record R
+                       left JOIN ForceInvolve F ON R.cautionID = F.cautionID
+              GROUP BY R.cautionID) RV
     </sql>
 
     <select id="selectRecordList" parameterType="Record" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
         <where>
-            <if test="cautiontimeStart != null and cautiontimeEnd != null">and date(R.cautiontime) between
+            <if test="cautiontimeStart != null and cautiontimeEnd != null">and date(RV.cautiontime) between
                 #{cautiontimeStart} and #{cautiontimeEnd}
             </if>
-            <if test="location != null  and location != ''">and R.location = #{location}</if>
-            <if test="distypeid != null ">and R.distypeID = #{distypeid}</if>
-            <if test="dillobject != null ">and R.dillobject = #{dillobject}</if>
-            <if test="siteid != null ">and R.siteID = #{siteid}</if>
-            <if test="truckid != null ">and R.truckID = #{truckid}</if>
-            <if test="status != null ">and R.status = #{status}</if>
-            <if test="keywords != null  and keywords != ''">and R.keywords = #{keywords}</if>
-            <if test="siteid2 != null  and siteid2 != ''">and R.cautionID in (select cautionID from ForceInvolve where FIND_IN_SET(siteID, #{siteid2}))</if>
+            <if test="location != null  and location != ''">and RV.location = #{location}</if>
+            <if test="distypeid != null ">and RV.distypeID = #{distypeid}</if>
+            <if test="dillobject != null ">and RV.dillobject = #{dillobject}</if>
+            <if test="siteid != null ">and RV.siteID = #{siteid}</if>
+            <if test="truckid != null ">and RV.truckID = #{truckid}</if>
+            <if test="status != null ">and RV.status = #{status}</if>
+            <if test="keywords != null  and keywords != ''">and RV.keywords = #{keywords}</if>
+            <if test="siteid2 != null  and siteid2 != ''">
+            <foreach collection="siteid2List" item="item">
+                and FIND_IN_SET(#{item}, RV.siteID2)
+            </foreach>
+            </if>
         </where>
-        <include refid="selectRecordVoSuffix"/>
-        order by R.cautiontime desc
+        order by RV.cautiontime desc
     </select>
 
     <select id="selectRecordByCautionid" parameterType="String" resultMap="RecordResult">
         <include refid="selectRecordVo"/>
-        where R.cautionID = #{cautionid}
+        where RV.cautionID = #{cautionid}
     </select>
 
     <insert id="insertRecord" parameterType="Record">

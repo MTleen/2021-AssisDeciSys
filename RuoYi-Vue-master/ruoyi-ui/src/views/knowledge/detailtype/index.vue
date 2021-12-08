@@ -3,10 +3,10 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="详细类型" prop="typename">
         <el-select v-model="queryParams.typename" filterable placeholder="请选择详细类型" clearable size="small">
-          <el-option v-for="(value, key, index) in $root.totalDetailType"
+          <el-option v-for="(value, key, index) in totalDetailType"
                      :key="key"
-                     :label="value[0]"
-                     :value="value[0]"/>
+                     :label="value"
+                     :value="value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="处置对象" prop="disposeobj">
@@ -210,6 +210,12 @@ export default {
         ],
       }
     };
+  },
+  computed: {
+    totalDetailType: function (){
+      let temp = {}
+        return Object.assign(temp, this.$root.totalGeneralType, this.$root.totalSpecialType, this.$root.totalSecurityType)
+    }
   },
   created() {
     this.getList();
