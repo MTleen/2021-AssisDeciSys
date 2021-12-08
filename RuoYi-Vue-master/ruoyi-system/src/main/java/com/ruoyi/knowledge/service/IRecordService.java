@@ -58,4 +58,11 @@ public interface IRecordService
      * @return 结果
      */
     public int deleteRecordByCautionid(String cautionid);
+
+    /**
+     * 循环更新 ForceInvolve 表
+     *
+     * @param record 出警记录
+     */
+    public void updateForceInvolveLoop(Record record);
 }

@@ -1,11 +1,16 @@
 package com.ruoyi.knowledge.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.knowledge.domain.ForceInvolve;
+import com.ruoyi.knowledge.domain.TypeRelation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.knowledge.mapper.RecordMapper;
 import com.ruoyi.knowledge.domain.Record;
 import com.ruoyi.knowledge.service.IRecordService;
+import com.ruoyi.knowledge.service.IForceInvolveService;
+import com.ruoyi.knowledge.mapper.ForceInvolveMapper;
 
 /**
  * 出警记录表Service业务层处理
@@ -18,6 +23,8 @@ public class RecordServiceImpl implements IRecordService
 {
     @Autowired
     private RecordMapper recordMapper;
+    @Autowired
+    private ForceInvolveMapper forceInvolveMapper;
 
     /**
      * 查询出警记录表
@@ -52,6 +59,7 @@ public class RecordServiceImpl implements IRecordService
     @Override
     public int insertRecord(Record record)
     {
+        updateForceInvolveLoop(record);
         return recordMapper.insertRecord(record);
     }
 
@@ -64,6 +72,10 @@ public class RecordServiceImpl implements IRecordService
     @Override
     public int updateRecord(Record record)
     {
+        if(record.getCautionid() != null){
+            forceInvolveMapper.deleteForceInvolveByCautionId(Long.parseLong(record.getCautionid()));
+        }
+        updateForceInvolveLoop(record);
         return recordMapper.updateRecord(record);
     }
 
@@ -89,5 +101,17 @@ public class RecordServiceImpl implements IRecordService
     public int deleteRecordByCautionid(String cautionid)
     {
         return recordMapper.deleteRecordByCautionid(cautionid);
+    }
+
+    @Override
+    public void updateForceInvolveLoop(Record record) {
+        if (record.getSiteid2List() != null) {
+            for (String site : record.getSiteid2List()) {
+                ForceInvolve fi = new ForceInvolve();
+                fi.setCautionid(Long.parseLong(record.getCautionid()));
+                fi.setSiteid(Long.parseLong(site));
+                forceInvolveMapper.insertForceInvolve(fi);
+            }
+        }
     }
 }

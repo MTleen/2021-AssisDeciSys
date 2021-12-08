@@ -52,6 +52,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from ForceInvolve where id = #{id}
     </delete>
 
+    <delete id="deleteForceInvolveByCautionId" parameterType="Long">
+        delete from ForceInvolve where cautionID = #{id}
+    </delete>
+
     <delete id="deleteForceInvolveByIds" parameterType="String">
         delete from ForceInvolve where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">

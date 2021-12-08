@@ -58,4 +58,12 @@ public interface ForceInvolveMapper
      * @return 结果
      */
     public int deleteForceInvolveByIds(Long[] ids);
+
+    /**
+     * 根据 cautionID 删除参战力量
+     *
+     * @param id 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteForceInvolveByCautionId(Long id);
 }

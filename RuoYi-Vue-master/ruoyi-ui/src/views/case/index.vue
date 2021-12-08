@@ -470,9 +470,6 @@ export default {
       getRecord(cautionid).then(response => {
         this.form = response.data;
         this.$root.num2str(this.form)
-        if (this.form.siteid2) {
-          this.form.siteid2 = this.form.siteid2.split(",");
-        }
         this.open = true;
         this.title = "修改出警记录";
       });
