@@ -247,10 +247,9 @@ public class KnowledgeMatchingController extends BaseController {
                 }
             }
         } else {
-            Record oldrecord = recordService.selectRecordByCautionid(query.getcautionID().toString());
-            if (oldrecord.getDetailtype()==null&&record.getDetailtype()!=null){
-                oldrecord.setDetailtype(record.getDetailtype());
-                recordService.updateRecord(oldrecord);//更新Record
+            record.setCautionid(query.getcautionID().toString());
+            if (recordService.selectRecordList(record).isEmpty()){//查询二次推送的案件记录是否有变化
+                recordService.updateRecord(record);//更新Record
             }
         }
         /**
