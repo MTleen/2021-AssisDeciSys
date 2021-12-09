@@ -108,8 +108,8 @@ public class KnowledgeServiceImpl implements IKnowledgeService {
     }
 
     @Override
-    public List<History> selectLibrarybyCaution(String cautionid, String tele, Date sendtime) {
-        return knowledgeMapper.selectLibrarybyCaution(cautionid, tele, sendtime);
+    public List<History> selectInformByCaution(String cautionid, String tele, Date sendtime) {
+        return knowledgeMapper.selectInformByCaution(cautionid, tele, sendtime);
     }
 
     @Override

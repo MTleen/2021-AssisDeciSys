@@ -70,7 +70,7 @@ public interface IKnowledgeService
      */
     public String selecttelebyOpenID(String openid);
     public Boolean selectStatusbyCaution(String cautionid);
-    public List<History> selectLibrarybyCaution(String cautionid,String tele,Date sendtime);
+    public List<History> selectInformByCaution(String cautionid,String tele,Date sendtime);
     public List<History> selectCautionbytele(String tele);
     public String selectDisaster(String disastertype);
 //    public List<History> selectInformIDbytele(String tele, String cautionid,Date sendtime,Integer library);

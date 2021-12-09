@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 用户信息对象 UserInfo
  * 
@@ -28,7 +30,7 @@ public class UserInfo extends BaseEntity
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Long age;
+    private Date age;
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
@@ -93,12 +95,12 @@ public class UserInfo extends BaseEntity
     {
         return gender;
     }
-    public void setAge(Long age) 
+    public void setAge(Date age)
     {
         this.age = age;
     }
 
-    public Long getAge() 
+    public Date getAge()
     {
         return age;
     }

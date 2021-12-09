@@ -71,7 +71,7 @@ public interface KnowledgeMapper
      */
     public String selecttelebyOpenID(@Param("openid") String openid);
     public Boolean selectStatusbyCaution(@Param("cautionid") String cautionid);
-    public List<History> selectLibrarybyCaution(@Param("cautionid") String cautionid,@Param("tele") String tele,@Param("sendtime") Date sendtime);
+    public List<History> selectInformByCaution(@Param("cautionid") String cautionid,@Param("tele") String tele,@Param("sendtime") Date sendtime);
     public List<History> selectCautionbytele(@Param("tele") String tele);
     public String selectDisaster(@Param("disastertype") String disastertype);
 //    public List<History> selectInformIDbytele(@Param("tele") String tele, @Param("cautionid") String cautionid,@Param("sendtime") Date sendtime,@Param("library") Integer library);

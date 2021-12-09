@@ -10,6 +10,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.knowledge.domain.*;
 import com.ruoyi.knowledge.domain.Record;
 
+import com.ruoyi.knowledge.mapper.KnowledgeMapper;
+import com.ruoyi.knowledge.service.*;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +23,6 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.knowledge.service.IKnowledgeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 //import org.springframework.web.client.RestTemplate;
@@ -38,6 +39,14 @@ import org.springframework.web.client.RestTemplate;
 public class KnowledgeController extends BaseController {
     @Autowired
     private IKnowledgeService knowledgeService;
+    @Autowired
+    private ISpecialService specialService;
+    @Autowired
+    private ISecurityService securityService;
+    @Autowired
+    private IRecordService recordService;
+    @Autowired
+    private IDisasterTypeService disasterTypeService;
 
     /**
      * 查询通用知识库列表
@@ -148,219 +157,64 @@ public class KnowledgeController extends BaseController {
 //        查询手机号
         String location = null;
         String disastertype = null;
-        String disastertype1 = null;
         Date cautiontime = null;
-        String metw = null;
         Boolean status = null;
         String tele;
-        Integer library;
 
         Kappinfo info = new Kappinfo();
         Kappinfo info1 = new Kappinfo();
 
-        List<Knowledge> listK = new ArrayList<Knowledge>();//提示信息列表
-        List<Security> listS = new ArrayList<Security>();//提示信息列表
-        List<Special> listP = new ArrayList<Special>();//提示信息列表
-
         List<String> text1 = new ArrayList<>();//提示信息列表
-        List<String> text = new ArrayList<>();//提示信息列表
         List<Kappinfo> result = new ArrayList<Kappinfo>();
-        List<History> caution = new ArrayList<History>();
-        List<Record> in = new ArrayList<Record>();
-//        根据手机号查询informid
-        List<History> listInform = new ArrayList<>();
-        List<History> listInform1 = new ArrayList<>();
-        List<String> cautionID = new ArrayList<>();
-        List<History> library1 = new ArrayList<>();
-        List<Integer> libraryID = new ArrayList<>();
-//        List<History> library1 = new ArrayList<>();
-//        List<Integer> libraryID = new ArrayList<>();
-        String op = null;
-        Integer ol = null;
-
-
+        List<History> cautions = new ArrayList<History>();
+        List<History> cautionInforms = new ArrayList<>();
+        String cid = null;
+        // 根据 openid 查询 tele
         tele = knowledgeService.selecttelebyOpenID(openid);
-        caution = knowledgeService.selectCautionbytele(tele);
-        for (History a : caution) {
-            op = a.getCautionid();
-            cautionID.add(op);
-        }
-        cautionID = toRepeat(cautionID);
-        System.out.print(cautionID);
-        for (String h : cautionID) {
-            //info = new Kappinfo();
+        // 根据 tele 查询所有匹配的 cautionid
+        cautions = knowledgeService.selectCautionbytele(tele);
+        // 遍历 cautionids
+        for (History caution : cautions) {
+            cid = caution.getCautionid();
+            // 根据 cautionid 查找 record
+            Record record = recordService.selectRecordByCautionid(cid);
+            location = record.getLocation();
+            disastertype = disasterTypeService.selectDisasterTypeByTypeid(record.getDistypeid()).getTypename();
+            cautiontime = record.getCautiontime();
             //根据cautionid查询任务状态
-            status = knowledgeService.selectStatusbyCaution(h);
-            library1 = knowledgeService.selectLibrarybyCaution(h, tele, sendtime);
-            System.out.print("--------");
-            System.out.print(library1);
-            System.out.print("--------");
-            for (History l : library1) {
-                ol = l.getLibrarytype();
-                libraryID.add(ol);
-            }
-            System.out.print("--------");
-            System.out.print(libraryID);
-            System.out.print("--------");
-            libraryID = toRepeat1(libraryID);
+            status = knowledgeService.selectStatusbyCaution(cid);
+            // 根据 cautionid 查询所有相关 informid 及 librarytype
+            cautionInforms = knowledgeService.selectInformByCaution(cid, tele, sendtime);
+
             text1 = new ArrayList<>();//提示信息列表
-//           如果已经完成，根据cautionid和tele查询即可
-            if (status) {
-                for (Integer lib : libraryID) {
-                    if (lib == 1) {
-                        //查询信息编号
-                        listInform = knowledgeService.selectInformIDbycau(tele, h, sendtime, lib);
-                        //查询每个informid对应的信息
-                        for (History r : listInform) {
-                            long b = Long.valueOf(r.getInformid()).longValue();
-                            //根据informid查询提示信息
-                            listK = knowledgeService.selectKnow1(b);
-                            for (Knowledge k : listK) {
-                                metw = k.getInform();
-                            }
-                            text1.add(metw);
-                        }
-                        System.out.print("\n~~~~~~~~\n");
-                        System.out.print(text1);
-                        System.out.print("\n~~~~~~~~\n");
-                        //根据手机号和发送时间查询记录表,得到报警编号
-                        //根据电话和时间查询记录表中的位置、类型、时间
-                    }
-                    if (lib == 2) {
-                        //查询信息编号
-                        listInform = knowledgeService.selectInformIDbycau(tele, h, sendtime, lib);
-                        //查询每个informid对应的信息
-                        for (History r : listInform) {
-                            long b = Long.valueOf(r.getInformid()).longValue();
-                            //根据informid查询提示信息
-                            listS = knowledgeService.selectKnow2(b);
-                            for (Security k : listS) {
-                                metw = k.getInform();
-                            }
-                            text1.add(metw);
-                        }
-                        System.out.print("\n~~~~~~~~\n");
-                        System.out.print(text1);
-                        System.out.print("\n~~~~~~~~\n");
-
-                    }
-                    if (lib == 3) {
-                        //查询信息编号
-                        listInform = knowledgeService.selectInformIDbycau(tele, h, sendtime, lib);
-                        //查询每个informid对应的信息
-                        for (History r : listInform) {
-                            long b = Long.valueOf(r.getInformid()).longValue();
-                            //根据informid查询提示信息
-                            listP = knowledgeService.selectKnow3(b);
-                            for (Special p : listP) {
-                                metw = p.getInform();
-                            }
-                            text1.add(metw);
-                        }
-                        System.out.print("\n~~~~~~~~\n");
-                        System.out.print(text1);
-                        System.out.print("\n~~~~~~~~\n");
-                        //根据手机号和发送时间查询记录表,得到报警编号
-                        //根据电话和时间查询记录表中的位置、类型、时间
-                    }
+            for (History his : cautionInforms) {
+                Integer libraryType = his.getLibrarytype();
+                String informId = his.getInformid();
+                switch (libraryType) {
+                    case 1:
+                        Knowledge kl = knowledgeService.selectKnowledgeByInformid(Long.valueOf(informId));
+                        text1.add(kl.getInform());
+                        break;
+                    case 2:
+                        Security se = securityService.selectSecurityByInformid(Integer.valueOf(informId));
+                        text1.add(se.getInform());
+                        break;
+                    case 3:
+                        Special sp = specialService.selectSpecialByInformid(Integer.valueOf(informId));
+                        text1.add(sp.getInform());
+                        break;
+                    default:
+                        break;
                 }
-                in = knowledgeService.selectRecord2(h);
-                for (Record i : in) {
-                    location = i.getLocation();
-                    disastertype = i.getCautionid();
-                    cautiontime = i.getCautiontime();
-                }
-                //查询类型名称
-                disastertype1 = knowledgeService.selectDisaster(disastertype);
-                info.addInfo(location, text1, disastertype1, cautiontime);
             }
-
-//未完成
-            if (!status) {
-
-                listInform = knowledgeService.selectInformIDbytele(tele, h, sendtime);
-//                listInform = knowledgeService.selectInformIDbytele(tele, h, sendtime, lib);
-                //              根据编号查信息
-                List<Date> date = new ArrayList<>();
-                for (History r : listInform) {
-                    date.add(r.getSendtime());
-                }
-                HashSet hs1 = new HashSet();
-                hs1.addAll(date);
-                date.clear();
-                date.addAll(hs1);
-                Collections.sort(date, Collections.reverseOrder());
-                System.out.print(date);
-                //        以发送时间为分类
-                for (Date d : date) {
-                    //          清除text之前存储的内容
-                    text = new ArrayList<>();//提示信息列表
-                    for (Integer lib : libraryID) {
-                        if (lib == 1) {
-                            //           以电话和时间查询informid
-                            listInform1 = knowledgeService.selectInformIDbytele1(tele, h, d, lib);
-                            //            查询每个informid对应的信息
-                            for (History r : listInform1) {
-                                long b = Long.valueOf(r.getInformid()).longValue();
-                                //            根据informid查询提示信息
-                                listK = knowledgeService.selectKnow1(b);
-                                for (Knowledge k : listK) {
-                                    metw = k.getInform();
-                                }
-                                text.add(metw);
-                                System.out.print(text);
-                            }
-                        }
-                        if (lib == 2) {
-                            listInform1 = knowledgeService.selectInformIDbytele1(tele, h, d, lib);
-                            //            查询每个informid对应的信息
-                            for (History r : listInform1) {
-                                long b = Long.valueOf(r.getInformid()).longValue();
-                                //            根据informid查询提示信息
-                                listS = knowledgeService.selectKnow2(b);
-                                for (Security k : listS) {
-                                    metw = k.getInform();
-                                }
-                                text.add(metw);
-                                System.out.print(text);
-                            }
-                        }
-                        if (lib == 3) {
-                            //           以电话和时间查询informid
-                            listInform1 = knowledgeService.selectInformIDbytele1(tele, h, d, lib);
-                            //            查询每个informid对应的信息
-                            for (History r : listInform1) {
-                                long b = Long.valueOf(r.getInformid()).longValue();
-                                //            根据informid查询提示信息
-                                listP = knowledgeService.selectKnow3(b);
-                                for (Special k : listP) {
-                                    metw = k.getInform();
-                                }
-                                text.add(metw);
-                                System.out.print(text);
-                            }
-                        }
-                    }
-                    in = knowledgeService.selectRecord2(h);
-                    System.out.print(in);
-                    System.out.print("-------\n");
-                    for (Record i : in) {
-                        location = i.getLocation();
-                        disastertype = i.getCautionid();
-                        cautiontime = i.getCautiontime();
-                    }
-                    //                查询类型名称
-                    disastertype1 = knowledgeService.selectDisaster(disastertype);
-                    info1.addInfo(location, text, disastertype1, cautiontime);
-                    System.out.print("\n~~~~~~~~\n");
-                    System.out.print(info1);
-                    System.out.print("\n~~~~~~~~\n");
-                }
+            if (status) {
+                info.addInfo(location, text1, disastertype, cautiontime);
+            } else {
+                info1.addInfo(location, text1, disastertype, cautiontime);
             }
         }
         result.add(info1);
         result.add(info);
         return getDataTable(result);
-
     }
 }

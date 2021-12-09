@@ -18,15 +18,15 @@
                      :value="key"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="年龄" prop="age">
-        <el-input
-          v-model="queryParams.age"
-          placeholder="请输入年龄"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+      <!--      <el-form-item label="年龄" prop="age">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.age"-->
+      <!--          placeholder="请输入年龄"-->
+      <!--          clearable-->
+      <!--          size="small"-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <el-form-item label="岗位" prop="positionid">
         <el-select v-model="queryParams.positionid" placeholder="请选择岗位" clearable filterable size="small">
           <el-option v-for="(value, key, index) in $root.totalUserPositions"
@@ -43,27 +43,30 @@
                      :value="key"/>
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="账号" prop="account">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.account"-->
-<!--          placeholder="请输入账号"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="密码" prop="password">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.password"-->
-<!--          placeholder="请输入密码"-->
-<!--          clearable-->
-<!--          size="small"-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="账号" prop="account">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.account"-->
+      <!--          placeholder="请输入账号"-->
+      <!--          clearable-->
+      <!--          size="small"-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
+      <!--      <el-form-item label="密码" prop="password">-->
+      <!--        <el-input-->
+      <!--          v-model="queryParams.password"-->
+      <!--          placeholder="请输入密码"-->
+      <!--          clearable-->
+      <!--          size="small"-->
+      <!--          @keyup.enter.native="handleQuery"-->
+      <!--        />-->
+      <!--      </el-form-item>-->
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small">
-          <el-option label="请选择字典生成" value=""/>
+          <el-option v-for="(value, key, index) in userStatus"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -132,7 +135,11 @@
           {{ $root.GENDER[scope.row.gender] }}
         </template>
       </el-table-column>
-      <el-table-column label="年龄" align="center" prop="age"/>
+      <el-table-column label="年龄" align="center" prop="age" sortable>
+        <template slot-scope="scope">
+          <span>{{getAge(scope.row.age)}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="岗位" align="center" prop="positionid">
         <template slot-scope="scope">
           {{ $root.totalUserPositions[scope.row.positionid] }}
@@ -143,9 +150,13 @@
           {{ $root.totalSites[scope.row.siteid] }}
         </template>
       </el-table-column>
-<!--      <el-table-column label="账号" align="center" prop="account"/>-->
-<!--      <el-table-column label="密码" align="center" prop="password"/>-->
-      <el-table-column label="状态" align="center" prop="status"/>
+      <!--      <el-table-column label="账号" align="center" prop="account"/>-->
+      <!--      <el-table-column label="密码" align="center" prop="password"/>-->
+      <el-table-column label="状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <span>{{ userStatus[scope.row.status] }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="微信 openid" align="center" prop="openid"/>
       <el-table-column label="企业微信 id" align="center" prop="userid"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -192,8 +203,13 @@
                        :value="key"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="form.age" placeholder="请输入年龄"/>
+        <el-form-item label="出生日期" prop="age">
+          <el-date-picker
+            v-model="form.age"
+            size="small"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="岗位" prop="positionid">
           <el-select v-model="form.positionid" filterable clearable size="small">
@@ -211,16 +227,19 @@
                        :value="key"/>
           </el-select>
         </el-form-item>
-<!--        <el-form-item label="账号" prop="account">-->
-<!--          <el-input v-model="form.account" placeholder="请输入账号"/>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="密码" prop="password">-->
-<!--          <el-input v-model="form.password" placeholder="请输入密码"/>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="账号" prop="account">-->
+        <!--          <el-input v-model="form.account" placeholder="请输入账号"/>-->
+        <!--        </el-form-item>-->
+        <!--        <el-form-item label="密码" prop="password">-->
+        <!--          <el-input v-model="form.password" placeholder="请输入密码"/>-->
+        <!--        </el-form-item>-->
         <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
-          </el-radio-group>
+          <el-select v-model="form.status" filterable clearable size="small" placeholder="请选择状态">
+            <el-option v-for="(value, key, index) in userStatus"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
         </el-form-item>
         <el-form-item label="微信 openid" prop="openid">
           <el-input v-model="form.openid" placeholder="请输入微信 openid"/>
@@ -294,8 +313,14 @@ export default {
         gender: [
           {required: true, message: "性别不能为空", trigger: "blur"}
         ],
-      }
+      },
+      userStatus: null
     };
+  },
+  computed: {
+    ageComputed: function (date) {
+      return new Date().getFullYear() - new Date(date).getFullYear()
+    }
   },
   created() {
     this.getList();
@@ -304,11 +329,18 @@ export default {
     /** 查询用户信息列表 */
     getList() {
       this.loading = true;
+      this.$root.getDicts('sys_user_status').then(response => {
+        this.userStatus = this.$root.parseDicts(response.data)
+      })
       listUserinfo(this.queryParams).then(response => {
         this.userinfoList = response.rows;
+        console.log(this.userinfoList[0])
         this.total = response.total;
         this.loading = false;
       });
+    },
+    getAge(date) {
+      return new Date().getFullYear() - new Date(date).getFullYear()
     },
     // 取消按钮
     cancel() {

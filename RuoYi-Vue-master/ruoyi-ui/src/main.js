@@ -22,7 +22,7 @@ import directive from './directive' //directive
 
 import './assets/icons' // icon
 import './permission' // permission control
-import {getDicts} from "@/api/system/dict/data";
+import {getDicts, parseDicts} from "@/api/system/dict/data";
 import {getConfigKey} from "@/api/system/config";
 import {
   parseTime,
@@ -60,6 +60,7 @@ import {listUserposition} from "@/api/information/userposition";
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
+Vue.prototype.parseDicts = parseDicts
 Vue.prototype.getConfigKey = getConfigKey
 Vue.prototype.parseTime = parseTime
 Vue.prototype.resetForm = resetForm

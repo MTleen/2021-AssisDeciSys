@@ -1,15 +1,11 @@
 <template>
   <div class="app-container">
     <div class="top-style">
-      <el-form label-position="left" ref="form" :model="form" :inline="true" label-width="80px">
+      <el-form label-position="left" ref="cautionForm" :model="form" :rules="rules" :inline="true" label-width="80px">
         <el-row style="margin-top: 15px">
           <el-form-item label="案发地址:" prop="address" style="">
             <el-input v-model="form.address" size="small" clearable/>
           </el-form-item>
-
-          <!--          <el-form-item label="立案时间:" prop="time" style="">-->
-          <!--            <el-input v-model="form.time" size="small" clearable/>-->
-          <!--          </el-form-item>-->
           <el-form-item label="立案时间:" prop="date">
             <el-date-picker clearable size="small"
                             v-model="form.date"
@@ -121,194 +117,197 @@
       <!--      </el-row>-->
 
 
-        <el-row :gutter="30">
-          <el-col :span="24">
-            <div class="grid-content bg-purple">
-              <div class="table-height">
-                <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" border stripe
-                          @selection-change="handleSelectChange" max-height="600">
-                  <el-table-column type="selection" align="center" width="50"/>
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <div class="grid-content bg-purple">
+            <div class="table-height">
+              <el-table :v-loading="loading" :cell-style="{padding:'2px'}" :data="informList" border stripe
+                        @selection-change="handleSelectChange" max-height="600">
+                <el-table-column type="selection" align="center" width="50"/>
 
-                  <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
-                  <!--                <template slot-scope="scope">{{ scope.row.ZHId }}</template>-->
-                  <!--              </el-table-column>-->
-                  <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+                <!--              <el-table-column label="序号" align="center" prop="ZHId" width="50">-->
+                <!--                <template slot-scope="scope">{{ scope.row.ZHId }}</template>-->
+                <!--              </el-table-column>-->
+                <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
 
-                  <el-table-column label="提示信息" align="left" prop="inform" :show-overflow-tooltip="false"/>
-                  <el-table-column label="信息类型" align="center" width="200" prop="librarytype">
-                    <template slot-scope="scope">
-                      {{ scope.row.librarytype === 1 ? $root.totalGeneralType[scope.row.detailtype] : $root.totalSpecialType[scope.row.detailtype] }}
-                    </template>
-                  </el-table-column>
-                  <!--                            <el-table-column-->
-                  <!--                              width="60"-->
-                  <!--                              label="信息类型"-->
-                  <!--                              align="center"-->
-                  <!--                              prop="detailtype"-->
-                  <!--                              :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
-                  <!--                              :filter-method="filterTag">-->
+                <el-table-column label="提示信息" align="left" prop="inform" :show-overflow-tooltip="false"/>
+                <el-table-column label="信息类型" align="center" width="200" prop="librarytype">
+                  <template slot-scope="scope">
+                    {{
+                      scope.row.librarytype === 1 ? $root.totalGeneralType[scope.row.detailtype] : $root.totalSpecialType[scope.row.detailtype]
+                    }}
+                  </template>
+                </el-table-column>
+                <!--                            <el-table-column-->
+                <!--                              width="60"-->
+                <!--                              label="信息类型"-->
+                <!--                              align="center"-->
+                <!--                              prop="detailtype"-->
+                <!--                              :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
+                <!--                              :filter-method="filterTag">-->
 
-                  <!--                <template slot-scope="scope">-->
-                  <!--                  <i class='el-icon-question' v-if="scope.row.ZHIcon === '1'">-->
-                  <!--                  </i>-->
-                  <!--                  <i class='el-icon-message-solid' v-if="scope.row.ZHIcon === '2'">-->
-                  <!--                  </i>-->
-                  <!--                  <i class='el-icon-s-management' v-if="scope.row.ZHIcon === '3'">-->
-                  <!--                  </i>-->
-                  <!--                </template>-->
-                  <!--              </el-table-column>-->
-                </el-table>
-              </div>
-              <pagination
-                v-show="total>0"
-                :total="total"
-                :page.sync="form.pageNum"
-                :limit.sync="form.pageSize"
-                :pager-count="pagerCount"
-                @pagination="getInfo"
-              />
+                <!--                <template slot-scope="scope">-->
+                <!--                  <i class='el-icon-question' v-if="scope.row.ZHIcon === '1'">-->
+                <!--                  </i>-->
+                <!--                  <i class='el-icon-message-solid' v-if="scope.row.ZHIcon === '2'">-->
+                <!--                  </i>-->
+                <!--                  <i class='el-icon-s-management' v-if="scope.row.ZHIcon === '3'">-->
+                <!--                  </i>-->
+                <!--                </template>-->
+                <!--              </el-table-column>-->
+              </el-table>
+            </div>
+            <pagination
+              v-show="total>0"
+              :total="total"
+              :page.sync="form.pageNum"
+              :limit.sync="form.pageSize"
+              :pager-count="pagerCount"
+              @pagination="getInfo"
+            />
 
-              <!-- <div align="left" class="fujian-style">
-                <el-form ref="form" :model="customerInfo">
-                  <el-form-item label="" prop="tip">
-                  <div class="width:100px">
-                    <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">
-                      <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="float:left;"/>
-                    </el-col>
-                  </div>
-                  <div>
-                    <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">
-                      <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">
-                        附件上传
-                      </el-button>
-                    </el-col>
-                  </div>
-                  </el-form-item>
-                </el-form>
-              </div> -->
-
+            <!-- <div align="left" class="fujian-style">
               <el-form ref="form" :model="customerInfo">
                 <el-form-item label="" prop="tip">
-                  <div class="fujian-style">
-                    <div style="margin-right:10px; width:40%">
-                      <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:100%" @focus="resetTimer"/>
-                    </div>
-                    <div>
-                      <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">
-                        附件上传
-                      </el-button>
-                    </div>
-                  </div>
+                <div class="width:100px">
+                  <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">
+                    <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="float:left;"/>
+                  </el-col>
+                </div>
+                <div>
+                  <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">
+                    <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">
+                      附件上传
+                    </el-button>
+                  </el-col>
+                </div>
                 </el-form-item>
               </el-form>
-            </div>
+            </div> -->
 
-            <div align="center">
-              <el-button style="margin-top: 40px" type="primary" v-if="seconds > 0">{{ seconds }} s</el-button>
-              <el-button style="margin-top: 40px;margin-bottom:20px" type="primary" size="middle" v-else @click="sendInfo"
-                        :disabled="informList.length === 0">发 送
-              </el-button>
-            </div>
-          </el-col>
+            <el-form ref="form" :model="customerInfo">
+              <el-form-item label="" prop="tip">
+                <div class="fujian-style">
+                  <div style="margin-right:10px; width:40%">
+                    <el-input v-model="customerInfo" size="small" placeholder="请输入特别警示..." style="width:100%"
+                              @focus="resetTimer"/>
+                  </div>
+                  <!--                    <div>-->
+                  <!--                      <el-button type="" size="small" icon="el-icon-plus" scopped: style=" ">-->
+                  <!--                        附件上传-->
+                  <!--                      </el-button>-->
+                  <!--                    </div>-->
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
 
-          <!--        <el-col :span="8">-->
-          <!--          <div class="grid-content bg-purple">-->
-          <!--            <el-table v-loading="loading" :cell-style="{padding:'2px'}" :data="zhandouData" stripe>-->
-          <!--              <el-table-column type="selection" align="center" width="50"/>-->
+          <div align="center">
+            <el-button style="margin-top: 40px" type="primary" v-if="seconds > 0">{{ seconds }} s</el-button>
+            <el-button style="margin-top: 40px;margin-bottom:20px" type="primary" size="middle" v-else @click="sendInfo"
+                       :disabled="informList.length === 0">发 送
+            </el-button>
+          </div>
+        </el-col>
 
-          <!--              <el-table-column label="序号" align="center" prop="ZDId" width="50">-->
-          <!--                <template slot-scope="scope">{{ scope.row.ZDId }}</template>-->
-          <!--              </el-table-column>-->
-          <!--              <el-table-column label="内容详情" align="center" prop="ZDcontent" :show-overflow-tooltip="false"/>-->
-          <!--              <el-table-column-->
-          <!--                width="60"-->
-          <!--                label="全部"-->
-          <!--                align="center"-->
-          <!--                prop="ZDIcon"-->
-          <!--                :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
-          <!--                :filter-method="filterTag">-->
+        <!--        <el-col :span="8">-->
+        <!--          <div class="grid-content bg-purple">-->
+        <!--            <el-table v-loading="loading" :cell-style="{padding:'2px'}" :data="zhandouData" stripe>-->
+        <!--              <el-table-column type="selection" align="center" width="50"/>-->
 
-          <!--                <template slot-scope="scope">-->
-          <!--                  <i class='el-icon-question' v-if="scope.row.ZDIcon === '1'">-->
-          <!--                  </i>-->
-          <!--                  <i class='el-icon-message-solid' v-if="scope.row.ZDIcon === '2'">-->
-          <!--                  </i>-->
-          <!--                  <i class='el-icon-s-management' v-if="scope.row.ZDIcon === '3'">-->
-          <!--                  </i>-->
-          <!--                </template>-->
+        <!--              <el-table-column label="序号" align="center" prop="ZDId" width="50">-->
+        <!--                <template slot-scope="scope">{{ scope.row.ZDId }}</template>-->
+        <!--              </el-table-column>-->
+        <!--              <el-table-column label="内容详情" align="center" prop="ZDcontent" :show-overflow-tooltip="false"/>-->
+        <!--              <el-table-column-->
+        <!--                width="60"-->
+        <!--                label="全部"-->
+        <!--                align="center"-->
+        <!--                prop="ZDIcon"-->
+        <!--                :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
+        <!--                :filter-method="filterTag">-->
 
-          <!--              </el-table-column>-->
-          <!--            </el-table>-->
+        <!--                <template slot-scope="scope">-->
+        <!--                  <i class='el-icon-question' v-if="scope.row.ZDIcon === '1'">-->
+        <!--                  </i>-->
+        <!--                  <i class='el-icon-message-solid' v-if="scope.row.ZDIcon === '2'">-->
+        <!--                  </i>-->
+        <!--                  <i class='el-icon-s-management' v-if="scope.row.ZDIcon === '3'">-->
+        <!--                  </i>-->
+        <!--                </template>-->
 
-          <!--            <div align="right" class="fujian-style">-->
-          <!--              <el-form ref="form" :model="tipForm">-->
-          <!--                <el-form-item label="" prop="tip">-->
-          <!--                  <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">-->
-          <!--                    <el-input v-model="tipForm.tip" size="small" placeholder="请输入特别警示..." style="float:left;"/>-->
-          <!--                  </el-col>-->
-          <!--                  <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">-->
-          <!--                    <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">-->
-          <!--                      附件上传-->
-          <!--                    </el-button>-->
-          <!--                  </el-col>-->
-          <!--                </el-form-item>-->
-          <!--              </el-form>-->
-          <!--            </div>-->
+        <!--              </el-table-column>-->
+        <!--            </el-table>-->
 
-          <!--          </div>-->
-          <!--        </el-col>-->
+        <!--            <div align="right" class="fujian-style">-->
+        <!--              <el-form ref="form" :model="tipForm">-->
+        <!--                <el-form-item label="" prop="tip">-->
+        <!--                  <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">-->
+        <!--                    <el-input v-model="tipForm.tip" size="small" placeholder="请输入特别警示..." style="float:left;"/>-->
+        <!--                  </el-col>-->
+        <!--                  <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">-->
+        <!--                    <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">-->
+        <!--                      附件上传-->
+        <!--                    </el-button>-->
+        <!--                  </el-col>-->
+        <!--                </el-form-item>-->
+        <!--              </el-form>-->
+        <!--            </div>-->
 
-          <!--        <el-col :span="8">-->
-          <!--          <div align:="right" class="grid-content bg-purple">-->
-          <!--            <el-table v-loading="loading" :cell-style="{padding:'2px'}" :data="sitongData" stripe>-->
-          <!--              <el-table-column type="selection" align="center" width="50"/>-->
+        <!--          </div>-->
+        <!--        </el-col>-->
 
-          <!--              <el-table-column label="序号" align="center" prop="STId" width="50">-->
-          <!--                <template slot-scope="scope">{{ scope.row.STId }}</template>-->
-          <!--              </el-table-column>-->
-          <!--              <el-table-column label="内容详情" align="center" prop="STcontent" :show-overflow-tooltip="false"/>-->
-          <!--              <el-table-column-->
-          <!--                width="60"-->
-          <!--                label="全部"-->
-          <!--                align="center"-->
-          <!--                prop="STIcon"-->
-          <!--                :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
-          <!--                :filter-method="filterTag"-->
-          <!--                filter-placement="bottom-end">-->
+        <!--        <el-col :span="8">-->
+        <!--          <div align:="right" class="grid-content bg-purple">-->
+        <!--            <el-table v-loading="loading" :cell-style="{padding:'2px'}" :data="sitongData" stripe>-->
+        <!--              <el-table-column type="selection" align="center" width="50"/>-->
 
-          <!--                <template slot-scope="scope">-->
-          <!--                  <i class='el-icon-question' v-if="scope.row.STIcon === '1'">-->
-          <!--                  </i>-->
-          <!--                  <i class='el-icon-message-solid' v-if="scope.row.STIcon === '2'">-->
-          <!--                  </i>-->
-          <!--                  <i class='el-icon-s-management' v-if="scope.row.STIcon === '3'">-->
-          <!--                  </i>-->
-          <!--                </template>-->
+        <!--              <el-table-column label="序号" align="center" prop="STId" width="50">-->
+        <!--                <template slot-scope="scope">{{ scope.row.STId }}</template>-->
+        <!--              </el-table-column>-->
+        <!--              <el-table-column label="内容详情" align="center" prop="STcontent" :show-overflow-tooltip="false"/>-->
+        <!--              <el-table-column-->
+        <!--                width="60"-->
+        <!--                label="全部"-->
+        <!--                align="center"-->
+        <!--                prop="STIcon"-->
+        <!--                :filters="[{text:'1', value:'1'},{text:'2', value:'2'},{text:'3', value:'3'}]"-->
+        <!--                :filter-method="filterTag"-->
+        <!--                filter-placement="bottom-end">-->
 
-          <!--              </el-table-column>-->
+        <!--                <template slot-scope="scope">-->
+        <!--                  <i class='el-icon-question' v-if="scope.row.STIcon === '1'">-->
+        <!--                  </i>-->
+        <!--                  <i class='el-icon-message-solid' v-if="scope.row.STIcon === '2'">-->
+        <!--                  </i>-->
+        <!--                  <i class='el-icon-s-management' v-if="scope.row.STIcon === '3'">-->
+        <!--                  </i>-->
+        <!--                </template>-->
 
-          <!--            </el-table>-->
+        <!--              </el-table-column>-->
 
-          <!--            <div align="right" class="fujian-style">-->
-          <!--              <el-form ref="form" :model="tipForm">-->
-          <!--                <el-form-item label="" prop="tip">-->
-          <!--                  <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">-->
-          <!--                    <el-input v-model="tipForm.tip" size="small" placeholder="请输入特别警示..."-->
-          <!--                              style="float:left; width: 100%; "/>-->
-          <!--                  </el-col>-->
-          <!--                  <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">-->
-          <!--                    <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">-->
-          <!--                      附件上传-->
-          <!--                    </el-button>-->
-          <!--                  </el-col>-->
-          <!--                </el-form-item>-->
-          <!--              </el-form>-->
-          <!--            </div>-->
+        <!--            </el-table>-->
 
-          <!--          </div>-->
+        <!--            <div align="right" class="fujian-style">-->
+        <!--              <el-form ref="form" :model="tipForm">-->
+        <!--                <el-form-item label="" prop="tip">-->
+        <!--                  <el-col :span="16" style=" padding-left: 0px; padding-right: 0px;">-->
+        <!--                    <el-input v-model="tipForm.tip" size="small" placeholder="请输入特别警示..."-->
+        <!--                              style="float:left; width: 100%; "/>-->
+        <!--                  </el-col>-->
+        <!--                  <el-col :span="8" style=" padding-left: 0px; padding-right: 0px;">-->
+        <!--                    <el-button type="" size="small" icon="el-icon-plus" scopped: style="margin-top: 3px; float:right;">-->
+        <!--                      附件上传-->
+        <!--                    </el-button>-->
+        <!--                  </el-col>-->
+        <!--                </el-form-item>-->
+        <!--              </el-form>-->
+        <!--            </div>-->
 
-          <!--        </el-col>-->
-        </el-row>
+        <!--          </div>-->
+
+        <!--        </el-col>-->
+      </el-row>
     </div>
   </div>
 </template>
@@ -348,6 +347,20 @@ export default {
       specialInfo: [],
       securityInfo: [],
       screenHeight: document.body.clientHeight,
+      rules: {
+        address: [
+          {required: true, message: "地址不能为空", trigger: "blur"}
+        ],
+        date: [
+          {required: true, message: "立案时间不能为空", trigger: "blur"}
+        ],
+        distype: [
+          {required: true, message: "灾情类型不能为空", trigger: "blur"}
+        ],
+        siteID1: [
+          {required: true, message: "主管队站不能为空", trigger: "blur"}
+        ]
+      }
     }
   },
   created() {
@@ -361,15 +374,15 @@ export default {
       this.form.address = queryParameters.location
       this.form.siteID1 = queryParameters.siteid
       this.form.siteID2 = queryParameters.siteid2 ? queryParameters.siteid2.split(',') : []
-      if(queryParameters.detailtype in this.$root.totalGeneralType){
+      if (queryParameters.detailtype in this.$root.totalGeneralType) {
         this.form.generalType = queryParameters.detailtype
-      }else{
+      } else {
         this.form.specialType = queryParameters.detailtype
       }
       console.log(this.form)
     }
   },
-  mounted () {
+  mounted() {
     const that = this
     window.onresize = () => {
       return (() => {
@@ -381,13 +394,13 @@ export default {
   methods: {
     /** 搜索按钮操作 */
     handleQuery() {
-      this.resetTimer()
-      this.form.pageNum = 1
-      this.getInfo()
-      // 延迟 1s，等待数据库结果返回
-      setTimeout(() => {
-        this.autoSend()
-      }, 1000)
+      this.$refs['cautionForm'].validate(valid =>{
+        if (valid){
+          this.resetTimer()
+          this.form.pageNum = 1
+          this.getInfo()
+        }
+      })
     },
     // 发送消息
     sendInfo() {
@@ -436,6 +449,8 @@ export default {
         }
       }
       this.resetForm('form')
+      this.$refs['cautionForm'].resetFields()
+      this.resetTimer()
     },
     filterTag(value, row, column) {
       const property = column['property']
@@ -447,7 +462,6 @@ export default {
     // 匹配提示信息
     getInfo() {
       this.loading = true
-      // this.form.pageSize = 10
       // 若存在专项类型，则匹配专项库
       if (this.form.specialType) {
         let queryParams = {
@@ -460,6 +474,7 @@ export default {
           this.informList = response.rows
           this.total = response.total
           this.loading = false
+          this.autoSend()
         })
       } else {
         let queryParams = {
@@ -474,6 +489,7 @@ export default {
           this.informList = response.rows
           this.total = response.total
           this.loading = false
+          this.autoSend()
         })
       }
     },

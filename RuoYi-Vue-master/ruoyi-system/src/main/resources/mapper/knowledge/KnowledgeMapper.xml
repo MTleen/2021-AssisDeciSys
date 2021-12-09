@@ -59,14 +59,14 @@
         <where>
             <if test="inform != null  and inform != ''">and K.inform like concat('%', #{inform}, '%')</if>
             <if test="disastertype != null and disastertype != ''">
-            <foreach collection="disastertypeList" item="item">
-                and FIND_IN_SET(#{item}, KV.disastertype)
-            </foreach>
+                <foreach collection="disastertypeList" item="item">
+                    and FIND_IN_SET(#{item}, KV.disastertype)
+                </foreach>
             </if>
             <if test="disposeobj != null and disposeobj!= ''">
-            <foreach collection="disposeobjList" item="item">
-                and FIND_IN_SET(#{item}, KV.disposeobj)
-            </foreach>
+                <foreach collection="disposeobjList" item="item">
+                    and FIND_IN_SET(#{item}, KV.disposeobj)
+                </foreach>
             </if>
             <if test="detailtype != null and detailtype != ''">and KV.detailtype = #{detailtype}</if>
         </where>
@@ -128,23 +128,25 @@
         where openid = #{openid}
     </select>
     <select id="selectCautionbytele" resultType="History">
-        select cautionID
+        select DISTINCT cautionID
         from History
         where tele = #{tele}
+        ORDER BY cautionID DESC
     </select>
     <select id="selectStatusbyCaution" parameterType="String" resultType="Boolean">
         select status
         from Record
         where cautionID = #{cautionid}
     </select>
-    <select id="selectLibrarybyCaution" resultType="History">
+
+    <select id="selectInformByCaution" resultType="History">
+        select informID, librarytype from History where cautionID=#{cautionid} and tele=#{tele}
         <if test="sendtime != null">
-            select librarytype from History where cautionID=#{cautionid} and tele=#{tele} and sendtime >= #{sendtime}
+            and sendtime >= #{sendtime}
         </if>
-        <if test="sendtime == null">
-            select librarytype from History where cautionID=#{cautionid} and tele=#{tele}
-        </if>
+        ORDER BY sendtime DESC
     </select>
+
     <select id="selectInformIDbytele" resultType="History">
         <if test="sendtime != null">
             select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >=

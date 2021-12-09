@@ -25,6 +25,16 @@ export function getDicts(dictType) {
   })
 }
 
+export function parseDicts(dictArr) {
+  let result = {}
+  if (dictArr != null) {
+    for (let dict of dictArr) {
+      result[dict['dictValue']] = dict['dictLabel']
+    }
+  }
+  return result
+}
+
 // 新增字典数据
 export function addData(data) {
   return request({

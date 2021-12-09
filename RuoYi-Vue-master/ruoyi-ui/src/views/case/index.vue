@@ -27,6 +27,14 @@
                      :value="key"/>
         </el-select>
       </el-form-item>
+      <el-form-item label="详细类型" prop="typename">
+        <el-select v-model="queryParams.detailtype" filterable placeholder="请选择详细类型" clearable size="small">
+          <el-option v-for="(value, key, index) in totalDetailType"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
+        </el-select>
+      </el-form-item>
       <el-form-item label="主管队站" prop="siteid">
         <el-select v-model="queryParams.siteid" placeholder="请选择主管队站" clearable size="small">
           <el-option v-for="(value, key, index) in $root.totalSites"
@@ -44,7 +52,10 @@
       </el-form-item>
       <el-form-item label="任务执行状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择任务执行状态" clearable size="small">
-          <el-option label="请选择字典生成" value=""/>
+          <el-option v-for="(value, key, index) in cautionStatus"
+                     :key="key"
+                     :label="value"
+                     :value="key"/>
         </el-select>
       </el-form-item>
       <el-form-item label="关键词" prop="keywords">
@@ -120,10 +131,23 @@
         >导出
         </el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          :disabled="ids.length === 0"
+          type="success"
+          plain
+          size="mini"
+          circle
+          icon="el-icon-check"
+          @click="handleComplete"
+          v-hasPermi="['knowledge:record:edit']"
+        ></el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="recordList" border stripe @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="recordList" border @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="序号" align="center" type="index" width="50"></el-table-column>
       <el-table-column label="报警编号" align="center" prop="cautionid" width="80"/>
@@ -143,6 +167,11 @@
           <span>{{ $root.totalDisposeObj[scope.row.dillobject] }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="详细类型" align="center" prop="detailtype">
+        <template slot-scope="scope">
+          <span>{{ totalDetailType[scope.row.detailtype] }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="主管队站" align="center" prop="siteid">
         <template slot-scope="scope">
           <span>{{ $root.totalSites[scope.row.siteid] }}</span>
@@ -154,7 +183,11 @@
         </template>
       </el-table-column>
       <!--      <el-table-column label="  出警车辆" align="center" prop="truckid" />-->
-      <el-table-column label="任务执行状态" align="center" prop="status"/>
+      <el-table-column label="任务执行状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <span>{{ cautionStatus[scope.row.status] }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="关键词" align="center" prop="keywords"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -231,6 +264,14 @@
                        :value="key"/>
           </el-select>
         </el-form-item>
+        <el-form-item label="详细类型" prop="typename">
+          <el-select v-model="form.detailtype" filterable placeholder="请选择详细类型" clearable>
+            <el-option v-for="(value, key, index) in totalDetailType"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
+          </el-select>
+        </el-form-item>
         <el-form-item label="主管队站" prop="siteid">
           <el-select v-model="form.siteid" placeholder="请选择主管单位">
             <el-option v-for="(value, key, index) in $root.totalSites"
@@ -239,21 +280,24 @@
           </el-select>
         </el-form-item>
         <el-form-item label="参战力量">
-          <el-select v-model="form.siteid2List" placeholder="请选择参战力量" clearable multiple size="small">
+          <el-select v-model="form.siteid2List" placeholder="请选择参战力量" clearable multiple>
             <el-option v-for="(value, key, index) in $root.totalSites"
                        :key="key"
                        :label="value"
                        :value="key"/>
           </el-select>
         </el-form-item>
-<!--        <el-form-item label="出警车辆" prop="truckid">-->
-<!--          <el-select v-model="form.truckid" placeholder="请选择出警车辆">-->
-<!--            <el-option label="请选择字典生成" value=""/>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="出警车辆" prop="truckid">-->
+        <!--          <el-select v-model="form.truckid" placeholder="请选择出警车辆">-->
+        <!--            <el-option label="请选择字典生成" value=""/>-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
         <el-form-item label="任务执行状态" prop="status">
           <el-select v-model="form.status" placeholder="请选择任务执行状态">
-            <el-option label="请选择字典生成" value=""/>
+            <el-option v-for="(value, key, index) in cautionStatus"
+                       :key="key"
+                       :label="value"
+                       :value="key"/>
           </el-select>
         </el-form-item>
         <el-form-item label="关键词" prop="keywords">
@@ -354,9 +398,20 @@ export default {
       hisLoading: false,
       hisTotal: 0,
       dialogTableVisible: false,
+      cautionStatus: {}
     };
   },
+  computed: {
+    totalDetailType: function () {
+      let temp = {}
+      return Object.assign(temp, this.$root.totalGeneralType, this.$root.totalSpecialType)
+    }
+  },
   created() {
+    // 读取案件状态 dict
+    this.$root.getDicts("sys_caution_status").then(response => {
+      this.cautionStatus = this.$root.parseDicts(response.data)
+    })
     this.getList();
   },
   methods: {
@@ -364,14 +419,21 @@ export default {
     handleChange(sendtimes) {
       this.sendtimes = sendtimes
     },
+    // 设置行的 highlight 显示
+    tableRowClassName({row, rowIndex}) {
+      if (row.status) {
+        return 'success-row';
+      }
+      return '';
+    },
     //设置表头行的样式
     tableHeaderColor({row, column, rowIndex, columnIndex}) {
       return 'background-color:rgb(167, 196, 237);color:black;font-wight:500;text-align:center'
     },
     // 二次发送信息
     handleSendInfo(caution) {
-      console.log(caution)
-      console.log(this.$router)
+      // console.log(caution)
+      // console.log(this.$router)
       caution.cautiontime = Date.parse(caution.cautiontime)
       this.$router.push({path: '/index', query: caution})
     },
@@ -441,7 +503,7 @@ export default {
         this.queryParams.cautiontimeStart = null
         this.queryParams.cautiontimeEnd = null
       }
-      console.log(this.queryParams)
+      // console.log(this.queryParams)
       this.getList()
     },
     /** 重置按钮操作 */
@@ -473,6 +535,22 @@ export default {
         this.open = true;
         this.title = "修改出警记录";
       });
+    },
+    handleComplete(){
+      this.reset()
+      const cautionids = this.ids
+      for (let cid of cautionids){
+        getRecord(cid).then(response => {
+          this.form = response.data
+          this.form.status = 0
+          updateRecord(this.form).then(response => {
+            this.open = false;
+            this.getList();
+          });
+        })
+      }
+      this.msgSuccess('修改成功')
+      this.ids = []
     },
     /** 提交按钮 */
     submitForm() {
@@ -531,6 +609,11 @@ export default {
   }
 };
 </script>
+<style>
+.el-table .success-row {
+  background: #fcf0f0;
+}
+</style>
 <style scoped>
 .el-date-editor .el-range-input {
   width: 70%;
