@@ -88,6 +88,7 @@
         <el-button
           type="primary"
           plain
+          disabled
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -332,6 +333,14 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <pagination
+          v-show="hisTotal>0"
+          :total="hisTotal"
+          :page.sync="hisQueryParams.pageNum"
+          :limit.sync="hisQueryParams.pageSize"
+          @pagination="listHisInfo"
+        />
       </div>
     </el-dialog>
   </div>
@@ -383,6 +392,14 @@ export default {
         siteid2: null,
         siteid2List: []
       },
+      hisQueryParams: {
+        pageNum: 1,
+        pageSize: 20,
+        positionid: null,
+        sendtimeStart: null,
+        sendtimeEnd: null,
+        librarytype: null
+      },
       // 表单参数
       form: {},
       // 表单校验
@@ -432,22 +449,20 @@ export default {
     },
     // 二次发送信息
     handleSendInfo(caution) {
-      // console.log(caution)
-      // console.log(this.$router)
       caution.cautiontime = Date.parse(caution.cautiontime)
       this.$router.push({path: '/index', query: caution})
     },
     // 展示案件历史信息
     handleHisQuery(cautionID) {
       this.dialogTableVisible = true
-      this.queryParams.cautionid = cautionID
-      this.queryParams.pageNum = 1
+      this.hisQueryParams.cautionid = cautionID
+      this.hisQueryParams.pageNum = 1
       this.listHisInfo()
     },
     // 查询历史信息
     listHisInfo() {
       this.hisLoading = true;
-      listHistory(this.queryParams).then(response => {
+      listHistory(this.hisQueryParams).then(response => {
         this.historyList = response.rows;
         this.hisTotal = response.total;
         this.hisLoading = false;

@@ -4,7 +4,7 @@
       <el-form label-position="left" ref="cautionForm" :model="form" :rules="rules" :inline="true" label-width="80px">
         <el-row style="margin-top: 15px">
           <el-form-item label="案发地址:" prop="address" style="">
-            <el-input v-model="form.address" size="small" clearable/>
+            <el-input v-model="form.address"  placeholder="请输入案发地址" size="small" clearable/>
           </el-form-item>
           <el-form-item label="立案时间:" prop="date">
             <el-date-picker clearable size="small"
@@ -74,7 +74,6 @@
           <el-form-item label="关键词:" prop="keyWords" style="">
             <el-input v-model="form.keyWords" clearable style="width: 214px;" size="small" prefix-icon=" el-icon-search"
                       placeholder="请输入关键词"/>
-
           </el-form-item>
 
           <el-form-item>
@@ -441,15 +440,11 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      for (let key in this.form) {
-        if (key === 'pageNum') {
-          this.form[key] = 1
-        } else if (key !== 'pageSize') {
-          this.form[key] = null
-        }
-      }
-      this.resetForm('form')
-      this.$refs['cautionForm'].resetFields()
+      this.form = {}
+      this.form['pageNum'] = 1
+      this.form['pageSize'] = 10
+      this.informList = []
+      this.resetForm('cautionForm')
       this.resetTimer()
     },
     filterTag(value, row, column) {
