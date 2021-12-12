@@ -4,13 +4,13 @@
       <el-form label-position="right" ref="cautionForm" :model="form" :rules="rules" :inline="true" label-width="85px">
         <el-row style="margin-top: 15px">
           <el-form-item label="案发地址:" prop="address" style="">
-            <el-input v-model="form.address"  placeholder="请输入案发地址" size="small" clearable/>
+            <el-input class="inputStyle" v-model="form.address"  placeholder="请输入案发地址" size="small" clearable/>
           </el-form-item>
           <el-form-item label="立案时间:" prop="date">
             <el-date-picker clearable size="small"
                             v-model="form.date"
                             type="datetime"
-                            style="width: 214px;"
+                            style="width: 208px;"
                             value-format="timestamp"
                             placeholder="选择立案时间">
             </el-date-picker>
@@ -72,7 +72,7 @@
           </el-form-item>
 
           <el-form-item label="关键词:" prop="keyWords" style="">
-            <el-input v-model="form.keyWords" clearable style="width: 214px;" size="small" prefix-icon=" el-icon-search"
+            <el-input v-model="form.keyWords" clearable style="width: 208px;" size="small" prefix-icon=" el-icon-search"
                       placeholder="请输入关键词"/>
           </el-form-item>
 
@@ -553,11 +553,17 @@ element.style {
   padding-right: 0px;
 }
 
-.el-date-editor.el-input,.el-date-editor.el-input__inner{
+
+.inputStyle{
+  width:208px;
+}
+
+
+/* .el-date-editor.el-input,.el-date-editor.el-input__inner{
   width: 208px;
 } 
 .el-input {
   width: 208px;
-} 
+}  */
 
 </style>

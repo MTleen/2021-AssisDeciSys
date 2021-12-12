@@ -190,10 +190,10 @@
     />
 
     <!-- 添加或修改用户信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="95px"  style="width: 66%">
+    <el-dialog :title="title" :visible.sync="open" width="450px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="95px"  style="width: 74%">
         <el-form-item label="姓名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入姓名" />
+          <el-input c v-model="form.username" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-select v-model="form.gender" placeholder="请选择性别" clearable filterable size="small">
@@ -205,6 +205,7 @@
         </el-form-item>
         <el-form-item label="出生日期" prop="age">
           <el-date-picker
+            style="width: 208px;"
             v-model="form.age"
             size="small"
             type="date"
@@ -234,7 +235,7 @@
         <!--          <el-input v-model="form.password" placeholder="请输入密码"/>-->
         <!--        </el-form-item>-->
         <el-form-item label="状态">
-          <el-select v-model="form.status" filterable clearable size="small" placeholder="请选择状态">
+          <el-select v-model="form.status"  placeholder="请选择状态" filterable clearable size="small" >
             <el-option v-for="(value, key, index) in userStatus"
                        :key="key"
                        :label="value"
