@@ -126,7 +126,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="userinfoList" border stripe @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="userinfoList" border stripe @selection-change="handleSelectionChange" label-width="85px">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="手机号" align="center" prop="tele"/>
       <el-table-column label="姓名" align="center" prop="username"/>
@@ -191,9 +191,9 @@
 
     <!-- 添加或修改用户信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="95px"  style="width: 66%">
         <el-form-item label="姓名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入姓名"/>
+          <el-input v-model="form.username" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-select v-model="form.gender" placeholder="请选择性别" clearable filterable size="small">
@@ -453,3 +453,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.el-date-editor{
+  width:210px
+}
+</style>

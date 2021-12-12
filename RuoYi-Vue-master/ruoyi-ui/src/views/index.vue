@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="top-style">
-      <el-form label-position="left" ref="cautionForm" :model="form" :rules="rules" :inline="true" label-width="80px">
+      <el-form label-position="right" ref="cautionForm" :model="form" :rules="rules" :inline="true" label-width="85px">
         <el-row style="margin-top: 15px">
           <el-form-item label="案发地址:" prop="address" style="">
             <el-input v-model="form.address" size="small" clearable/>
@@ -503,7 +503,7 @@ export default {
   }
 }
 </script>
-<style>
+<style  scoped>
 .el-table--medium th, .el-table--medium td {
   padding: 2px 0;
   padding-top: 2px;
@@ -558,11 +558,11 @@ element.style {
   padding-right: 0px;
 }
 
-/* .el-date-editor.el-input, .el-date-editor.el-input__inner{
+.el-date-editor.el-input,.el-date-editor.el-input__inner{
   width: 208px;
-} */
-/* .el-input {
+} 
+.el-input {
   width: 208px;
-} */
+} 
 
 </style>
