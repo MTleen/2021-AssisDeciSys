@@ -5,6 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.information.mapper.UserInfoMapper">
     
     <resultMap type="UserInfo" id="UserInfoResult">
+        <result property="id"    column="id"    />
         <result property="tele"    column="tele"    />
         <result property="username"    column="username"    />
         <result property="gender"    column="gender"    />
@@ -21,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectUserInfoVo">
-        select tele, username, gender, age, positionID, truckID, siteID, account, password, adminID, status, openid, userid from UserInfo
+        select id, tele, username, gender, age, positionID, truckID, siteID, account, password, adminID, status, openid, userid from UserInfo
     </sql>
 
     <select id="selectUserInfoList" parameterType="UserInfo" resultMap="UserInfoResult">
@@ -43,6 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectUserInfoByTele" parameterType="String" resultMap="UserInfoResult">
         <include refid="selectUserInfoVo"/>
         where tele = #{tele}
+    </select>
+
+    <select id="selectUserInfoById" parameterType="Integer" resultMap="UserInfoResult">
+        <include refid="selectUserInfoVo"/>
+        where id = #{id}
     </select>
         
     <insert id="insertUserInfo" parameterType="UserInfo">
@@ -82,6 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateUserInfo" parameterType="UserInfo">
         update UserInfo
         <trim prefix="SET" suffixOverrides=",">
+            <if test="tele != null and tele != ''">tele = #{tele},</if>
             <if test="username != null and username != ''">username = #{username},</if>
             <if test="gender != null">gender = #{gender},</if>
             <if test="age != null">age = #{age},</if>
@@ -95,17 +102,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="openid != null">openid = #{openid},</if>
             <if test="userid != null">userid = #{userid},</if>
         </trim>
-        where tele = #{tele}
+        where id = #{id}
     </update>
 
     <delete id="deleteUserInfoByTele" parameterType="String">
         delete from UserInfo where tele = #{tele}
     </delete>
 
+    <delete id="deleteUserInfoById" parameterType="Integer">
+        delete from UserInfo where id = #{id}
+    </delete>
+
     <delete id="deleteUserInfoByTeles" parameterType="String">
-        delete from UserInfo where tele in 
+        delete from UserInfo where tele in
         <foreach item="tele" collection="array" open="(" separator="," close=")">
             #{tele}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUserInfoByIds" parameterType="Integer">
+        delete from UserInfo where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
 </mapper>

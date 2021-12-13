@@ -9,199 +9,220 @@ import java.util.Date;
 
 /**
  * 用户信息对象 UserInfo
- * 
+ *
  * @author Mathripper
  * @date 2021-11-16
  */
-public class UserInfo extends BaseEntity
-{
+public class UserInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+    private Integer id;
+
+    /**
+     * $column.columnComment
+     */
     private String tele;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String username;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Integer gender;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date age;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long positionid;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Integer truckid;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long siteid;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String account;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String password;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long adminid;
 
-    /** $column.columnComment */
+    /**
+     * $column.columnComment
+     */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Long status;
 
-    /** 用户微信 openid */
+    /**
+     * 用户微信 openid
+     */
     @Excel(name = "用户微信 openid")
     private String openid;
 
-    /** 用户企业微信 id */
+    /**
+     * 用户企业微信 id
+     */
     @Excel(name = "用户企业微信 id")
     private String userid;
 
-    public void setTele(String tele) 
-    {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setTele(String tele) {
         this.tele = tele;
     }
 
-    public String getTele() 
-    {
+    public String getTele() {
         return tele;
     }
-    public void setUsername(String username) 
-    {
+
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getUsername() 
-    {
+    public String getUsername() {
         return username;
     }
-    public void setGender(Integer gender) 
-    {
+
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public Integer getGender() 
-    {
+    public Integer getGender() {
         return gender;
     }
-    public void setAge(Date age)
-    {
+
+    public void setAge(Date age) {
         this.age = age;
     }
 
-    public Date getAge()
-    {
+    public Date getAge() {
         return age;
     }
-    public void setPositionid(Long positionid) 
-    {
+
+    public void setPositionid(Long positionid) {
         this.positionid = positionid;
     }
 
-    public Long getPositionid() 
-    {
+    public Long getPositionid() {
         return positionid;
     }
-    public void setTruckid(Integer truckid) 
-    {
+
+    public void setTruckid(Integer truckid) {
         this.truckid = truckid;
     }
 
-    public Integer getTruckid() 
-    {
+    public Integer getTruckid() {
         return truckid;
     }
-    public void setSiteid(Long siteid) 
-    {
+
+    public void setSiteid(Long siteid) {
         this.siteid = siteid;
     }
 
-    public Long getSiteid() 
-    {
+    public Long getSiteid() {
         return siteid;
     }
-    public void setAccount(String account) 
-    {
+
+    public void setAccount(String account) {
         this.account = account;
     }
 
-    public String getAccount() 
-    {
+    public String getAccount() {
         return account;
     }
-    public void setPassword(String password) 
-    {
+
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getPassword() 
-    {
+    public String getPassword() {
         return password;
     }
-    public void setAdminid(Long adminid) 
-    {
+
+    public void setAdminid(Long adminid) {
         this.adminid = adminid;
     }
 
-    public Long getAdminid() 
-    {
+    public Long getAdminid() {
         return adminid;
     }
-    public void setStatus(Long status) 
-    {
+
+    public void setStatus(Long status) {
         this.status = status;
     }
 
-    public Long getStatus() 
-    {
+    public Long getStatus() {
         return status;
     }
-    public void setOpenid(String openid) 
-    {
+
+    public void setOpenid(String openid) {
         this.openid = openid;
     }
 
-    public String getOpenid() 
-    {
+    public String getOpenid() {
         return openid;
     }
-    public void setUserid(String userid) 
-    {
+
+    public void setUserid(String userid) {
         this.userid = userid;
     }
 
-    public String getUserid() 
-    {
+    public String getUserid() {
         return userid;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("tele", getTele())
-            .append("username", getUsername())
-            .append("gender", getGender())
-            .append("age", getAge())
-            .append("positionid", getPositionid())
-            .append("truckid", getTruckid())
-            .append("siteid", getSiteid())
-            .append("account", getAccount())
-            .append("password", getPassword())
-            .append("adminid", getAdminid())
-            .append("status", getStatus())
-            .append("openid", getOpenid())
-            .append("userid", getUserid())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("tele", getTele())
+                .append("username", getUsername())
+                .append("gender", getGender())
+                .append("age", getAge())
+                .append("positionid", getPositionid())
+                .append("truckid", getTruckid())
+                .append("siteid", getSiteid())
+                .append("account", getAccount())
+                .append("password", getPassword())
+                .append("adminid", getAdminid())
+                .append("status", getStatus())
+                .append("openid", getOpenid())
+                .append("userid", getUserid())
+                .toString();
     }
 }

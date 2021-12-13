@@ -62,10 +62,10 @@ public class UserInfoController extends BaseController
      * 获取用户信息详细信息
      */
     @PreAuthorize("@ss.hasPermi('information:userinfo:query')")
-    @GetMapping(value = "/{tele}")
-    public AjaxResult getInfo(@PathVariable("tele") String tele)
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Integer id)
     {
-        return AjaxResult.success(userInfoService.selectUserInfoByTele(tele));
+        return AjaxResult.success(userInfoService.selectUserInfoById(id));
     }
 
     /**
@@ -95,9 +95,9 @@ public class UserInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('information:userinfo:remove')")
     @Log(title = "用户信息", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{teles}")
-    public AjaxResult remove(@PathVariable String[] teles)
+	@DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Integer[] ids)
     {
-        return toAjax(userInfoService.deleteUserInfoByTeles(teles));
+        return toAjax(userInfoService.deleteUserInfoByIds(ids));
     }
 }

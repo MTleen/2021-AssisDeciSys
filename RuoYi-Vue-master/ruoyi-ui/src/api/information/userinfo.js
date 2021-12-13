@@ -10,9 +10,9 @@ export function listUserinfo(query) {
 }
 
 // 查询用户信息详细
-export function getUserinfo(tele) {
+export function getUserinfo(id) {
   return request({
-    url: '/information/userinfo/' + tele,
+    url: '/information/userinfo/' + id,
     method: 'get'
   })
 }
@@ -36,9 +36,9 @@ export function updateUserinfo(data) {
 }
 
 // 删除用户信息
-export function delUserinfo(tele) {
+export function delUserinfo(ids) {
   return request({
-    url: '/information/userinfo/' + tele,
+    url: '/information/userinfo/' + ids,
     method: 'delete'
   })
 }

@@ -192,11 +192,14 @@
     <!-- 添加或修改用户信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="450px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="95px"  style="width: 74%">
+        <el-form-item label="手机号" prop="tele">
+          <el-input v-model="form.tele" clearable placeholder="请输入手机号"/>
+        </el-form-item>
         <el-form-item label="姓名" prop="username">
           <el-input c v-model="form.username" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
-          <el-select v-model="form.gender" placeholder="请选择性别" clearable filterable size="small">
+          <el-select v-model="form.gender" placeholder="请选择性别" clearable filterable>
             <el-option v-for="(value, key, index) in $root.GENDER"
                        :key="key"
                        :label="value"
@@ -213,7 +216,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="岗位" prop="positionid">
-          <el-select v-model="form.positionid" filterable clearable size="small">
+          <el-select v-model="form.positionid" filterable clearable>
             <el-option v-for="(value, key, index) in $root.totalUserPositions"
                        :key="key"
                        :label="value"
@@ -221,7 +224,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="队站" prop="siteid">
-          <el-select v-model="form.siteid" placeholder="请选择队站" clearable filterable size="small">
+          <el-select v-model="form.siteid" placeholder="请选择队站" clearable filterable>
             <el-option v-for="(value, key, index) in $root.totalSites"
                        :key="key"
                        :label="value"
@@ -350,21 +353,22 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
-        tele: null,
-        username: null,
-        gender: null,
-        age: null,
-        positionid: null,
-        truckid: null,
-        siteid: null,
-        account: null,
-        password: null,
-        adminid: null,
-        status: 0,
-        openid: null,
-        userid: null
-      };
+      // this.form = {
+      //   tele: null,
+      //   username: null,
+      //   gender: null,
+      //   age: null,
+      //   positionid: null,
+      //   truckid: null,
+      //   siteid: null,
+      //   account: null,
+      //   password: null,
+      //   adminid: null,
+      //   status: 0,
+      //   openid: null,
+      //   userid: null
+      // };
+      this.form = {}
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -379,7 +383,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.tele)
+      this.ids = selection.map(item => item.id)
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
@@ -392,8 +396,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const tele = row.tele || this.ids
-      getUserinfo(tele).then(response => {
+      const idx = row.id || this.ids
+      getUserinfo(idx).then(response => {
         this.form = response.data;
         this.$root.num2str(this.form)
         this.open = true;
@@ -404,7 +408,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.tele != null) {
+          if (this.form.id != null) {
             updateUserinfo(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
@@ -422,13 +426,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const teles = row.tele || this.ids;
-      this.$confirm('是否确认删除用户信息编号为"' + teles + '"的数据项?', "警告", {
+      const ids = row.id || this.ids;
+      this.$confirm('是否确认删除用户信息编号为"' + ids + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delUserinfo(teles);
+        return delUserinfo(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");

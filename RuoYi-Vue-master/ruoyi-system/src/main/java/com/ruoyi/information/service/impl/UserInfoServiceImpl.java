@@ -32,8 +32,20 @@ public class UserInfoServiceImpl implements IUserInfoService
     }
 
     /**
+     * 查询用户信息
+     *
+     * @param id 用户信息主键
+     * @return 用户信息
+     */
+    @Override
+    public UserInfo selectUserInfoById(Integer id)
+    {
+        return userInfoMapper.selectUserInfoById(id);
+    }
+
+    /**
      * 查询用户信息列表
-     * 
+     *
      * @param userInfo 用户信息
      * @return 用户信息
      */
@@ -70,24 +82,24 @@ public class UserInfoServiceImpl implements IUserInfoService
     /**
      * 批量删除用户信息
      * 
-     * @param teles 需要删除的用户信息主键
+     * @param ids 需要删除的用户信息主键
      * @return 结果
      */
     @Override
-    public int deleteUserInfoByTeles(String[] teles)
+    public int deleteUserInfoByIds(Integer[] ids)
     {
-        return userInfoMapper.deleteUserInfoByTeles(teles);
+        return userInfoMapper.deleteUserInfoByIds(ids);
     }
 
     /**
      * 删除用户信息信息
      * 
-     * @param tele 用户信息主键
+     * @param id 用户信息主键
      * @return 结果
      */
     @Override
-    public int deleteUserInfoByTele(String tele)
+    public int deleteUserInfoById(Integer id)
     {
-        return userInfoMapper.deleteUserInfoByTele(tele);
+        return userInfoMapper.deleteUserInfoById(id);
     }
 }

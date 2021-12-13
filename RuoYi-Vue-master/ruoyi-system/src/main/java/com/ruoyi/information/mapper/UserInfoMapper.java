@@ -20,6 +20,14 @@ public interface UserInfoMapper
     public UserInfo selectUserInfoByTele(String tele);
 
     /**
+     * 查询用户信息
+     *
+     * @param id 用户信息主键
+     * @return 用户信息
+     */
+    public UserInfo selectUserInfoById(Integer id);
+
+    /**
      * 查询用户信息列表
      * 
      * @param userInfo 用户信息
@@ -46,16 +54,16 @@ public interface UserInfoMapper
     /**
      * 删除用户信息
      * 
-     * @param tele 用户信息主键
+     * @param id 用户信息主键
      * @return 结果
      */
-    public int deleteUserInfoByTele(String tele);
+    public int deleteUserInfoById(Integer id);
 
     /**
      * 批量删除用户信息
      * 
-     * @param teles 需要删除的数据主键集合
+     * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteUserInfoByTeles(String[] teles);
+    public int deleteUserInfoByIds(Integer[] ids);
 }
