@@ -9,17 +9,19 @@
                      :value="value"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="处置对象" prop="disposeobj">
-        <el-select v-model="queryParams.disposeobjList" filterable multiple placeholder="请选择处置对象" clearable size="small">
-          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+     
+      <el-form-item label="通用/专项" prop="priority">
+        <el-select v-model="queryParams.priority" filterable placeholder="请选择通用/专项" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalLibType"
                      :key="key"
                      :label="value"
                      :value="key"/>
         </el-select>
-      </el-form-item>
-      <el-form-item label="通用/专项" prop="priority">
-        <el-select v-model="queryParams.priority" filterable placeholder="请选择通用/专项" clearable size="small">
-          <el-option v-for="(value, key, index) in $root.totalLibType"
+      </el-form-item> 
+
+      <el-form-item label="处置对象" prop="disposeobj">
+        <el-select v-model="queryParams.disposeobjList" filterable multiple placeholder="请选择处置对象" clearable size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                      :key="key"
                      :label="value"
                      :value="key"/>
@@ -85,19 +87,21 @@
     <el-table v-loading="loading" :data="detailtypeList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <!--      <el-table-column label="类型 ID" align="center" prop="typeid" />-->
-      <el-table-column label="序号" align="center" type="index" width="50"/>
-      <el-table-column label="详细类型" align="center" prop="typename"/>
+      <el-table-column label="序号" align="center" type="index" width="80"/>
+      <el-table-column label="详细类型" align="center" prop="typename" width="180"/>
+      
+      <el-table-column label="通用/专项" align="center" width="120">
+        <template slot-scope="scope">
+          <span>{{ $root.totalLibType[scope.row.priority] }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="处置对象" align="center">
         <template slot-scope="scope">
           <span>{{ $root.parseString(scope.row.disposeobj, $root.totalDisposeObj) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="通用/专项" align="center">
-        <template slot-scope="scope">
-          <span>{{ $root.totalLibType[scope.row.priority] }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -129,7 +133,7 @@
 
     <!-- 添加或修改详细类型表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="width: 299px">
         <el-form-item label="详细类型" prop="typename">
           <el-input v-model="form.typename" placeholder="请输入详细类型"/>
         </el-form-item>

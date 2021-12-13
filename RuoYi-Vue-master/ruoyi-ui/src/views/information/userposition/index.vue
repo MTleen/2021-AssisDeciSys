@@ -65,9 +65,9 @@
 
     <el-table v-loading="loading" :data="userpositionList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" width="50" type="index"/>
+      <el-table-column label="序号" align="center" width="80" type="index"/>
       <el-table-column label="岗位名称" align="center" prop="positionname" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -97,7 +97,7 @@
 
     <!-- 添加或修改岗位信息表管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="width:319px">
         <el-form-item label="岗位名称" prop="positionname">
           <el-input
           v-model="queryParams.positionname"

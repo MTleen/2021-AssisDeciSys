@@ -2,9 +2,9 @@
   <div class="app-container">
     <div class="top-style">
       <el-form label-position="right" ref="cautionForm" :model="form" :rules="rules" :inline="true" label-width="85px">
-        <el-row style="margin-top: 15px">
+        <el-row style="margin-top: 15px; margin-bottom: 5px">
           <el-form-item label="案发地址:" prop="address" style="">
-            <el-input class="inputStyle" v-model="form.address"  placeholder="请输入案发地址" size="small" clearable/>
+            <el-input  style="width: 208px;" class="inputStyle" v-model="form.address"  placeholder="请输入案发地址" size="small" clearable/>
           </el-form-item>
           <el-form-item label="立案时间:" prop="date">
             <el-date-picker clearable size="small"
@@ -17,7 +17,7 @@
           </el-form-item>
 
           <el-form-item label="灾情类型:" prop="distype" style="">
-            <el-select v-model="form.distype" filterable clearable size="small">
+            <el-select  style="width: 208px;" v-model="form.distype" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDisType"
                          :key="key"
                          :label="value"
@@ -26,7 +26,7 @@
           </el-form-item>
 
           <el-form-item label="处置对象:" prop="disposeObj" style="">
-            <el-select v-model="form.disposeObj" filterable clearable size="small">
+            <el-select  style="width: 208px;" v-model="form.disposeObj" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                          :key="key"
                          :label="value"
@@ -35,7 +35,7 @@
           </el-form-item>
 
           <el-form-item label="通用类型:" prop="generalType" style="">
-            <el-select v-model="form.generalType" filterable clearable size="small">
+            <el-select style="width: 208px;" v-model="form.generalType" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalGeneralType"
                          :key="key"
                          :label="value"
@@ -45,7 +45,7 @@
 
           <!--        <el-row style="margin-top: 2px">-->
           <el-form-item label="主管队站:" prop="siteID1" style="">
-            <el-select v-model="form.siteID1" filterable clearable size="small">
+            <el-select style="width: 208px;" v-model="form.siteID1" filterable clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalSites"
                          :key="key"
                          :label="value"
@@ -54,7 +54,7 @@
           </el-form-item>
 
           <el-form-item label="参战力量:" prop="siteID2" style="">
-            <el-select v-model="form.siteID2" filterable clearable multiple size="small">
+            <el-select style="width: 208px;" v-model="form.siteID2" filterable clearable multiple size="small">
               <el-option v-for="(value, key, index) in $root.totalSites"
                          :key="key"
                          :label="value"
@@ -63,7 +63,7 @@
           </el-form-item>
 
           <el-form-item label="专项类型:" prop="specialType" style="">
-            <el-select v-model="form.specialType" clearable size="small">
+            <el-select style="width: 208px;" v-model="form.specialType" clearable size="small">
               <el-option v-for="(value, key, index) in $root.totalSpecialType"
                          :key="key"
                          :label="value"
@@ -545,7 +545,7 @@ export default {
 }
 
 .el-form-item {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 element.style {
@@ -553,10 +553,6 @@ element.style {
   padding-right: 0px;
 }
 
-
-.inputStyle{
-  width:208px;
-}
 
 
 /* .el-date-editor.el-input,.el-date-editor.el-input__inner{

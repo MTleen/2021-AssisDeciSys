@@ -75,7 +75,7 @@
           <span>{{$root.totalSecurityType[scope.row.securitypeid]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -106,9 +106,6 @@
     <!-- 添加或修改安全知识库对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="提示信息" prop="inform">
-          <el-input v-model="form.inform" placeholder="请输入内容" type="textarea" />
-        </el-form-item>
         <el-form-item label="安全类型" prop="securitypeid">
           <el-select v-model="form.securitypeid" placeholder="请选择安全类型">
             <el-option v-for="(value, key, index) in $root.totalSecurityType"
@@ -117,6 +114,11 @@
                        :value="key"/>
           </el-select>
         </el-form-item>
+
+        <el-form-item label="提示信息" prop="inform">
+          <el-input v-model="form.inform" placeholder="请输入内容" type="textarea"  :autosize="{ minRows: 3}"  />
+        </el-form-item>
+        
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

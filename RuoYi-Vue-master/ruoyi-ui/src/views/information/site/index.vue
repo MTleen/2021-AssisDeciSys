@@ -10,19 +10,19 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="电话" prop="tele">
+      <el-input
+        v-model="queryParams.tele"
+        placeholder="请输入电话"
+        clearable
+        size="small"
+        @keyup.enter.native="handleQuery"
+      />
+      </el-form-item>
       <el-form-item label="地址" prop="siteposition">
         <el-input
           v-model="queryParams.siteposition"
           placeholder="请输入地址"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="电话" prop="tele">
-        <el-input
-          v-model="queryParams.tele"
-          placeholder="请输入电话"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -84,10 +84,10 @@
     <el-table v-loading="loading" :data="siteList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" type="index" width="100" />
-      <el-table-column label="队站" align="left" prop="sitename" />
-      <el-table-column label="地址" align="left" prop="siteposition" />
+      <el-table-column label="队站" align="center" prop="sitename"width="160"  />
       <el-table-column label="电话" align="center" prop="tele" width="180"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+      <el-table-column label="地址" align="left" prop="siteposition" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -117,15 +117,15 @@
 
     <!-- 添加或修改队站信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="width:319px">
         <el-form-item label="队站" prop="sitename">
           <el-input v-model="form.sitename" placeholder="请输入队站" />
         </el-form-item>
-        <el-form-item label="地址" prop="siteposition">
-          <el-input v-model="form.siteposition" placeholder="请输入地址" />
-        </el-form-item>
         <el-form-item label="电话" prop="tele">
           <el-input v-model="form.tele" placeholder="请输入电话" />
+        </el-form-item>
+        <el-form-item label="地址" prop="siteposition" >
+          <el-input v-model="form.siteposition" placeholder="请输入地址" type="textarea" autosize />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

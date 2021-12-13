@@ -72,7 +72,7 @@
           <span>{{$root.totalSpecialType[scope.row.detailtype]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -102,10 +102,9 @@
 
     <!-- 添加或修改专项知识库对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="提示信息" prop="inform">
-          <el-input v-model="form.inform" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" width="250px">
+        
+
         <el-form-item label="专项类型" prop="detailtype" >
           <el-select v-model="form.detailtype" placeholder="请选择专项类型">
             <el-option v-for="(value, key, index) in $root.totalSpecialType"
@@ -113,6 +112,10 @@
                        :label="value"
                        :value="key"/>
           </el-select>
+        </el-form-item>
+
+        <el-form-item label="提示信息" prop="inform">
+          <el-input v-model="form.inform" type="textarea" placeholder="请输入内容"  :autosize="{ minRows: 3}" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

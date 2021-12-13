@@ -64,9 +64,9 @@
 <div style="margin-top: 20px; background: white;padding: 20px 20px 30px 30px;">
     <el-table v-loading="loading" :data="disastertypeList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" width="50" align="center" />
+      <el-table-column label="序号" type="index" width="80" align="center" />
       <el-table-column label="灾情类型" align="center" prop="typename" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             v-hasPermi="['knowledge:disastertype:edit']"
@@ -96,7 +96,7 @@
 </div>
     <!-- 添加或修改险情类型对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="width:319px">
         <el-form-item label="类型名称" prop="typename">
           <el-input v-model="form.typename" placeholder="请输入类型名称" />
         </el-form-item>

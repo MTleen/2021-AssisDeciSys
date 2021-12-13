@@ -1,17 +1,19 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
-      <el-form-item label="灾情类型" prop="disastertype">
-        <el-select v-model="queryParams.disastertypeList" placeholder="请选择灾情类型" clearable filterable multiple size="small">
-          <el-option v-for="(value, key, index) in $root.totalDisType"
+     
+      <el-form-item label="处置对象" prop="disposeobj">
+        <el-select v-model="queryParams.disposeobjList" placeholder="请选择处置对象" clearable filterable multiple size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
                      :key="key"
                      :label="value"
                      :value="key"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="处置对象" prop="disposeobj">
-        <el-select v-model="queryParams.disposeobjList" placeholder="请选择处置对象" clearable filterable multiple size="small">
-          <el-option v-for="(value, key, index) in $root.totalDisposeObj"
+      
+       <el-form-item label="灾情类型" prop="disastertype">
+        <el-select v-model="queryParams.disastertypeList" placeholder="请选择灾情类型" clearable filterable multiple size="small">
+          <el-option v-for="(value, key, index) in $root.totalDisType"
                      :key="key"
                      :label="value"
                      :value="key"/>
@@ -83,18 +85,20 @@
     </el-row>
 
     <el-table v-loading="loading" :data="knowledgeList" border stripe @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column type="selection" width="45" align="center"/>
       <!--      <el-table-column label="详细类型" align="center" prop="informid" />-->
-      <el-table-column label="序号" align="center" type="index" width="100"/>
+      <el-table-column label="序号" align="center" type="index" width="50"/>
+     
+      
       <el-table-column label="信息内容" align="left" prop="inform"/>
+      <el-table-column label="处置对象" align="center" prop="disposeobj">
+        <template slot-scope="scope">
+          <span>{{ $root.parseString(scope.row.disposeobj, $root.totalDisposeObj) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="灾情类型" align="center" prop="disastertype" width="150">
         <template slot-scope="scope">
           <span>{{ $root.parseString(scope.row.disastertype, $root.totalDisType) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="处置对象" align="center" prop="disposeobj" width="250">
-        <template slot-scope="scope">
-          <span>{{ $root.parseString(scope.row.disposeobj, $root.totalDisposeObj) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="通用类型" align="center" prop="detailtype" width="150">
@@ -102,7 +106,7 @@
           <span>{{ $root.totalGeneralType[scope.row.detailtype] }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"

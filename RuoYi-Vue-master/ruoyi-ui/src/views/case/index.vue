@@ -149,16 +149,16 @@
 
     <el-table v-loading="loading" :data="recordList" border @selection-change="handleSelectionChange"
               :row-class-name="tableRowClassName">
-      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column type="selection" width="45" align="center"  />
       <el-table-column label="序号" align="center" type="index" width="50"></el-table-column>
-      <el-table-column label="报警编号" align="center" prop="cautionid" width="80"/>
-      <el-table-column label="时间" align="center" prop="cautiontime" width="180" sortable>
+      <el-table-column label="报警编号" align="center" prop="cautionid" width="75"/>
+      <el-table-column label="时间" align="center" prop="cautiontime" width="160" sortable>
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.cautiontime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="地址" align="center" prop="location"/>
-      <el-table-column label="灾情类型" align="center" prop="distypeid">
+      <el-table-column label="灾情类型" align="center" prop="distypeid" width="75">
         <template slot-scope="scope">
           <span>{{ $root.totalDisType[scope.row.distypeid] }}</span>
         </template>
@@ -173,7 +173,7 @@
           <span>{{ totalDetailType[scope.row.detailtype] }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="主管队站" align="center" prop="siteid">
+      <el-table-column label="主管队站" align="center" prop="siteid" width="75">
         <template slot-scope="scope">
           <span>{{ $root.totalSites[scope.row.siteid] }}</span>
         </template>
@@ -184,15 +184,16 @@
         </template>
       </el-table-column>
       <!--      <el-table-column label="  出警车辆" align="center" prop="truckid" />-->
-      <el-table-column label="任务执行状态" align="center" prop="status">
+      <el-table-column label="任务执行状态" align="center" prop="status" width="100">
         <template slot-scope="scope">
           <span>{{ cautionStatus[scope.row.status] }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="关键词" align="center" prop="keywords"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="关键词" align="center" prop="keywords" />
+      <el-table-column label="操作" align="center"  width="130" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            style="margin-left: 10px"
             size="mini"
             type="text"
             icon="el-icon-s-promotion"
@@ -201,6 +202,7 @@
           >推送
           </el-button>
           <el-button
+            style="margin-right: 10px"
             size="mini"
             type="text"
             icon="el-icon-message-solid"
@@ -217,6 +219,7 @@
           >修改
           </el-button>
           <el-button
+            style="margin-right: 10px"
             size="mini"
             type="text"
             icon="el-icon-delete"
@@ -239,7 +242,7 @@
 
     <!-- 添加或修改出警记录表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px" style="width: 319px">
         <el-form-item label="时间" prop="cautiontime">
           <el-date-picker clearable size="small"
                           v-model="form.cautiontime"
@@ -249,7 +252,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="地址" prop="location">
-          <el-input v-model="form.location" placeholder="请输入地址"/>
+          <el-input v-model="form.location" type="textarea"  autosize placeholder="请输入地址"/>
         </el-form-item>
         <el-form-item label="灾情类型" prop="distypeid">
           <el-select v-model="form.distypeid" placeholder="请选择灾情类型">

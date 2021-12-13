@@ -87,7 +87,7 @@
     <el-table v-loading="loading" :data="historyList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="序号" align="center" type="index" width="50"/>
-      <el-table-column label="案件编号" align="center" prop="cautionid" width="150"/>
+      <el-table-column label="案件编号" align="center" prop="cautionid" width="100"/>
       <el-table-column label="提示信息" align="left" prop="informid"/>
       <el-table-column label="推送对象" align="center" prop="positionid" width="200">
         <template slot-scope="scope">

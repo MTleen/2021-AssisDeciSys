@@ -128,38 +128,38 @@
 
     <el-table v-loading="loading" :data="userinfoList" border stripe @selection-change="handleSelectionChange" label-width="85px">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="手机号" align="center" prop="tele"/>
-      <el-table-column label="姓名" align="center" prop="username"/>
-      <el-table-column label="性别" align="center" prop="gender">
+      <el-table-column label="姓名" align="center" prop="username" width="120"/>
+      <el-table-column label="性别" align="center" prop="gender" width="65" >
         <template slot-scope="scope">
           {{ $root.GENDER[scope.row.gender] }}
         </template>
       </el-table-column>
-      <el-table-column label="年龄" align="center" prop="age" sortable>
+      <el-table-column label="年龄" align="center" prop="age" sortable width="90">
         <template slot-scope="scope">
           <span>{{getAge(scope.row.age)}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="岗位" align="center" prop="positionid">
+      <el-table-column label="手机号" align="center" prop="tele" width="120"/>
+      <el-table-column label="岗位" align="center" prop="positionid" width="110">
         <template slot-scope="scope">
           {{ $root.totalUserPositions[scope.row.positionid] }}
         </template>
       </el-table-column>
-      <el-table-column label="队站" align="center" prop="siteid">
+      <el-table-column label="队站" align="center" prop="siteid"  width="130">
         <template slot-scope="scope">
           {{ $root.totalSites[scope.row.siteid] }}
         </template>
       </el-table-column>
       <!--      <el-table-column label="账号" align="center" prop="account"/>-->
       <!--      <el-table-column label="密码" align="center" prop="password"/>-->
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column label="状态" align="center" prop="status" width="100">
         <template slot-scope="scope">
           <span>{{ userStatus[scope.row.status] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="微信 openid" align="center" prop="openid"/>
       <el-table-column label="企业微信 id" align="center" prop="userid"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -243,10 +243,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="微信 openid" prop="openid">
-          <el-input v-model="form.openid" placeholder="请输入微信 openid"/>
+          <el-input v-model="form.openid" placeholder="请输入微信 openid" type="textarea" autosize />
         </el-form-item>
         <el-form-item label="企业微信 id" prop="userid">
-          <el-input v-model="form.userid" placeholder="请输入企业微信 id"/>
+          <el-input v-model="form.userid" placeholder="请输入企业微信 id" type="textarea" autosize />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

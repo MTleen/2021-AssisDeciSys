@@ -72,17 +72,17 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="disposeobjList" border stripe @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="disposeobjList" border stripe @selection-change="handleSelectionChange" >
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="处置对象编号" align="center" prop="objid" />-->
-      <el-table-column label="序号" type="index" align="center" width="50" />
+      <el-table-column label="序号" type="index" align="center" width="80" />
       <el-table-column label="处置对象名称" align="center" prop="objname" />
       <el-table-column label="灾情类型" align="center" >
         <template slot-scope="scope">
           <span>{{$root.totalDisType[scope.row.distype]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -112,7 +112,7 @@
 
     <!-- 添加或修改处置对象对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px"  style="width: 319px"> 
         <el-form-item label="处置对象名称" prop="objname">
           <el-input
             v-model="form.objname"

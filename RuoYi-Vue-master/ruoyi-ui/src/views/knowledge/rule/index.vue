@@ -83,11 +83,11 @@
 
     <el-table v-loading="loading" :data="ruleList" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" type="index" width="50" />
+      <el-table-column label="序号" align="center" type="index" width="80" />
       <el-table-column label="通用数量" align="center" prop="generalnum" />
       <el-table-column label="专项数量" align="center" prop="securitynum" />
       <el-table-column label="安全数量" align="center" prop="specialnum" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="130">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -117,7 +117,7 @@
 
     <!-- 添加或修改发送规则对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="width: 299px">
         <el-form-item label="通用数量" prop="generalnum">
           <el-input v-model="form.generalnum" placeholder="请输入通用数量" />
         </el-form-item>
