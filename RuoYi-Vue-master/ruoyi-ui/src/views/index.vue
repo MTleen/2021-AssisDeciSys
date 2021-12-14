@@ -405,7 +405,7 @@ export default {
     sendInfo() {
       // 判断自定义消息是否为 null，若不为 null 则加入 inform 列表
       if (this.customerInfo) {
-        this.form.inform.push({informid: null, inform: this.customerInfo, librarytype: null})
+        this.form.inform.push({informid: null, inform: this.customerInfo, librarytype: 4})
       }
       console.log('this.form:', this.form)
       sendMessage(this.form).then(response => {
@@ -420,7 +420,7 @@ export default {
     // 倒计时结束自动发送
     autoSend() {
       console.log(this.informList)
-      if (this.informList.length > 0) {
+      if (this.informList.length > 0 && !this.timerId) {
         this.seconds = 30
         // 倒计时 30 s
         this.timerId = setInterval(args => {
@@ -456,13 +456,14 @@ export default {
     },
     // 匹配提示信息
     getInfo() {
+      // this.resetTimer()
       this.loading = true
       // 若存在专项类型，则匹配专项库
       if (this.form.specialType) {
         let queryParams = {
           pageNum: this.form.pageNum,
           pageSize: this.form.pageSize,
-          detailtype: this.form.sepcialType,
+          detailtype: this.form.specialType,
           inform: this.form.keyWords
         }
         listSpecial(queryParams).then(response => {
@@ -493,6 +494,7 @@ export default {
       if (this.timerId) {
         clearInterval(this.timerId)
         this.seconds = 0
+        this.timerId = null
       }
     }
   }
@@ -557,7 +559,7 @@ element.style {
 
 /* .el-date-editor.el-input,.el-date-editor.el-input__inner{
   width: 208px;
-} 
+}
 .el-input {
   width: 208px;
 }  */

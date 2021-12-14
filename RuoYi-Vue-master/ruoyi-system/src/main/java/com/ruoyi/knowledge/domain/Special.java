@@ -18,7 +18,7 @@ public class Special extends BaseEntity
     /** $column.columnComment */
     private Integer informid;
 
-    private Integer librarytype;
+    private Integer librarytype = 3;
     /** 提示信息 */
     @Excel(name = "提示信息")
     private String inform;
