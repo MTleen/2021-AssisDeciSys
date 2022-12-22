@@ -101,7 +101,7 @@
           <span>{{ $root.parseString(scope.row.disastertype, $root.totalDisType) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="通用类型" align="center" prop="detailtype" width="150">
+      <el-table-column label="通用类型" align="center" prop="detailtype" width="180">
         <template slot-scope="scope">
           <span>{{ $root.totalGeneralType[scope.row.detailtype] }}</span>
         </template>

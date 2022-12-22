@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.knowledge.mapper.KnowledgeMapper">
+
+
+    <resultMap type="Security" id="SecurityResult">
+        <result property="informid" column="informID"/>
+        <result property="inform" column="inform"/>
+        <result property="securitypeid" column="securitypeID"/>
+    </resultMap>
+    <resultMap type="Special" id="SpecialResult">
+        <result property="informid" column="informID"/>
+        <result property="inform" column="inform"/>
+        <result property="detailtype" column="detailtype"/>
+    </resultMap>
+    <resultMap type="Knowledge" id="KnowledgeResult">
+        <result property="informid" column="informID"/>
+        <result property="inform" column="inform"/>
+        <result property="weight" column="weight"/>
+        <result property="disastertype" column="disastertype"/>
+        <result property="disposeobj" column="disposeobj"/>
+        <result property="detailtype" column="detailtype"/>
+        <result property="informtypeid" column="informtypeID"/>
+    </resultMap>
+    <resultMap type="Record" id="RecordResult">
+        <result property="cautionid" column="cautionID"/>
+        <result property="cautiontime" column="cautiontime"/>
+        <result property="location" column="location"/>
+        <result property="distypeid" column="distypeID"/>
+        <result property="dillobject" column="dillobject"/>
+        <result property="siteid" column="siteID"/>
+        <result property="truckid" column="truckID"/>
+        <result property="picture" column="picture"/>
+        <result property="status" column="status"/>
+        <result property="detailtype" column="detailtype"/>
+        <result property="label4" column="label4"/>
+        <result property="keywords" column="keywords"/>
+    </resultMap>
+
+    <sql id="selectKnowledgeVo">
+        SELECT *
+        from (SELECT K.informID,
+                     K.inform,
+                     K.weight,
+                     GROUP_CONCAT(DISTINCT D.distype)     AS disastertype,
+                     GROUP_CONCAT(DISTINCT TR.disposeobj) AS disposeobj,
+                     K.detailtype,
+                     K.informtypeID
+              FROM Knowledge K
+                       LEFT JOIN TypeRelation TR ON K.detailtype = TR.detailtype
+                       LEFT JOIN DisposeObj D ON TR.disposeobj = D.objID
+              GROUP BY K.informID) KV
+    </sql>
+
+    <select id="selectKnowledgeList" parameterType="Knowledge" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        <where>
+            <if test="inform != null  and inform != ''">and K.inform like concat('%', #{inform}, '%')</if>
+            <if test="disastertype != null and disastertype != ''">
+                <foreach collection="disastertypeList" item="item">
+                    and FIND_IN_SET(#{item}, KV.disastertype)
+                </foreach>
+            </if>
+            <if test="disposeobj != null and disposeobj!= ''">
+                <foreach collection="disposeobjList" item="item">
+                    and FIND_IN_SET(#{item}, KV.disposeobj)
+                </foreach>
+            </if>
+            <if test="detailtype != null and detailtype != ''">and KV.detailtype = #{detailtype}</if>
+        </where>
+    </select>
+
+    <select id="selectKnowledgeByInformid" parameterType="Long" resultMap="KnowledgeResult">
+        <include refid="selectKnowledgeVo"/>
+        where KV.informID = #{informid}
+    </select>
+
+    <insert id="insertKnowledge" parameterType="Knowledge" useGeneratedKeys="true" keyProperty="informid">
+        insert into Knowledge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inform != null and inform != ''">inform,</if>
+            <if test="weight != null">weight,</if>
+            <if test="disposeobj != null">disposeobj,</if>
+            <if test="detailtype != null">detailtype,</if>
+            <if test="informtypeid != null">informtypeID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inform != null and inform != ''">#{inform},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="disposeobj != null">#{disposeobj},</if>
+            <if test="detailtype != null">#{detailtype},</if>
+            <if test="informtypeid != null">#{informtypeid},</if>
+        </trim>
+    </insert>
+
+    <update id="updateKnowledge" parameterType="Knowledge">
+        update Knowledge
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inform != null and inform != ''">inform = #{inform},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="disposeobj != null">disposeobj = #{disposeobj},</if>
+            <if test="detailtype != null">detailtype = #{detailtype},</if>
+            <if test="informtypeid != null">informtypeID = #{informtypeid},</if>
+        </trim>
+        where informID = #{informid}
+    </update>
+
+    <delete id="deleteKnowledgeByInformid" parameterType="Long">
+        delete
+        from Knowledge
+        where informID = #{informid}
+    </delete>
+
+    <delete id="deleteKnowledgeByInformids" parameterType="String">
+        delete from Knowledge where informID in
+        <foreach item="informid" collection="array" open="(" separator="," close=")">
+            #{informid}
+        </foreach>
+    </delete>
+
+
+    <!--小程序信息查询 -->
+    <select id="selecttelebyOpenID" parameterType="String" resultType="String">
+        select tele
+        from UserInfo
+        where openid = #{openid}
+    </select>
+    <select id="selectCautionbytele" resultType="History">
+        select DISTINCT cautionID
+        from History
+        where tele = #{tele}
+        ORDER BY cautionID DESC
+    </select>
+    <select id="selectStatusbyCaution" parameterType="String" resultType="Boolean">
+        select status
+        from Record
+        where cautionID = #{cautionid}
+    </select>
+
+    <select id="selectInformByCaution" resultType="History">
+        select informID, librarytype from History where cautionID=#{cautionid} and tele=#{tele}
+        <if test="sendtime != null">
+            and sendtime >= #{sendtime}
+        </if>
+        ORDER BY sendtime DESC
+    </select>
+
+    <select id="selectInformIDbytele" resultType="History">
+        <if test="sendtime != null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >=
+            #{sendtime} order by sendtime
+        </if>
+        <if test="sendtime == null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} order by sendtime
+        </if>
+    </select>
+    <select id="selectInformIDbytele2" resultType="Security">
+        <if test="sendtime != null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and sendtime >=
+            #{sendtime} and librarytype=#{library} order by sendtime
+        </if>
+        <if test="sendtime == null">
+            select informID,sendtime from History where tele=#{tele} and cautionID=#{cautionid} and
+            librarytype=#{library} order by sendtime
+        </if>
+    </select>
+    <select id="selectInformIDbytele1" resultType="History">
+        select informID, sendtime
+        from History
+        where tele = #{tele}
+          and sendtime = #{sendtime}
+          and cautionID = #{cautionid}
+          and librarytype = #{library}
+    </select>
+    <select id="selectInformIDbycau" resultType="History">
+        <if test="sendtime != null">
+            select informID from History where tele=#{tele} and cautionID= #{cautionid} and sendtime >= #{sendtime} and
+            librarytype=#{library}
+        </if>
+        <if test="sendtime == null">
+            select informID from History where tele=#{tele} and cautionID= #{cautionid} and librarytype=#{library}
+        </if>
+    </select>
+    <select id="selectKnow1" parameterType="Long" resultMap="KnowledgeResult">
+        select *
+        from Knowledge k
+        where k.informID = #{informid}
+    </select>
+    <select id="selectKnow2" parameterType="Long" resultMap="SecurityResult">
+        select *
+        from Security s
+        where s.informID = #{informid}
+    </select>
+    <select id="selectKnow3" parameterType="Long" resultMap="SpecialResult">
+        select *
+        from Special s
+        where s.informID = #{informid}
+    </select>
+    <select id="selectRecord1" resultMap="RecordResult">
+        select *
+        from Record r
+                 LEFT join History h on h.tele = #{tele} and h.sendtime = #{sendtime1}
+        where r.cautionID = h.cautionID
+--         group by r.cautionID
+    </select>
+    <select id="selectRecord2" resultMap="RecordResult">
+        select *
+        from Record r
+        where r.cautionID = #{cautionid}
+--         group by r.cautionID
+    </select>
+    <select id="selectDisaster" parameterType="String" resultType="String">
+        select typename
+        from DisasterType
+        where typeID = #{disastertype}
+    </select>
+</mapper>
