@@ -82,7 +82,7 @@
             <if test="label4 != null">label4,</if>
             <if test="status != null">status,</if>
             <if test="keywords != null">keywords,</if>
-<!--            <if test="siteid2 != null">siteID2,</if>-->
+            <if test="siteid2 != null">siteID2,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cautionid != null">#{cautionid},</if>
@@ -97,7 +97,7 @@
             <if test="label4 != null">#{label4},</if>
             <if test="status != null">#{status},</if>
             <if test="keywords != null">#{keywords},</if>
-<!--            <if test="siteid2 != null">#{siteid2},</if>-->
+            <if test="siteid2 != null">#{siteid2},</if>
         </trim>
     </insert>
 
@@ -115,6 +115,7 @@
             <if test="label4 != null">label4 = #{label4},</if>
             <if test="status != null">status = #{status},</if>
             <if test="keywords != null">keywords = #{keywords},</if>
+            <if test="siteid2 != null">siteID2 = #{siteid2},</if>
         </trim>
         where cautionID = #{cautionid}
     </update>

@@ -3,13 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/2021-AssisDeciSys.iml" filepath="$PROJECT_DIR$/.idea/2021-AssisDeciSys.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-admin/ruoyi-admin.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-admin/ruoyi-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-common/ruoyi-common.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-common/ruoyi-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-framework/ruoyi-framework.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-framework/ruoyi-framework.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-generator/ruoyi-generator.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-generator/ruoyi-generator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-quartz/ruoyi-quartz.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-quartz/ruoyi-quartz.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-system/ruoyi-system.iml" filepath="$PROJECT_DIR$/RuoYi-Vue-master/ruoyi-system/ruoyi-system.iml" />
     </modules>
   </component>
 </project>

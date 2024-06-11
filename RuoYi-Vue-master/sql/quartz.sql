@@ -9,7 +9,6 @@ DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS;
 DROP TABLE IF EXISTS QRTZ_TRIGGERS;
 DROP TABLE IF EXISTS QRTZ_JOB_DETAILS;
 DROP TABLE IF EXISTS QRTZ_CALENDARS;
-
 -- ----------------------------
 -- 1、存储每一个已配置的 jobDetail 的详细信息
 -- ----------------------------
@@ -172,3 +171,6 @@ create table QRTZ_SIMPROP_TRIGGERS (
 ) engine=innodb comment = '同步机制的行锁表';
 
 commit;
+
+
+SHOW VARIABLES LIKE 'lower_case_table_names';
