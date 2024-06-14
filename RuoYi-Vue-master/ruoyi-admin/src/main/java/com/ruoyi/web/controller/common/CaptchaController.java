@@ -57,7 +57,7 @@ public class CaptchaController
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
         AjaxResult ajax = AjaxResult.success();
-        // boolean captchaOnOff = configService.selectCaptchaOnOff();
+//         boolean captchaOnOff = configService.selectCaptchaOnOff();
         
         // TODO: 暴力关闭验证码，更优雅的方式后续再优化
         
